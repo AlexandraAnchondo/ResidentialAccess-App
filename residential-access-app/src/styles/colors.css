@@ -1,0 +1,36 @@
+:root {
+    /* Paleta de colores principal */
+    --primary-color: #00a8cc;
+    --primary-hover-color: #008db8;
+    --secondary-color: #0ca9cc;
+    --secondary-hover-color: #0778a1;
+    --background-color: #f9f9f9;
+    --background-blur: rgba(255, 255, 255, 0.4);
+    --background-border: rgba(255, 255, 255, 0.8);
+
+    /* Texto */
+    --text-primary: #555;
+    --text-placeholder: #0ca9cc;
+    --text-link: #004f79;
+
+    /* Otros */
+    --box-shadow: rgba(0, 0, 0, 0.3);
+    --stroke-color: rgba(255, 255, 255, 0.6);
+    --border-color: #cce7f0;
+
+    /* Buttons */
+    --button-background: #00a8cc;
+    --button-hover-background: #008db8;
+    --button-text: #fff;
+    --button-border: none;
+    --button-border-radius: 5px;
+    --button-transition: background-color 0.3s ease-in-out;
+    --active-button: #aceaf8;
+
+    /* Inputs */
+    --input-background: rgb(236, 250, 255);
+    --input-border: 1px solid var(--border-color);
+    --input-placeholder-color: #999;
+    --input-border-radius: 5px;
+    --input-transition: border-color 0.3s ease-in-out;
+}
