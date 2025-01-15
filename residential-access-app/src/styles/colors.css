@@ -34,4 +34,7 @@
     --input-placeholder-color: #999;
     --input-border-radius: 5px;
     --input-transition: border-color 0.3s ease-in-out;
+
+    /* Table */
+    --child-row: #d6f2f8;
 }
