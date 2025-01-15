@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDoorOpen, faImage } from "@fortawesome/free-solid-svg-icons";
+import { faDoorOpen, faImage, faBoxOpen} from "@fortawesome/free-solid-svg-icons";
+import Modal from "./modals/Modal";
 import "../../styles/Usuarios/HomePage.css";
 
 const HomePage = () => {
     const imageSrc = "INE.png"; // Ruta de la imagen
+    const [showModal, setShowModal] = useState(false); // Estado para controlar el modal
+
+    const handleGenerateClick = () => {
+        setShowModal(true); // Mostrar modal
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false); // Ocultar modal
+    };
 
     return (
         <div className="home-container">
@@ -27,7 +37,7 @@ const HomePage = () => {
             <main className="home-main">
                 <div className="combined-info">
                     <section className="resident-info">
-                        <h2>Información del residente</h2>
+                        <h2>Información del residente:</h2>
                         <div className="info-item">
                             <strong>Dirección:</strong>
                             <input
@@ -54,20 +64,28 @@ const HomePage = () => {
                                 <p>No se ha proporcionado la INE</p>
                                 <FontAwesomeIcon icon={faImage} className="icon-placeholder" />
                             </div>
-                        ) : <center><img src={imageSrc} alt="Foto de identificación"/></center>
-                        }
+                        ) : (
+                            <center>
+                                <img src={imageSrc} alt="Foto de identificación" />
+                            </center>
+                        )}
                     </section>
                 </div>
 
                 <section className="code-generator">
                     <h2>Generador de códigos:</h2>
                     <div className="no-code">
-                        <p>No existe ningún código vigente</p>
-                        <FontAwesomeIcon icon={faImage} className="icon-placeholder" />
+                        <p>No existe ningún <br></br>código vigente</p>
+                        <FontAwesomeIcon icon={faBoxOpen} className="icon-placeholder" />
                     </div>
-                    <button className="generate-button">Generar</button>
+                    <button className="generate-button" onClick={handleGenerateClick}>
+                        Generar
+                    </button>
                 </section>
             </main>
+
+            {/* Modal */}
+            <Modal show={showModal} onClose={handleCloseModal} />
         </div>
     );
 };

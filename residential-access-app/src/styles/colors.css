@@ -12,6 +12,7 @@
     --text-primary: #555;
     --text-placeholder: #0ca9cc;
     --text-link: #004f79;
+    --text-disabled: #a5ccd4;
 
     /* Otros */
     --box-shadow: rgba(0, 0, 0, 0.3);
@@ -28,7 +29,7 @@
     --active-button: #aceaf8;
 
     /* Inputs */
-    --input-background: rgb(236, 250, 255);
+    --input-background: rgb(236, 249, 253);
     --input-border: 1px solid var(--border-color);
     --input-placeholder-color: #999;
     --input-border-radius: 5px;
