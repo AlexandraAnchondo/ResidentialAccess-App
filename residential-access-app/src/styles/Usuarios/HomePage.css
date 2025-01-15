@@ -116,6 +116,10 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--border-color);
     margin-right: 50px;
+    display: flex; /* Activa Flexbox */
+    flex-direction: column; /* Acomoda los elementos verticalmente */
+    justify-content: space-between; /* Asegura que el botón esté abajo */
+    align-items: center; /* Centra los elementos horizontalmente */
 }
 
 h2 {
@@ -153,6 +157,12 @@ input {
     padding: 10px 20px;
     cursor: pointer;
     margin-top: 15px;
+    align-self: center; /* Centra el botón horizontalmente */
+}
+
+.edit-button:hover,
+.generate-button:hover{
+    background-color: var(--secondary-hover-color);
 }
 
 .code-generator .generate-button {
@@ -167,15 +177,22 @@ input {
 }
 
 .no-code {
-    text-align: center;
-    color: var(--text-placeholder);
+    display: flex; /* Activa Flexbox para centrar su contenido */
+    flex-direction: column; /* Acomoda texto e ícono verticalmente */
+    justify-content: center; /* Centrado vertical */
+    align-items: center; /* Centrado horizontal */
+    flex-grow: 1; /* Hace que este elemento ocupe el espacio sobrante */
+    text-align: center; /* Centra el texto */
+    color: var(--text-disabled);
     margin: 20px 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 1.5rem;
 }
 
 .icon-placeholder {
-    font-size: 3rem;
+    font-size: 6rem; /* Tamaño del ícono */
     color: var(--border-color);
+    margin-top: 10px; /* Espaciado entre el texto y el ícono */
 }
 
 /* Responsividad */
