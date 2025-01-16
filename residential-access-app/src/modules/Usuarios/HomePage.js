@@ -15,6 +15,7 @@ const HomePage = () => {
     const [ineSrc, setIneSrc] = useState("INE.png"); // Ruta de la imagen
     const [showModal, setShowModal] = useState(false); // Estado para controlar el CodeModal
     const [activeView, setActiveView] = useState("home"); // Controlar la vista activa
+    const [showLogoutModal, setShowLogoutModal] = useState(false); // Estado para modal de logout
 
     const handleNavClick = (view) => {
         setActiveView(view);
@@ -26,6 +27,19 @@ const HomePage = () => {
 
     const handleCloseModal = () => {
         setShowModal(false); // Ocultar CodeModal
+    };
+
+    const handleLogoutClick = () => {
+        setShowLogoutModal(true); // Mostrar modal de confirmación de logout
+    };
+
+    const handleLogoutConfirm = () => {
+        setShowLogoutModal(false);
+        window.location.href = "http://localhost:3000/"; // Redirigir al inicio de sesión
+    };
+
+    const handleLogoutCancel = () => {
+        setShowLogoutModal(false); // Ocultar modal sin realizar logout
     };
 
     return (
@@ -51,7 +65,7 @@ const HomePage = () => {
                     >
                         Visitantes
                     </button>
-                    <button className="nav-button logout">
+                    <button className="nav-button logout" onClick={handleLogoutClick}>
                         <FontAwesomeIcon icon={faDoorOpen} />
                     </button>
                 </nav>
@@ -126,6 +140,19 @@ const HomePage = () => {
 
             {/* CodeModal */}
             <CodeModal show={showModal} onClose={handleCloseModal} />
+
+            {/* Logout Confirmation Modal */}
+            {showLogoutModal && (
+                <div className="logout-modal">
+                    <div className="logout-modal-content">
+                        <p>¿Deseas cerrar sesión? <FontAwesomeIcon icon={faDoorOpen}/></p>
+                        <div className="logout-modal-actions">
+                            <button className="confirm-button" onClick={handleLogoutConfirm}>Aceptar</button>
+                            <button className="cancel-button" onClick={handleLogoutCancel}>Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
