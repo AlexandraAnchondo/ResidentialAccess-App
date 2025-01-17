@@ -5,7 +5,6 @@ import { faUserGroup, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import AddVisitanteModal from "./modals/AddVisitanteModal";
 
 const Visitantes = () => {
-    // Datos de ejemplo
     const [visitantesData, setVisitantesData] = useState([
         {
             nombre: "Alexandra",
@@ -23,18 +22,24 @@ const Visitantes = () => {
         },
     ]);
 
-    const [showModal, setShowModal] = useState(false); // Estado para controlar el AddVisitanteModal
+    const [showModal, setShowModal] = useState(false);
 
     const handleAgregarVisitanteClick = () => {
-        setShowModal(true); // Mostrar AddVisitanteModal
+        setShowModal(true);
     };
 
     const handleCloseModal = () => {
-        setShowModal(false); // Ocultar AddVisitanteModal
+        setShowModal(false);
+    };
+
+    // Función para agregar un nuevo visitante
+    const handleAgregarVisitante = (nuevoVisitante) => {
+        setVisitantesData([...visitantesData, nuevoVisitante]); // Agregar al estado
+        setShowModal(false); // Cerrar el modal
     };
 
     const handleBorrarVisitante = (index) => {
-        const newVisitantes = visitantesData.filter((_, i) => i !== index); // Eliminar visitante
+        const newVisitantes = visitantesData.filter((_, i) => i !== index);
         setVisitantesData(newVisitantes);
     };
 
@@ -44,48 +49,45 @@ const Visitantes = () => {
                 <div className="no-data">
                     <FontAwesomeIcon icon={faUserGroup} className="icon-placeholder" />
                     <p>No existe ningún visitante frecuente registrado</p>
-                    {/* Si hay menos de 3 visitantes, mostrar el botón de agregar */}
                     <button className="agregar-visitante-button" onClick={handleAgregarVisitanteClick}>
-                            Agregar visitante
+                        Agregar visitante
                     </button>
                 </div>
             ) : (
                 <div className="visitantes-list">
                     {visitantesData.map((item, index) => (
-                        <div className="visitor-container">
-                        <section key={index} className="visitor-info">
-                            <h3>Información del visitante</h3>
-                            <div className="info-container">
-                                <div className="info-item">
-                                    <label>Nombre:</label>
-                                    <span>{item.nombre}</span>
+                        <div className="visitor-container" key={index}>
+                            <section className="visitor-info">
+                                <h3>Información del visitante</h3>
+                                <div className="info-container">
+                                    <div className="info-item">
+                                        <label>Nombre:</label>
+                                        <span>{item.nombre}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <label>Apellido:</label>
+                                        <span>{item.apellido}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <label>Teléfono:</label>
+                                        <span>{item.telefono}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <label>Placas:</label>
+                                        <span>{item.placas}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <label>Modelo:</label>
+                                        <span>{item.modelo}</span>
+                                    </div>
                                 </div>
-                                <div className="info-item">
-                                    <label>Apellido:</label>
-                                    <span>{item.apellido}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>Teléfono:</label>
-                                    <span>{item.telefono}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>Placas:</label>
-                                    <span>{item.placas}</span>
-                                </div>
-                                <div className="info-item">
-                                    <label>Modelo:</label>
-                                    <span>{item.modelo}</span>
-                                </div>
-                            </div>
-                            <button className="edit-button">Editar</button>
-                        </section>
-                        <button className="delete-button" onClick={() => handleBorrarVisitante(index)}>
+                                <button className="edit-button">Editar</button>
+                            </section>
+                            <button className="delete-button" onClick={() => handleBorrarVisitante(index)}>
                                 <FontAwesomeIcon icon={faTrashAlt} />
                             </button>
                         </div>
-                        
                     ))}
-                    {/* Si hay menos de 3 visitantes, mostrar el botón de agregar */}
                     {visitantesData.length < 3 && (
                         <button className="agregar-visitante-button" onClick={handleAgregarVisitanteClick}>
                             Agregar visitante
@@ -95,7 +97,11 @@ const Visitantes = () => {
             )}
 
             {/* AddVisitanteModal */}
-            <AddVisitanteModal show={showModal} onClose={handleCloseModal} />
+            <AddVisitanteModal
+                show={showModal}
+                onClose={handleCloseModal}
+                onAdd={handleAgregarVisitante} // Pasar la función al modal
+            />
         </>
     );
 };

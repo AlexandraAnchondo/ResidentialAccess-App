@@ -1,7 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../../../styles/Usuarios/AddVisitanteModal.css";
 
-const CodeModal = ({ show, onClose }) => {
+const AddVisitanteModal = ({ show, onClose, onAdd }) => {
+    const [formData, setFormData] = useState({
+        nombre: "",
+        apellido: "",
+        telefono: "",
+        placas: "",
+        modelo: "",
+    });
+
+    useEffect(() => {
+        if (!show) {
+            setFormData({
+                nombre: "",
+                apellido: "",
+                telefono: "",
+                placas: "",
+                modelo: "",
+            });
+        }
+    }, [show]);
+
+    const handleinputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handlePhoneChange = (e) => {
+        const value = e.target.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+        const formattedPhone = value
+            .slice(0, 10) // Limita a 10 dígitos
+            .replace(/(\d{3})(\d{3})(\d{0,4})/, "($1) $2-$3"); // Formato (###) ###-####
+        setFormData({ ...formData, telefono: formattedPhone });
+    };
+
+    const handleAcceptClick = () => {
+        if (
+            !formData.nombre ||
+            !formData.apellido ||
+            !formData.telefono ||
+            !formData.placas ||
+            !formData.modelo
+        ) {
+            alert("Todos los campos son obligatorios");
+            return;
+        }
+        onAdd(formData);
+        onClose();
+    };
+
     if (!show) return null;
 
     return (
@@ -14,32 +62,71 @@ const CodeModal = ({ show, onClose }) => {
                     <div className="add-visitante-modal-options">
                         <label>
                             Nombre:
-                            <input type="text" name="nombre"/>
+                            <input
+                                iconPosition="left"
+                                name="nombre"
+                                value={formData.nombre}
+                                onChange={handleinputChange}
+                            />
                         </label>
                         <label>
                             Apellido:
-                            <input type="text" name="apellido" />
+                            <input
+                                iconPosition="left"
+                                name="apellido"
+                                value={formData.apellido}
+                                onChange={handleinputChange}
+                            />
                         </label>
                         <label>
                             Teléfono:
-                            <input type="text" name="telefono"/>
+                            <input
+                                iconPosition="left"
+                                name="telefono"
+                                value={formData.telefono}
+                                onChange={handlePhoneChange}
+                                maxLength={14}
+                            />
                         </label>
                         <label>
                             Placas:
-                            <input type="text" name="placas" />
+                            <input
+                                iconPosition="left"
+                                name="placas"
+                                value={formData.placas}
+                                onChange={handleinputChange}
+                            />
                         </label>
                         <label>
                             Modelo:
-                            <input type="text" name="modelo" />
+                            <input
+                                iconPosition="left"
+                                name="modelo"
+                                value={formData.modelo}
+                                onChange={handleinputChange}
+                            />
                         </label>
                     </div>
                 </div>
-                <button className="add-visitante-modal-close-button" onClick={onClose}>
-                    Aceptar
-                </button>
+                <div className="add-visitante-modal-buttons">
+                    <button
+                        color="green"
+                        onClick={handleAcceptClick}
+                        className="add-visitante-modal-confirm-button"
+                    >
+                        <icon name="check" /> Aceptar
+                    </button>
+                    <button
+                        color="red"
+                        onClick={onClose}
+                        className="add-visitante-modal-close-button"
+                    >
+                        <icon name="close" /> Cancelar
+                    </button>
+                </div>
             </div>
         </div>
     );
 };
 
-export default CodeModal;
+export default AddVisitanteModal;
