@@ -91,3 +91,8 @@
 .add-visitante-modal-confirm-button:hover {
     background-color: var(--secondary-hover-color);
 }
+
+.add-visitante-modal-confirm-button:disabled {
+    background-color: var(--text-disabled);
+    cursor: not-allowed;
+}

@@ -36,18 +36,18 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
     };
 
     const handleAcceptClick = () => {
-        if (
-            !formData.nombre ||
-            !formData.apellido ||
-            !formData.telefono ||
-            !formData.placas ||
-            !formData.modelo
-        ) {
-            alert("Todos los campos son obligatorios");
-            return;
-        }
         onAdd(formData);
         onClose();
+    };
+
+    const isFormValid = () => {
+        return (
+            formData.nombre &&
+            formData.apellido &&
+            formData.telefono &&
+            formData.placas &&
+            formData.modelo
+        );
     };
 
     if (!show) return null;
@@ -110,14 +110,13 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                 </div>
                 <div className="add-visitante-modal-buttons">
                     <button
-                        color="green"
                         onClick={handleAcceptClick}
                         className="add-visitante-modal-confirm-button"
+                        disabled={!isFormValid()} // Deshabilita el botón si el formulario no es válido
                     >
                         <icon name="check" /> Aceptar
                     </button>
                     <button
-                        color="red"
                         onClick={onClose}
                         className="add-visitante-modal-close-button"
                     >
