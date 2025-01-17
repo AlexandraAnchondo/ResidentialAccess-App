@@ -167,11 +167,6 @@ input {
     align-self: center; /* Centra el botón horizontalmente */
 }
 
-.edit-button:hover,
-.generate-button:hover{
-    background-color: var(--secondary-hover-color);
-}
-
 .code-generator .generate-button {
     display: block;
     margin: 0 auto;
@@ -231,32 +226,6 @@ input {
     justify-content: center;
     gap: 10px;
     margin-top: 15px;
-}
-
-.logout-modal-actions button.confirm-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: var(--secondary-color);
-    color: white;
-}
-
-.logout-modal-actions button.cancel-button  {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: rgb(173, 173, 173);
-    color: white;
-}
-
-.logout-modal-actions button.confirm-button:hover {
-    background-color: var(--secondary-hover-color);
-}
-
-.logout-modal-actions button.cancel-button:hover {
-    background-color: rgb(58, 58, 58);
 }
 
 /* Responsividad */

@@ -1,5 +1,12 @@
 import React from "react";
 import "../../../styles/Usuarios/CodeModal.css";
+import {
+    Button,
+} from "@mui/material";
+import {
+    Check as CheckIcon,
+} from "@mui/icons-material";
+import '../../../styles/colors.css';
 
 const CodeModal = ({ show, onClose }) => {
     if (!show) return null;
@@ -26,9 +33,20 @@ const CodeModal = ({ show, onClose }) => {
                         </label>
                     </div>
                 </div>
-                <button className="code-modal-close-button" onClick={onClose}>
+                <Button
+                    onClick={onClose}
+                    variant="contained"
+                    startIcon={<CheckIcon />}
+                    sx={{
+                        color: '#ffff',
+                        backgroundColor: "#00a8cc",
+                        borderColor: "#00a8cc",
+                        marginBottom: 3,
+                        "&:hover": { borderColor: "#00a8ccCC", backgroundColor: "#00a8ccCC"},
+                    }}
+                >
                     Aceptar
-                </button>
+                </Button>
             </div>
         </div>
     );

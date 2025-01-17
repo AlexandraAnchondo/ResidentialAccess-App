@@ -5,6 +5,7 @@ import CodeModal from "./modals/CodeModal";
 import Historial from "./Historial";
 import Visitantes from "./Visitantes";
 import "../../styles/Usuarios/HomePage.css";
+import { Button } from "@mui/material";
 
 const HomePage = () => {
     // Definir las variables de estado
@@ -106,7 +107,18 @@ const HomePage = () => {
                                     <strong>Correo:</strong>
                                     <input type="email" value={email} readOnly /> {/* Mostrar correo */}
                                 </div>
-                                <button className="edit-button">Editar</button>
+                                <Button
+                                    variant="contained"
+                                    className="edit-button"
+                                    sx={{
+                                        color: '#ffff',
+                                        backgroundColor: "#00a8cc",
+                                        borderColor: "#00a8cc",
+                                        "&:hover": { borderColor: "#00a8ccCC", backgroundColor: "#00a8ccCC" },
+                                    }}
+                                >
+                                    Editar
+                                </Button>
                             </section>
 
                             <section className="id-photo">
@@ -130,9 +142,16 @@ const HomePage = () => {
                                 <p>No existe ningún <br></br>código vigente</p>
                                 <FontAwesomeIcon icon={faBoxOpen} className="icon-placeholder" />
                             </div>
-                            <button className="generate-button" onClick={handleGenerateClick}>
+                            <Button
+                                variant="contained"
+                                onClick={handleGenerateClick}
+                                sx={{
+                                    backgroundColor: "#00a8cc",
+                                    "&:hover": { backgroundColor: "#00a8ccCC" },
+                                }}
+                            >
                                 Generar
-                            </button>
+                            </Button>
                         </section>
                     </>
                 }
@@ -147,8 +166,24 @@ const HomePage = () => {
                     <div className="logout-modal-content">
                         <p>¿Deseas cerrar sesión? <FontAwesomeIcon icon={faDoorOpen}/></p>
                         <div className="logout-modal-actions">
-                            <button className="confirm-button" onClick={handleLogoutConfirm}>Aceptar</button>
-                            <button className="cancel-button" onClick={handleLogoutCancel}>Cancelar</button>
+                            <Button
+                                variant="contained"
+                                onClick={handleLogoutConfirm}
+                                sx={{
+                                    backgroundColor: "#00a8cc",
+                                    "&:hover": { backgroundColor: "#00a8ccCC" },
+                                }}
+                            >
+                                Aceptar
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                onClick={handleLogoutCancel}
+                            >
+                                Cancelar
+                            </Button>
+                            
                         </div>
                     </div>
                 </div>

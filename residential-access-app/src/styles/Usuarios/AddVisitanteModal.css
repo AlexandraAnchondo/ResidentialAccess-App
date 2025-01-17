@@ -1,3 +1,6 @@
+/* Importar variables globales */
+@import '../colors.css';
+
 .add-visitante-modal-overlay {
     position: fixed;
     top: 0;
@@ -14,7 +17,8 @@
 .add-visitante-modal {
     background-color: white;
     border-radius: 10px;
-    width: 800px; /* Más ancho para que todo quepa */
+    width: 900px; /* Más ancho para que todo quepa cómodamente */
+    max-width: 95%; /* Asegura que no desborde en pantallas pequeñas */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
     overflow: hidden;
@@ -42,57 +46,8 @@
 .add-visitante-modal-options {
     display: grid;
     grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
-    gap: 15px; /* Espaciado uniforme entre las celdas */
-    margin-left: 20px;
+    gap: 20px; /* Más espacio entre las columnas */
+    margin: 0 auto; /* Centra el contenido dentro del modal */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.add-visitante-modal-options label {
-    display: flex;
-    flex-direction: column; /* Alineación vertical de label y input */
-    color: var(--text-primary);
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    letter-spacing: 1px;
-}
-
-.add-visitante-modal-options input[type="text"] {
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.add-visitante-modal-close-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: rgb(173, 173, 173);
-    color: white;
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
-.add-visitante-modal-close-button:hover{
-    background-color: rgb(58, 58, 58);
-}
-
-.add-visitante-modal-confirm-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: var(--secondary-color);
-    color: white;
-    margin-right: 20px;
-    margin-bottom: 20px;
-}
-
-.add-visitante-modal-confirm-button:hover {
-    background-color: var(--secondary-hover-color);
-}
-
-.add-visitante-modal-confirm-button:disabled {
-    background-color: var(--text-disabled);
-    cursor: not-allowed;
+    max-width: 800px; /* Asegura un ancho óptimo para las opciones */
 }
