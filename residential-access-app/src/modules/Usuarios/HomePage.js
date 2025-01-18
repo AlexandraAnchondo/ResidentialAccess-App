@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDoorOpen, faImage, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { faDoorOpen, faImage, faBoxOpen, faShareAlt } from "@fortawesome/free-solid-svg-icons";
 import CodeModal from "./modals/CodeModal";
 import Historial from "./Historial";
 import Visitantes from "./Visitantes";
 import "../../styles/Usuarios/HomePage.css";
 import { Button } from "@mui/material";
+import { QRCodeCanvas } from "qrcode.react"; // Librería para generar QR
 
 const HomePage = () => {
     // Definir las variables de estado
@@ -13,25 +14,36 @@ const HomePage = () => {
     const [address, setAddress] = useState("Av. Ficticia 1234 Fraccionamiento Inexistente Para Pruebas");
     const [phone, setPhone] = useState("(686) 420-49-24");
     const [email, setEmail] = useState("correo@gmail.com");
-    const [ineSrc, setIneSrc] = useState("INE.png"); // Ruta de la imagen
-    const [showModal, setShowModal] = useState(false); // Estado para controlar el CodeModal
-    const [activeView, setActiveView] = useState("home"); // Controlar la vista activa
-    const [showLogoutModal, setShowLogoutModal] = useState(false); // Estado para modal de logout
+    const [ineSrc, setIneSrc] = useState("INE.png"); 
+    const [showModal, setShowModal] = useState(false); 
+    const [activeView, setActiveView] = useState("home"); 
+    const [showLogoutModal, setShowLogoutModal] = useState(false); 
+    const [qrCodes, setQrCodes] = useState([]); 
 
     const handleNavClick = (view) => {
         setActiveView(view);
     };
 
     const handleGenerateClick = () => {
-        setShowModal(true); // Mostrar CodeModal
+        setShowModal(true); 
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false); // Ocultar CodeModal
+    const handleCloseModal = (newQrCodes) => {
+        setShowModal(false);
+        if (newQrCodes && newQrCodes.length > 0) {
+            setQrCodes(() => [...newQrCodes]);
+        }
+    };
+
+    const handleShareClick = (code) => {
+        navigator.share({
+            title: "Código QR",
+            text: `Aquí tienes un código QR con vencimiento en ${code.duration}`,
+        });
     };
 
     const handleLogoutClick = () => {
-        setShowLogoutModal(true); // Mostrar modal de confirmación de logout
+        setShowLogoutModal(true); 
     };
 
     const handleLogoutConfirm = () => {
@@ -40,13 +52,13 @@ const HomePage = () => {
     };
 
     const handleLogoutCancel = () => {
-        setShowLogoutModal(false); // Ocultar modal sin realizar logout
+        setShowLogoutModal(false); 
     };
 
     return (
         <div className="home-container">
             <header className="home-header">
-                <h1 className="user-name">{name}</h1> {/* Mostrar el nombre desde la variable */}
+                <h1 className="user-name">{name}</h1> 
                 <nav className="nav-links">
                     <button
                         className={`nav-button ${activeView === "home" ? "active" : ""}`}
@@ -95,7 +107,7 @@ const HomePage = () => {
                                     <strong>Dirección:</strong>
                                     <input
                                         type="text"
-                                        value={address} // Mostrar la dirección desde la variable
+                                        value={address} 
                                         readOnly
                                     />
                                 </div>
@@ -138,13 +150,39 @@ const HomePage = () => {
 
                         <section className="code-generator">
                             <h2>Generador de códigos:</h2>
-                            <div className="no-code">
-                                <p>No existe ningún <br></br>código vigente</p>
-                                <FontAwesomeIcon icon={faBoxOpen} className="icon-placeholder" />
-                            </div>
+                            {qrCodes.length === 0 ? (
+                                <div className="no-code">
+                                    <p>No existe ningún <br />código vigente</p>
+                                    <FontAwesomeIcon icon={faBoxOpen} className="icon-placeholder" />
+                                </div>
+                            ) : (
+                                <div className="qr-codes-container">
+                                    {qrCodes.map((code, index) => (
+                                        <div
+                                            key={code.id}
+                                            className={`qr-code-card position-${index % 2 === 0 ? "left" : "right"}`}
+                                        >
+                                            {/* Imagen QR */}
+                                            <QRCodeCanvas value={code.id} size={150} />
+                                            {/* Contenedor del texto y botón */}
+                                            <div className="content">
+                                                <p>Vence en: {code.duration}</p>
+                                                <Button
+                                                    variant="outlined"
+                                                    startIcon={<FontAwesomeIcon icon={faShareAlt} />}
+                                                    onClick={() => handleShareClick(code)}
+                                                >
+                                                    Compartir
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                             <Button
                                 variant="contained"
                                 onClick={handleGenerateClick}
+                                disabled={qrCodes.length === 3}
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" },
@@ -158,7 +196,11 @@ const HomePage = () => {
             </main>
 
             {/* CodeModal */}
-            <CodeModal show={showModal} onClose={handleCloseModal} />
+            <CodeModal
+                show={showModal}
+                onClose={handleCloseModal}
+                existingCodes={qrCodes} // Lista de códigos existentes
+            />
 
             {/* Logout Confirmation Modal */}
             {showLogoutModal && (

@@ -228,6 +228,74 @@ input {
     margin-top: 15px;
 }
 
+.qr-codes-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); /* Dos columnas */
+    grid-template-rows: repeat(3, auto); /* Tres filas, tamaño automático */
+    gap: 20px; /* Espacio entre los QR */
+    justify-content: center;
+}
+
+.qr-code-card {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para la imagen QR */
+.qr-code-card img {
+    width: 100px;
+    height: 100px;
+}
+
+/* Contenedor para el texto y el botón */
+.qr-code-card .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilo para el texto */
+.qr-code-card p {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Estilo para el botón */
+.qr-code-card button {
+    align-self: start;
+}
+
+/* Posicionamiento específico */
+.qr-code-card:nth-child(1) {
+    flex-direction: row; /* Contenido a la derecha del QR */
+    .content {
+        margin-left: 80px; /* 100px entre QR y contenido */
+        margin-right: 10px;/* Sin margen adicional */
+    }
+}
+
+.qr-code-card:nth-child(2) {
+    flex-direction: row-reverse; /* Contenido a la izquierda del QR */
+    .content {
+        margin-right: 80px; /* 100px entre QR y contenido */
+        margin-left: 10px;   /* Sin margen adicional */
+    }
+}
+
+.qr-code-card:nth-child(3) {
+    flex-direction: row; /* Contenido a la derecha del QR */
+    .content {
+        margin-left: 80px; /* 100px entre QR y contenido */
+        margin-right: 10px; /* Sin margen adicional */
+    }
+}
+
 /* Responsividad */
 @media screen and (max-width: 768px) {
     .home-main {
