@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "../../styles/Usuarios/Visitantes.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import AddVisitanteModal from "./modals/AddVisitanteModal";
+import DeleteModal from "./modals/DeleteModal";
 
 const Visitantes = () => {
     const [visitantesData, setVisitantesData] = useState([
@@ -23,14 +24,24 @@ const Visitantes = () => {
     ]);
 
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [indexToDelete, setIndexToDelete] = useState(null);
 
     const handleAgregarVisitanteClick = () => {
         setShowModal(true);
     };
 
+    const handleDeleteClick = () => {
+        setShowDeleteModal(true);
+    }
+
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+    }
 
     // Función para agregar un nuevo visitante
     const handleAgregarVisitante = (nuevoVisitante) => {
@@ -41,6 +52,7 @@ const Visitantes = () => {
     const handleBorrarVisitante = (index) => {
         const newVisitantes = visitantesData.filter((_, i) => i !== index);
         setVisitantesData(newVisitantes);
+        setShowDeleteModal(false);
     };
 
     return (
@@ -83,7 +95,10 @@ const Visitantes = () => {
                                 </div>
                                 <button className="edit-button">Editar</button>
                             </section>
-                            <button className="delete-button" onClick={() => handleBorrarVisitante(index)}>
+                            <button className="delete-button" onClick={ () =>{
+                                handleDeleteClick();
+                                setIndexToDelete(index);
+                            }}>
                                 <FontAwesomeIcon icon={faTrashAlt} />
                             </button>
                         </div>
@@ -101,6 +116,13 @@ const Visitantes = () => {
                 show={showModal}
                 onClose={handleCloseModal}
                 onAdd={handleAgregarVisitante} // Pasar la función al modal
+            />
+
+            {/* DeleteModal */}
+            <DeleteModal
+                showDeleteModal={showDeleteModal}
+                onCloseDeleteModal={handleCloseDeleteModal}
+                onDelete={() => handleBorrarVisitante(indexToDelete)}
             />
         </>
     );
