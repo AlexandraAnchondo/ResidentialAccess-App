@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import AddVisitanteModal from "./modals/AddVisitanteModal";
 import DeleteModal from "./modals/DeleteModal";
+import { Button } from "@mui/material";
 
 const Visitantes = () => {
     const [visitantesData, setVisitantesData] = useState([
@@ -27,6 +28,7 @@ const Visitantes = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [indexToDelete, setIndexToDelete] = useState(null);
 
+
     const handleAgregarVisitanteClick = () => {
         setShowModal(true);
     };
@@ -45,8 +47,8 @@ const Visitantes = () => {
 
     // Función para agregar un nuevo visitante
     const handleAgregarVisitante = (nuevoVisitante) => {
-        setVisitantesData([...visitantesData, nuevoVisitante]); // Agregar al estado
-        setShowModal(false); // Cerrar el modal
+        setVisitantesData([...visitantesData, nuevoVisitante]);
+        setShowModal(false);
     };
 
     const handleBorrarVisitante = (index) => {
@@ -61,9 +63,16 @@ const Visitantes = () => {
                 <div className="no-data">
                     <FontAwesomeIcon icon={faUserGroup} className="icon-placeholder" />
                     <p>No existe ningún visitante frecuente registrado</p>
-                    <button className="agregar-visitante-button" onClick={handleAgregarVisitanteClick}>
+                    <Button
+                        variant="contained"
+                        onClick={handleAgregarVisitanteClick}
+                        sx={{
+                            backgroundColor: "#00a8cc",
+                            "&:hover": { backgroundColor: "#00a8cc" },
+                        }}
+                    >
                         Agregar visitante
-                    </button>
+                    </Button>
                 </div>
             ) : (
                 <div className="visitantes-list">
@@ -93,20 +102,38 @@ const Visitantes = () => {
                                         <span>{item.modelo}</span>
                                     </div>
                                 </div>
-                                <button className="edit-button">Editar</button>
+                                <Button
+                                    variant="contained"
+                                    className="edit-button"
+                                    sx={{
+                                        color: '#ffff',
+                                        backgroundColor: "#00a8cc",
+                                        borderColor: "#00a8cc",
+                                        "&:hover": { borderColor: "#00a8ccCC", backgroundColor: "#00a8ccCC" },
+                                    }}
+                                >
+                                    Editar
+                                </Button>
                             </section>
-                            <button className="delete-button" onClick={ () =>{
+                            <Button onClick={ () =>{
                                 handleDeleteClick();
                                 setIndexToDelete(index);
-                            }}>
-                                <FontAwesomeIcon icon={faTrashAlt} />
-                            </button>
+                            }}
+                            ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: '20px' }} />
+                            </Button>
                         </div>
                     ))}
                     {visitantesData.length < 3 && (
-                        <button className="agregar-visitante-button" onClick={handleAgregarVisitanteClick}>
+                        <Button
+                            variant="contained"
+                            onClick={handleAgregarVisitanteClick}
+                            sx={{
+                                backgroundColor: "#00a8cc",
+                                "&:hover": { backgroundColor: "#00a8ccCC" },
+                            }}
+                        >
                             Agregar visitante
-                        </button>
+                        </Button>
                     )}
                 </div>
             )}
@@ -115,7 +142,7 @@ const Visitantes = () => {
             <AddVisitanteModal
                 show={showModal}
                 onClose={handleCloseModal}
-                onAdd={handleAgregarVisitante} // Pasar la función al modal
+                onAdd={handleAgregarVisitante}
             />
 
             {/* DeleteModal */}

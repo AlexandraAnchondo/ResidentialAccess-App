@@ -1,4 +1,19 @@
 import React, { useState, useEffect } from "react";
+import {
+    TextField,
+    InputAdornment,
+    Button,
+    Box,
+    Typography,
+} from "@mui/material";
+import {
+    Person as PersonIcon,
+    Phone as PhoneIcon,
+    DirectionsCar as CarIcon,
+    FormatListNumbered as LicensePlateIcon,
+    Close as CloseIcon,
+    Check as CheckIcon,
+} from "@mui/icons-material";
 import "../../../styles/Usuarios/AddVisitanteModal.css";
 
 const AddVisitanteModal = ({ show, onClose, onAdd }) => {
@@ -22,7 +37,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
         }
     }, [show]);
 
-    const handleinputChange = (e) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -56,72 +71,111 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
         <div className="add-visitante-modal-overlay">
             <div className="add-visitante-modal">
                 <div className="add-visitante-modal-header">
-                    <h2>Ingresa la información del visitante</h2>
+                    <Typography variant="h5" component="h2" gutterBottom>
+                        Ingresa la información del visitante
+                    </Typography>
                 </div>
                 <div className="add-visitante-modal-content">
-                    <div className="add-visitante-modal-options">
-                        <label>
-                            Nombre:
-                            <input
-                                iconPosition="left"
-                                name="nombre"
-                                value={formData.nombre}
-                                onChange={handleinputChange}
-                            />
-                        </label>
-                        <label>
-                            Apellido:
-                            <input
-                                iconPosition="left"
-                                name="apellido"
-                                value={formData.apellido}
-                                onChange={handleinputChange}
-                            />
-                        </label>
-                        <label>
-                            Teléfono:
-                            <input
-                                iconPosition="left"
-                                name="telefono"
-                                value={formData.telefono}
-                                onChange={handlePhoneChange}
-                                maxLength={14}
-                            />
-                        </label>
-                        <label>
-                            Placas:
-                            <input
-                                iconPosition="left"
-                                name="placas"
-                                value={formData.placas}
-                                onChange={handleinputChange}
-                            />
-                        </label>
-                        <label>
-                            Modelo:
-                            <input
-                                iconPosition="left"
-                                name="modelo"
-                                value={formData.modelo}
-                                onChange={handleinputChange}
-                            />
-                        </label>
-                    </div>
+                    <Box className="add-visitante-modal-options" sx={{ display: "grid", gap: 2 }}>
+                        <TextField
+                            label="Nombre"
+                            name="nombre"
+                            value={formData.nombre}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <PersonIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            fullWidth
+                        />
+                        <TextField
+                            label="Apellido"
+                            name="apellido"
+                            value={formData.apellido}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <PersonIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            fullWidth
+                        />
+                        <TextField
+                            label="Teléfono"
+                            name="telefono"
+                            value={formData.telefono}
+                            onChange={handlePhoneChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <PhoneIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            fullWidth
+                            inputProps={{ maxLength: 14 }}
+                        />
+                        <TextField
+                            label="Placas"
+                            name="placas"
+                            value={formData.placas}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <LicensePlateIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            fullWidth
+                        />
+                        <TextField
+                            label="Modelo"
+                            name="modelo"
+                            value={formData.modelo}
+                            onChange={handleInputChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <CarIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            fullWidth
+                        />
+                    </Box>
                 </div>
-                <div className="add-visitante-modal-buttons">
-                    <button
+                <div className="add-visitante-modal-buttons" style={{ marginTop: 16 }}>
+                    <Button
                         onClick={handleAcceptClick}
-                        className="add-visitante-modal-confirm-button"
+                        variant="contained"
+                        startIcon={<CheckIcon />}
                         disabled={!isFormValid()} // Deshabilita el botón si el formulario no es válido
+                        sx={{
+                            backgroundColor: isFormValid() ? "#00a8cc" : "rgba(0, 0, 0, 0.12)", // Color principal o gris deshabilitado
+                            color: isFormValid() ? "#fff" : "rgba(0, 0, 0, 0.26)", // Color del texto según el estado
+                            "&:hover": {
+                                backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)", // Color en hover si está activo
+                            },
+                        }}
+                        style={{ marginLeft: 20, marginBottom: 20 }}
                     >
-                        <icon name="check" /> Aceptar
-                    </button>
-                    <button
+                        Aceptar
+                    </Button>
+                    <Button
                         onClick={onClose}
-                        className="add-visitante-modal-close-button"
+                        variant="outlined"
+                        color="error"
+                        startIcon={<CloseIcon />}
+                        style={{ marginLeft: 20, marginBottom: 20 }}
                     >
-                        <icon name="close" /> Cancelar
-                    </button>
+                        Cancelar
+                    </Button>
                 </div>
             </div>
         </div>

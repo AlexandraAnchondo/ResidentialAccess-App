@@ -1,3 +1,6 @@
+/* Importar variables globales */
+@import '../colors.css';
+
 .code-modal-overlay {
     position: fixed;
     top: 0;
@@ -61,18 +64,4 @@
     margin: 0  15px; /* Quitar márgenes adicionales del checkbox */
     width: 20px; /* Tamaño del checkbox */
     height: 20px; /* Tamaño del checkbox */
-}
-
-.code-modal-close-button {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin: 15px 0;
-}
-
-.code-modal-close-button:hover{
-    background-color: var(--secondary-hover-color);
 }
