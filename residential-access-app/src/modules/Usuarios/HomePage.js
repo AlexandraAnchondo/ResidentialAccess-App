@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDoorOpen, faImage, faBoxOpen, faShareAlt } from "@fortawesome/free-solid-svg-icons";
+import { faDoorOpen, faImage, faBoxOpen, faShareAlt, faQrcode, faPerson, faHouse, faReceipt, faPencil, faCar } from "@fortawesome/free-solid-svg-icons";
 import CodeModal from "./modals/CodeModal";
 import Historial from "./Historial";
 import Visitantes from "./Visitantes";
+import Residentes from "./Residentes";
+import Autos from "./Autos";
 import "../../styles/Usuarios/HomePage.css";
 import { Button } from "@mui/material";
 import { QRCodeCanvas } from "qrcode.react"; // Librería para generar QR
+import { faUserGroup } from "@fortawesome/free-solid-svg-icons/faUserGroup";
 
 const HomePage = () => {
     // Definir las variables de estado
@@ -64,19 +67,31 @@ const HomePage = () => {
                         className={`nav-button ${activeView === "home" ? "active" : ""}`}
                         onClick={() => handleNavClick("home")}
                     >
-                        Domicilio
+                        <FontAwesomeIcon icon={faQrcode} /> Códigos QR 
                     </button>
                     <button
                         className={`nav-button ${activeView === "historial" ? "active" : ""}`}
                         onClick={() => handleNavClick("historial")}
                     >
-                        Historial
+                        <FontAwesomeIcon icon={faReceipt} /> Visitas
                     </button>
                     <button
                         className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
                         onClick={() => handleNavClick("visitantes")}
                     >
-                        Visitantes
+                        <FontAwesomeIcon icon={faUserGroup} /> Visitantes
+                    </button>
+                    <button
+                        className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
+                        onClick={() => handleNavClick("residentes")}
+                    >
+                        <FontAwesomeIcon icon={faHouse} /> Residentes
+                    </button>
+                    <button
+                        className={`nav-button ${activeView === "autos" ? "active" : ""}`}
+                        onClick={() => handleNavClick("autos")}
+                    >
+                        <FontAwesomeIcon icon={faCar} /> Autos
                     </button>
                     <button className="nav-button logout" onClick={handleLogoutClick}>
                         <FontAwesomeIcon icon={faDoorOpen} />
@@ -92,13 +107,24 @@ const HomePage = () => {
                 <div className="welcome-message">
                     <p>Historial de visitas</p>
                 </div>) : 
+            activeView === "visitantes" ? (
                 <div className="welcome-message">
                     <p>Visitantes frecuentes</p>
-                </div>}
+                </div>) :
+            activeView === "residentes" ? (
+                <div className="welcome-message">
+                    <p>Residentes</p>
+                </div>) : 
+                <div className="welcome-message">
+                    <p>Autos</p>
+                </div>
+            }
 
             <main className="home-main">
                 {activeView === "historial" ? <Historial /> :
                 activeView === "visitantes" ? <Visitantes /> :
+                activeView === "residentes" ? <Residentes /> :
+                activeView === "autos" ? <Autos /> :
                     <>
                         <div className="combined-info">
                             <section className="resident-info">
@@ -129,7 +155,7 @@ const HomePage = () => {
                                         "&:hover": { borderColor: "#00a8ccCC", backgroundColor: "#00a8ccCC" },
                                     }}
                                 >
-                                    Editar
+                                    <FontAwesomeIcon icon={faPencil} /> Editar
                                 </Button>
                             </section>
 
@@ -187,6 +213,7 @@ const HomePage = () => {
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" },
                                 }}
+                                startIcon={<FontAwesomeIcon icon={faQrcode} />}
                             >
                                 Generar
                             </Button>

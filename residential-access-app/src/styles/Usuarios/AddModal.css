@@ -1,7 +1,7 @@
 /* Importar variables globales */
 @import '../colors.css';
 
-.add-visitante-modal-overlay {
+.add-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -14,7 +14,7 @@
     z-index: 1000;
 }
 
-.add-visitante-modal {
+.add-modal {
     background-color: white;
     border-radius: 10px;
     width: 900px; /* Más ancho para que todo quepa cómodamente */
@@ -24,11 +24,11 @@
     overflow: hidden;
 }
 
-.add-visitante-modal-header {
+.add-modal-header {
     background-color: var(--primary-color); /* El color azul del header */
 }
 
-.add-visitante-modal-header h2 {
+.add-modal-header h2 {
     background-color: var(--primary-color); /* El color azul del header */
     color: white !important; /* Letras blancas en el header */
     text-align: center;
@@ -39,11 +39,11 @@
     padding: 10px;
 }
 
-.add-visitante-modal-content {
+.add-modal-content {
     padding: 20px;
 }
 
-.add-visitante-modal-options {
+.add-modal-options {
     display: grid;
     grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
     gap: 20px; /* Más espacio entre las columnas */
