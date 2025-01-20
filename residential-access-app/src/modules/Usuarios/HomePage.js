@@ -1,28 +1,19 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDoorOpen, faImage, faBoxOpen, faShareAlt } from "@fortawesome/free-solid-svg-icons";
+import { faImage, faBoxOpen, faShareAlt, faQrcode, faPencil } from "@fortawesome/free-solid-svg-icons";
 import CodeModal from "./modals/CodeModal";
-import Historial from "./Historial";
-import Visitantes from "./Visitantes";
 import "../../styles/Usuarios/HomePage.css";
 import { Button } from "@mui/material";
-import { QRCodeCanvas } from "qrcode.react"; // Librería para generar QR
+import { QRCodeCanvas } from "qrcode.react"; 
 
 const HomePage = () => {
     // Definir las variables de estado
-    const [name, setName] = useState("Alexandra Anchondo Robles");
     const [address, setAddress] = useState("Av. Ficticia 1234 Fraccionamiento Inexistente Para Pruebas");
     const [phone, setPhone] = useState("(686) 420-49-24");
     const [email, setEmail] = useState("correo@gmail.com");
     const [ineSrc, setIneSrc] = useState("INE.png"); 
     const [showModal, setShowModal] = useState(false); 
-    const [activeView, setActiveView] = useState("home"); 
-    const [showLogoutModal, setShowLogoutModal] = useState(false); 
     const [qrCodes, setQrCodes] = useState([]); 
-
-    const handleNavClick = (view) => {
-        setActiveView(view);
-    };
 
     const handleGenerateClick = () => {
         setShowModal(true); 
@@ -42,65 +33,10 @@ const HomePage = () => {
         });
     };
 
-    const handleLogoutClick = () => {
-        setShowLogoutModal(true); 
-    };
-
-    const handleLogoutConfirm = () => {
-        setShowLogoutModal(false);
-        window.location.href = "http://localhost:3000/"; // Redirigir al inicio de sesión
-    };
-
-    const handleLogoutCancel = () => {
-        setShowLogoutModal(false); 
-    };
-
     return (
         <div className="home-container">
-            <header className="home-header">
-                <h1 className="user-name">{name}</h1> 
-                <nav className="nav-links">
-                    <button
-                        className={`nav-button ${activeView === "home" ? "active" : ""}`}
-                        onClick={() => handleNavClick("home")}
-                    >
-                        Domicilio
-                    </button>
-                    <button
-                        className={`nav-button ${activeView === "historial" ? "active" : ""}`}
-                        onClick={() => handleNavClick("historial")}
-                    >
-                        Historial
-                    </button>
-                    <button
-                        className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
-                        onClick={() => handleNavClick("visitantes")}
-                    >
-                        Visitantes
-                    </button>
-                    <button className="nav-button logout" onClick={handleLogoutClick}>
-                        <FontAwesomeIcon icon={faDoorOpen} />
-                    </button>
-                </nav>
-            </header>
-
-            {activeView === "home" ? (
-                <div className="welcome-message">
-                    <p>Bienvenido (a)</p>
-                </div>) : 
-            activeView === "historial" ? (
-                <div className="welcome-message">
-                    <p>Historial de visitas</p>
-                </div>) : 
-                <div className="welcome-message">
-                    <p>Visitantes frecuentes</p>
-                </div>}
-
             <main className="home-main">
-                {activeView === "historial" ? <Historial /> :
-                activeView === "visitantes" ? <Visitantes /> :
-                    <>
-                        <div className="combined-info">
+                <div className="combined-info">
                             <section className="resident-info">
                                 <h2>Información del residente:</h2>
                                 <div className="info-item">
@@ -129,7 +65,7 @@ const HomePage = () => {
                                         "&:hover": { borderColor: "#00a8ccCC", backgroundColor: "#00a8ccCC" },
                                     }}
                                 >
-                                    Editar
+                                    <FontAwesomeIcon icon={faPencil} /> Editar
                                 </Button>
                             </section>
 
@@ -187,12 +123,11 @@ const HomePage = () => {
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" },
                                 }}
+                                startIcon={<FontAwesomeIcon icon={faQrcode} />}
                             >
                                 Generar
                             </Button>
                         </section>
-                    </>
-                }
             </main>
 
             {/* CodeModal */}
@@ -201,35 +136,6 @@ const HomePage = () => {
                 onClose={handleCloseModal}
                 existingCodes={qrCodes} // Lista de códigos existentes
             />
-
-            {/* Logout Confirmation Modal */}
-            {showLogoutModal && (
-                <div className="logout-modal">
-                    <div className="logout-modal-content">
-                        <p>¿Deseas cerrar sesión? <FontAwesomeIcon icon={faDoorOpen}/></p>
-                        <div className="logout-modal-actions">
-                            <Button
-                                variant="contained"
-                                onClick={handleLogoutConfirm}
-                                sx={{
-                                    backgroundColor: "#00a8cc",
-                                    "&:hover": { backgroundColor: "#00a8ccCC" },
-                                }}
-                            >
-                                Aceptar
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                color="error"
-                                onClick={handleLogoutCancel}
-                            >
-                                Cancelar
-                            </Button>
-                            
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
