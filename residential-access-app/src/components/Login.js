@@ -13,7 +13,7 @@ const Login = () => {
     const handleLogin = (e) => {
         e.preventDefault(); // Evita que se recargue la página
         if (username === "Usuario") {
-            navigate("/home"); // Redirige a HomePage si el usuario es "Usuario"
+            navigate("/users"); // Redirige a HomePage si el usuario es "Usuario"
         } else {
             alert("Usuario no válido"); // Mensaje si el usuario no es válido
         }
