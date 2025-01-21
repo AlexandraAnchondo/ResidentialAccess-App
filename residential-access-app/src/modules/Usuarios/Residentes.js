@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "../../styles/Usuarios/Residentes.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import AddResidenteModal from "./modals/AddResidenteModal";
 import { Button, Typography } from "@mui/material";
+import DeleteModal from "./modals/DeleteModal";
 
 const Residentes = () => {
     const [residentesData, setResidentesData] = useState([
@@ -22,15 +23,25 @@ const Residentes = () => {
     ]);
 
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [indexToDelete, setIndexToDelete] = useState(null);
 
 
     const handleAgregarResidenteClick = () => {
         setShowModal(true);
     };
 
+    const handleDeleteClick = () => {
+        setShowDeleteModal(true);
+    }
+
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+    }
 
     const handleAgregarResidente = (nuevoResidente) => {
         setResidentesData([...residentesData, nuevoResidente]);
@@ -40,6 +51,7 @@ const Residentes = () => {
     const handleBorrarResidente = (index) => {
         const newResidentes = residentesData.filter((_, i) => i !== index);
         setResidentesData(newResidentes);
+        setShowDeleteModal(false);
     };
 
     return (
@@ -120,7 +132,10 @@ const Residentes = () => {
                                 </Button>
                             </section>
                             <Button
-                                onClick={() => handleBorrarResidente(index)}
+                                onClick={() => {
+                                    handleDeleteClick();
+                                    setIndexToDelete(index);
+                                }}
                             ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: '20px' }} />
                             </Button>
                         </div>
@@ -143,6 +158,13 @@ const Residentes = () => {
                 show={showModal}
                 onClose={handleCloseModal}
                 onAdd={handleAgregarResidente}
+            />
+
+            {/* DeleteModal */}
+            <DeleteModal
+                showDeleteModal={showDeleteModal}
+                onCloseDeleteModal={handleCloseDeleteModal}
+                onDelete={() => handleBorrarResidente(indexToDelete)}
             />
         </>
     );

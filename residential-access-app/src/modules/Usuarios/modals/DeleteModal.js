@@ -13,10 +13,29 @@ const DeleteModal =({showDeleteModal, onCloseDeleteModal, onDelete}) => {
                 </div>
                 <div className="delete-modal-content">
                     <div className="delete-modal-options">
-                        <Button variant="contained" color="error" onClick={onDelete}>
+                        <Button 
+                            variant="contained" 
+                            color="error" 
+                            onClick={onDelete}>
                             Borrar
                         </Button>
-                        <Button variant="outlined" sx={{color:"gray", borderColor: "gray" ,backgroundColor: "white", "&:hover":{backgroundColor:"rgba(240, 240, 240, 0.8)"}}} onClick={onCloseDeleteModal}>
+                        <Button 
+                            variant="outlined" 
+                            sx={
+                                    {
+                                        color:"gray", 
+                                        borderColor: "gray",
+                                        backgroundColor: "white", 
+                                        "&:hover":
+                                            {
+                                                backgroundColor:"rgba(240, 240, 240, 0.8)"
+                                            }
+                                    }
+                                } 
+                            onClick=
+                            {
+                                onCloseDeleteModal
+                            }>
                             Cancelar
                         </Button>
                     </div>
