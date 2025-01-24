@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faBoxOpen, faShareAlt, faQrcode, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faImage, faShareAlt, faQrcode, faPencil } from "@fortawesome/free-solid-svg-icons";
 import CodeModal from "./modals/CodeModal";
 import "../../styles/Usuarios/HomePage.css";
 import { Button } from "@mui/material";
 import { QRCodeCanvas } from "qrcode.react"; 
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const HomePage = () => {
     // Definir las variables de estado
@@ -14,6 +15,8 @@ const HomePage = () => {
     const [ineSrc, setIneSrc] = useState("INE.png"); 
     const [showModal, setShowModal] = useState(false); 
     const [qrCodes, setQrCodes] = useState([]); 
+    const isUnder568 = useMediaQuery("(max-width: 568px)");
+    const isUnder768 = useMediaQuery("(max-width: 768px)");
 
     const handleGenerateClick = () => {
         setShowModal(true); 
@@ -73,7 +76,7 @@ const HomePage = () => {
                                 <h2>Foto de Identificación:</h2>
                                 {ineSrc == null || ineSrc === "" ? (
                                     <div className="no-image">
-                                        <p>No se ha proporcionado la INE</p>
+                                        <p>No se ha proporcionado <br/> identificación</p>
                                         <FontAwesomeIcon icon={faImage} className="icon-placeholder" />
                                     </div>
                                 ) : (
@@ -89,7 +92,7 @@ const HomePage = () => {
                             {qrCodes.length === 0 ? (
                                 <div className="no-code">
                                     <p>No existe ningún <br />código vigente</p>
-                                    <FontAwesomeIcon icon={faBoxOpen} className="icon-placeholder" />
+                                    <FontAwesomeIcon icon={faQrcode} className="icon-placeholder" />
                                 </div>
                             ) : (
                                 <div className="qr-codes-container">
@@ -99,7 +102,7 @@ const HomePage = () => {
                                             className={`qr-code-card position-${index % 2 === 0 ? "left" : "right"}`}
                                         >
                                             {/* Imagen QR */}
-                                            <QRCodeCanvas value={code.id} size={150} />
+                                            <QRCodeCanvas value={code.id} size={isUnder568 ? 100 : isUnder768 ? 120 : 150} />
                                             {/* Contenedor del texto y botón */}
                                             <div className="content">
                                                 <p>Vence en: {code.duration}</p>
@@ -122,6 +125,7 @@ const HomePage = () => {
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" },
+                                    marginTop: "20px"
                                 }}
                                 startIcon={<FontAwesomeIcon icon={faQrcode} />}
                             >
