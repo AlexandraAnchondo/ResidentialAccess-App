@@ -514,3 +514,43 @@ input {
         }
     }
 }
+
+/* Responsividad 769 - 1068 px*/
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+    .combined-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px; /* Espaciado entre las secciones dentro del combined-info */
+        flex: 1; /* Ocupa el 70% del espacio */
+        margin-left: 20px;
+    }
+    
+    .code-generator {
+        flex: 0 1 40%; /* La sección de generador de códigos ocupa el 40% del ancho del contenedor */
+        padding: 20px;
+        margin-right: 20px;
+    }
+    
+    .info-item {
+        margin-bottom: 20px;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        margin-left: 10px;
+    }
+    
+    input {
+        margin-top: 5px;
+        font-size: 0.8rem;
+    }
+    
+    .generate-button {
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-top: 15px;
+        align-self: center; /* Centra el botón horizontalmente */
+    }
+}

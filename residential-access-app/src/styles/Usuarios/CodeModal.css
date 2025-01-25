@@ -65,3 +65,120 @@
     width: 20px; /* Tamaño del checkbox */
     height: 20px; /* Tamaño del checkbox */
 }
+
+
+/* Responsividad 0 - 468 px*/
+@media screen and (max-width: 468px) {
+    .code-modal {
+        background-color: white;
+        border-radius: 10px;
+        width: 400px; 
+        height: 500px;
+    }
+
+    .code-modal-header h2 {
+        font-size: 1.7rem;
+    }
+
+    .code-modal-options {
+        gap: 35px;
+        margin-left: 30px;
+        margin-top: 50px;
+    }
+
+    .code-modal-actions {
+        gap: 10px;
+        margin-left: -30px;
+        margin-top: 50px;
+    }
+}
+
+/* Responsividad 469 - 568 px*/
+@media screen and (min-width: 469px) and (max-width: 568px) {
+    .code-modal {
+        background-color: white;
+        border-radius: 10px;
+        width: 500px; 
+        height: 500px;
+    }
+
+    .code-modal-header h2 {
+        font-size: 1.9rem;
+    }
+
+    .code-modal-options {
+        gap: 35px;
+        margin-left: 70px;
+        margin-top: 40px;
+    }
+
+    .code-modal-actions {
+        gap: 10px;
+        margin-left: -50px;
+        margin-top: 50px;
+    }
+
+    .code-modal-options label {
+        font-size: 1.3rem;
+    }
+}
+
+/* Responsividad 569 - 768 px*/
+@media screen and (min-width: 569px) and (max-width: 768px) {
+    .code-modal {
+        background-color: white;
+        border-radius: 10px;
+        width: 500px; 
+        height: 500px;
+    }
+
+    .code-modal-header h2 {
+        font-size: 1.9rem;
+    }
+
+    .code-modal-options {
+        gap: 35px;
+        margin-left: 70px;
+        margin-top: 40px;
+    }
+
+    .code-modal-actions {
+        gap: 10px;
+        margin-left: -50px;
+        margin-top: 50px;
+    }
+
+    .code-modal-options label {
+        font-size: 1.3rem;
+    }
+}
+
+/* Responsividad 769 - 1068 px*/
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+    .code-modal {
+        background-color: white;
+        border-radius: 10px;
+        width: 500px; 
+        height: 500px;
+    }
+
+    .code-modal-header h2 {
+        font-size: 1.9rem;
+    }
+
+    .code-modal-options {
+        gap: 35px;
+        margin-left: 70px;
+        margin-top: 10px;
+    }
+
+    .code-modal-actions {
+        gap: 10px;
+        margin-left: -50px;
+        margin-top: 40px;
+    }
+
+    .code-modal-options label {
+        font-size: 1.3rem;
+    }
+}

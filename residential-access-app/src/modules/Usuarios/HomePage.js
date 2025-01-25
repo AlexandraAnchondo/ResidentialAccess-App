@@ -17,6 +17,7 @@ const HomePage = () => {
     const [qrCodes, setQrCodes] = useState([]); 
     const isUnder568 = useMediaQuery("(max-width: 568px)");
     const isUnder768 = useMediaQuery("(max-width: 768px)");
+    const isUnder1068 = useMediaQuery("(max-width: 1068px)");
 
     const handleGenerateClick = () => {
         setShowModal(true); 
@@ -102,7 +103,7 @@ const HomePage = () => {
                                             className={`qr-code-card position-${index % 2 === 0 ? "left" : "right"}`}
                                         >
                                             {/* Imagen QR */}
-                                            <QRCodeCanvas value={code.id} size={isUnder568 ? 100 : isUnder768 ? 120 : 150} />
+                                            <QRCodeCanvas value={code.id} size={isUnder568 ? 100 : isUnder768 ? 120 : isUnder1068  ? 100 : 150} />
                                             {/* Contenedor del texto y botón */}
                                             <div className="content">
                                                 <p>Vence en: {code.duration}</p>

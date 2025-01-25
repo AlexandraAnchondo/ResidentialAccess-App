@@ -54,7 +54,8 @@ const Navbar = () => {
                     icon={faBars}
                     className="menu-icon"
                     onClick={toggleSidebar}
-                />}
+                />
+                }
                 {!isSidebarOpen && // Hide user name from header when sidebar is open
                     <h1 className="user-name">{name}</h1>
                 }
