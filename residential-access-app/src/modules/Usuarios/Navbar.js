@@ -28,7 +28,7 @@ const Navbar = () => {
         toggleSidebar();
         setTimeout(() => {
             setShowLogoutModal(true);
-        }, 350);
+        }, 450);
         
     };
 
@@ -159,7 +159,7 @@ const Navbar = () => {
                 {/* Welcome message for corresponding view */}
                 {activeView === "home" ? (
                     <div className="welcome-message">
-                        <p>Bienvenido (a)</p>
+                        <p>Bienvenido&nbsp;(a)</p>
                     </div>
                 ) : activeView === "historial" ? (
                     <div className="welcome-message">
@@ -200,7 +200,7 @@ const Navbar = () => {
                 <div className="logout-modal">
                     <div className="logout-modal-content">
                         <p>
-                            ¿Deseas cerrar sesión? <FontAwesomeIcon icon={faDoorOpen} />
+                            ¿Deseas cerrar sesión?&nbsp;<FontAwesomeIcon icon={faDoorOpen} />
                         </p>
                         <div className="logout-modal-actions">
                             <Button
