@@ -103,6 +103,8 @@ h2 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 1.5rem;
     font-weight: bold;
+    /* add transition with popover */
+    transition: transform 0.3s ease-in-out;
 }
 
 .logout-modal-actions {
@@ -136,7 +138,7 @@ h2 {
         position: fixed;
         top: 0;
         width: 260px;
-        height: 1090px;
+        height: 1170px;
         background-color: rgb(255, 255, 255);
         color: white;
         padding: 20px;
@@ -158,6 +160,7 @@ h2 {
         z-index: 1000;
         opacity: 1;
         margin-top: -50px;
+        box-shadow: 25px 24px 26px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar-header {
@@ -258,8 +261,8 @@ h2 {
         position: fixed;
         top: 0;
         left: 0;
-        width: 110%;
-        height: 100%;
+        width: 115%;
+        height: 110%;
         background-color: rgba(0, 0, 0, 0);
         /* Transparente por defecto */
         opacity: 0;

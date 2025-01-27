@@ -25,7 +25,11 @@ const Navbar = () => {
 
     /* Function for opening the logout modal */
     const handleLogoutClick = () => {
-        setShowLogoutModal(true);
+        toggleSidebar();
+        setTimeout(() => {
+            setShowLogoutModal(true);
+        }, 350);
+        
     };
 
     /* Function for closing the logout modal and redirecting to log in page*/
