@@ -1,7 +1,7 @@
 import React from "react";
 import "../../styles/Usuarios/Historial.css"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
-import { faList } from "@fortawesome/free-solid-svg-icons"; 
+import { faList } from "@fortawesome/free-solid-svg-icons";   
 
 const Historial = () => {
     // Datos de ejemplo
