@@ -36,5 +36,6 @@
     --input-transition: border-color 0.3s ease-in-out;
 
     /* Table */
-    --child-row: #d6f2f8;
+    --child-row: #d6f7f8;
+    --row-hover: #9bc4ce;
 }

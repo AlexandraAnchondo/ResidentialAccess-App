@@ -5,6 +5,7 @@ import { faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-
 import AddAutoModal from "./modals/AddAutoModal";
 import { Button, Typography } from "@mui/material";
 import { AddCircle, DirectionsCar as CarIcon, Lock, LockOpen } from "@mui/icons-material";
+import DeleteModal from "./modals/DeleteModal";
 
 const Autos = () => {
     const [autosData, setAutosData] = useState([
@@ -13,6 +14,8 @@ const Autos = () => {
     ]);
 
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [indexToDelete, setIndexToDelete] = useState(null);
 
     const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"];
 
@@ -39,9 +42,18 @@ const Autos = () => {
         setShowModal(false);
     };
 
+    const handleDeleteClick = () => {
+        setShowDeleteModal(true);
+    }
+
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+    }
+
     const handleBorrarAuto = (index) => {
         const newAutos = autosData.filter((_, i) => i !== index);
         setAutosData(newAutos);
+        setShowDeleteModal(false);
     };
 
     const toggleBloqueo = (index) => {
@@ -128,7 +140,10 @@ const Autos = () => {
                             </Button>
                             <Button
                                 variant="text"
-                                onClick={() => handleBorrarAuto(index)}
+                                onClick={() => {
+                                    handleDeleteClick();
+                                    setIndexToDelete(index);
+                                }}
                                 color="error"
                                 startIcon={<FontAwesomeIcon icon={faTrashAlt} />}
                                 size="small"
@@ -152,11 +167,19 @@ const Autos = () => {
             </div>
         )}
 
+            {/*AddAutoModal*/}
             <AddAutoModal
                 show={showModal}
                 onClose={handleCloseModal}
                 onAdd={handleAgregarAuto}
                 availableColors={availableColors}
+            />
+
+            {/* DeleteModal */}
+            <DeleteModal
+                showDeleteModal={showDeleteModal}
+                onCloseDeleteModal={handleCloseDeleteModal}
+                onDelete={() => handleBorrarAuto(indexToDelete)}
             />
         </>
     );

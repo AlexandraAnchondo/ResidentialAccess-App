@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import "../../styles/Usuarios/Visitantes.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faTrashAlt, faPencil, faCircleInfo, faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
 import AddVisitanteModal from "./modals/AddVisitanteModal";
+import DeleteModal from "./modals/DeleteModal";
 import { Button, Typography } from "@mui/material";
 
 const Visitantes = () => {
@@ -26,15 +27,26 @@ const Visitantes = () => {
     ]);
 
     const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [indexToDelete, setIndexToDelete] = useState(null);
 
     const handleAgregarVisitanteClick = () => {
         setShowModal(true);
     };
 
+    const handleDeleteClick = () => {
+        setShowDeleteModal(true);
+    }
+
     const handleCloseModal = () => {
         setShowModal(false);
     };
 
+    const handleCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+    }
+
+    // Función para agregar un nuevo visitante
     const handleAgregarVisitante = (nuevoVisitante) => {
         setVisitantesData([
             ...visitantesData,
@@ -46,6 +58,7 @@ const Visitantes = () => {
     const handleBorrarVisitante = (index) => {
         const newVisitantes = visitantesData.filter((_, i) => i !== index);
         setVisitantesData(newVisitantes);
+        setShowDeleteModal(false);
     };
 
     const toggleBloqueo = (index) => {
@@ -154,10 +167,11 @@ const Visitantes = () => {
                                     {item.bloqueado ? "SIN ACCESO" : "CON ACCESO"}
                                 </Button>
                             </section>
-                            <Button
-                                onClick={() => handleBorrarVisitante(index)}
-                            >
-                                <FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: "20px" }} />
+                            <Button onClick={ () =>{
+                                handleDeleteClick();
+                                setIndexToDelete(index);
+                            }}
+                            ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: '20px' }} />
                             </Button>
                         </div>
                     ))}
@@ -181,6 +195,13 @@ const Visitantes = () => {
                 show={showModal}
                 onClose={handleCloseModal}
                 onAdd={handleAgregarVisitante}
+            />
+
+            {/* DeleteModal */}
+            <DeleteModal
+                showDeleteModal={showDeleteModal}
+                onCloseDeleteModal={handleCloseDeleteModal}
+                onDelete={() => handleBorrarVisitante(indexToDelete)}
             />
         </>
     );
