@@ -45,7 +45,14 @@ const Navbar = () => {
 
     /* Function for toggling the sidebar open and closed */
     const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
+        const newSidebarState = !isSidebarOpen;
+        setIsSidebarOpen(newSidebarState); 
+    
+        if (newSidebarState) {
+            document.body.style.overflow = 'hidden'; 
+        } else {
+            document.body.style.overflow = '';
+        }
     };
 
     return (

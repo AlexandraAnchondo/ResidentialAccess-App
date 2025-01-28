@@ -73,3 +73,41 @@ body {
     margin-top: 15px;
     align-self: flex-end;
 }
+
+/* Responsividad 0 - 468 px*/
+@media screen and (max-width: 468px) {
+    .no-data {
+        margin: 20px 0 0 60px;
+        font-size: 1.8rem;
+    }
+
+    .autos-cards {
+        margin-left: 0px;
+        margin-right: 0px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .auto-card {
+        width: 330px;
+        padding: 15px;
+    }
+}
+
+/* Responsividad 469 - 568 px*/
+@media screen and (min-width: 469px) and (max-width: 568px) {
+
+}
+
+/* Responsividad 569 - 768 px*/
+@media screen and (min-width: 569px) and (max-width: 900px) {
+
+}
+
+/* Responsividad 769 - 1068 px*/
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+
+}
