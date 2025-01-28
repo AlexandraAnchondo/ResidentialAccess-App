@@ -12,6 +12,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    animation: fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
 }
 
 .code-modal {
@@ -21,6 +22,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
     overflow: hidden;
+    opacity: 0;
+    animation: scaleUp .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
 }
 
 .code-modal-header {
@@ -40,6 +43,7 @@
 
 .code-modal-content {
     padding: 20px;
+    animation: scaleBack .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
 }
 
 .code-modal-options {
@@ -66,6 +70,37 @@
     height: 20px; /* Tamaño del checkbox */
 }
 
+@keyframes fadeIn {
+    0% {
+        background: rgba(0, 0, 0, .0);
+    }
+
+    100% {
+        background: rgba(0, 0, 0, .7);
+    }
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(.8) translateY(1000px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1) translateY(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleBack {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(.85);
+    }
+}
 
 /* Responsividad 0 - 468 px*/
 @media screen and (max-width: 468px) {

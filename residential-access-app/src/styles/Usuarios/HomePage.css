@@ -413,7 +413,7 @@ input {
 }
 
 /* Responsividad 569 - 768 px*/
-@media screen and (min-width: 569px) and (max-width: 768px) {
+@media screen and (min-width: 569px) and (max-width: 900px) {
     .home-main {
         display: flex;
         flex-direction: column; 

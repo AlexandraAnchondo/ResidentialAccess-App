@@ -25,7 +25,7 @@ const Navbar = () => {
 
     /* Function for opening the logout modal */
     const handleLogoutClick = () => {
-        toggleSidebar();
+        setIsSidebarOpen(false);
         setTimeout(() => {
             setShowLogoutModal(true);
         }, 450);
@@ -110,41 +110,43 @@ const Navbar = () => {
                         <h1 className="sidebar-user-name">{name}</h1>
                         <h2 className="sidebar-perfil-title">Perfil</h2>
                     </div>
-                    <nav className="nav-links-sidebar">
-                        <button
-                            className={`nav-button ${activeView === "home" ? "active" : ""}`}
-                            onClick={() => handleNavClick("home")}
-                        >
-                            <FontAwesomeIcon icon={faQrcode} />&nbsp;&nbsp;Códigos QR
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "historial" ? "active" : ""}`}
-                            onClick={() => handleNavClick("historial")}
-                        >
-                            <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
-                            onClick={() => handleNavClick("visitantes")}
-                        >
-                            <FontAwesomeIcon icon={faUserGroup} />&nbsp;&nbsp;Visitantes
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
-                            onClick={() => handleNavClick("residentes")}
-                        >
-                            <FontAwesomeIcon icon={faHouse} />&nbsp;&nbsp;Residentes
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "autos" ? "active" : ""}`}
-                            onClick={() => handleNavClick("autos")}
-                        >
-                            <FontAwesomeIcon icon={faCar} />&nbsp;&nbsp;Autos
-                        </button>
-                        <button className="nav-button logout" onClick={handleLogoutClick}>
-                            <FontAwesomeIcon icon={faDoorOpen} />&nbsp;&nbsp;Cerrar sesión
-                        </button>
-                    </nav>
+                    {isSidebarOpen && 
+                        <nav className="nav-links-sidebar">
+                            <button
+                                className={`nav-button ${activeView === "home" ? "active" : ""}`}
+                                onClick={() => handleNavClick("home")}
+                            >
+                                <FontAwesomeIcon icon={faQrcode} />&nbsp;&nbsp;Códigos QR
+                            </button>
+                            <button
+                                className={`nav-button ${activeView === "historial" ? "active" : ""}`}
+                                onClick={() => handleNavClick("historial")}
+                            >
+                                <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas
+                            </button>
+                            <button
+                                className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
+                                onClick={() => handleNavClick("visitantes")}
+                            >
+                                <FontAwesomeIcon icon={faUserGroup} />&nbsp;&nbsp;Visitantes
+                            </button>
+                            <button
+                                className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
+                                onClick={() => handleNavClick("residentes")}
+                            >
+                                <FontAwesomeIcon icon={faHouse} />&nbsp;&nbsp;Residentes
+                            </button>
+                            <button
+                                className={`nav-button ${activeView === "autos" ? "active" : ""}`}
+                                onClick={() => handleNavClick("autos")}
+                            >
+                                <FontAwesomeIcon icon={faCar} />&nbsp;&nbsp;Autos
+                            </button>
+                            <button className="nav-button logout" onClick={handleLogoutClick}>
+                                <FontAwesomeIcon icon={faDoorOpen} />&nbsp;&nbsp;Cerrar sesión
+                            </button>
+                        </nav>
+                    }
                 </div>
             </div>
             }
@@ -197,11 +199,29 @@ const Navbar = () => {
 
             {/* Logout modal that appears when user clicks on logout button */}
             {showLogoutModal && (
-                <div className="logout-modal">
-                    <div className="logout-modal-content">
+                <div className="logout-modal-background">
+                    <div className="logout-modal">
                         <p>
                             ¿Deseas cerrar sesión?&nbsp;<FontAwesomeIcon icon={faDoorOpen} />
                         </p>
+                        <svg 
+                            className="modal-svg"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="100%"
+                            height="100%"
+                            viewBox="0 0 300 90"
+                            preserveAspectRatio="none"
+                        >
+                            <rect
+                                x="0"
+                                y="0"
+                                fill="none"
+                                width="300"
+                                height="90"
+                                rx="3"
+                                ry="3"
+                            ></rect>
+                        </svg>
                         <div className="logout-modal-actions">
                             <Button
                                 variant="contained"
