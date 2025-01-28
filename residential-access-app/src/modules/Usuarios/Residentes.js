@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import AddResidenteModal from "./modals/AddResidenteModal";
 import { Button, Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Residentes = () => {
     const [residentesData, setResidentesData] = useState([
@@ -23,6 +24,7 @@ const Residentes = () => {
 
     const [showModal, setShowModal] = useState(false);
 
+    const isMobile = useMediaQuery("(max-width: 568px)");
 
     const handleAgregarResidenteClick = () => {
         setShowModal(true);
@@ -48,10 +50,12 @@ const Residentes = () => {
                 variant="h2" 
                 align="center" 
                 sx={{ 
-                    marginLeft: '60px', 
-                    marginRight: "60px",
+                    marginLeft: isMobile ? '20px' : '60px',
+                    marginRight: isMobile ? '-40px' :  '60px',
+                    marginTop: isMobile ? '30px' : '0',
+                    marginBottom: isMobile ? '-10px' : '0',
                     fontWeight: 500, 
-                    fontSize: '1.3rem', 
+                    fontSize: isMobile ? '1rem' : '1.3rem',
                     border: '1px solid', 
                     borderRadius: 2, 
                     padding: 2, 

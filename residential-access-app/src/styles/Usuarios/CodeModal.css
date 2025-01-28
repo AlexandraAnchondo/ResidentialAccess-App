@@ -102,7 +102,6 @@
     }
 }
 
-/* Responsividad 0 - 468 px*/
 @media screen and (max-width: 468px) {
     .code-modal {
         background-color: white;
@@ -128,7 +127,6 @@
     }
 }
 
-/* Responsividad 469 - 568 px*/
 @media screen and (min-width: 469px) and (max-width: 568px) {
     .code-modal {
         background-color: white;
@@ -158,7 +156,6 @@
     }
 }
 
-/* Responsividad 569 - 768 px*/
 @media screen and (min-width: 569px) and (max-width: 768px) {
     .code-modal {
         background-color: white;
@@ -188,7 +185,6 @@
     }
 }
 
-/* Responsividad 769 - 1068 px*/
 @media screen and (min-width: 769px) and (max-width: 1068px) {
     .code-modal {
         background-color: white;

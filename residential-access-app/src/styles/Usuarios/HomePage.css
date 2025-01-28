@@ -1,4 +1,4 @@
-/* Importar variables globales */
+
 @import '../colors.css';
 
 body {
@@ -7,8 +7,6 @@ body {
     font-family: "Work Sans", sans-serif;
     background-color: var(--background-color);
     color: var(--text-primary);
-    overflow-x: auto; /* Permite scroll horizontal si el contenido no cabe */
-    overflow-y: auto; /* Permite scroll vertical si el contenido no cabe */
 }
 
 .home-container {
@@ -21,14 +19,14 @@ body {
     display: flex;
     gap: 20px;
     padding: 20px;
-    flex-wrap: wrap; /* Permite que las secciones se acomoden en nuevas filas si es necesario */
+    flex-wrap: wrap; 
 }
 
 .combined-info {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Espaciado entre las secciones dentro del combined-info */
-    flex: 1; /* Ocupa el 70% del espacio */
+    gap: 20px; 
+    flex: 1; 
     margin-left: 50px;
 }
 
@@ -58,17 +56,17 @@ body {
 }
 
 .code-generator {
-    flex: 0 1 30%; /* La sección de generador de códigos ocupa el 30% del ancho del contenedor */
+    flex: 0 1 30%; 
     background-color: white;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border: 1px solid var(--border-color);
     margin-right: 50px;
-    display: flex; /* Activa Flexbox */
-    flex-direction: column; /* Acomoda los elementos verticalmente */
-    justify-content: space-between; /* Asegura que el botón esté abajo */
-    align-items: center; /* Centra los elementos horizontalmente */
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    align-items: center;
 }
 
 h2 {
@@ -105,7 +103,7 @@ input {
     padding: 10px 20px;
     cursor: pointer;
     margin-top: 15px;
-    align-self: center; /* Centra el botón horizontalmente */
+    align-self: center; 
 }
 
 .code-generator .generate-button {
@@ -115,17 +113,17 @@ input {
 
 .resident-info .edit-button {
     display: block;
-    margin-left: auto; /* Empuja el botón hacia la derecha */
+    margin-left: auto; 
     margin-right: 0;
 }
 
 .no-code {
-    display: flex; /* Activa Flexbox para centrar su contenido */
-    flex-direction: column; /* Acomoda texto e ícono verticalmente */
-    justify-content: center; /* Centrado vertical */
-    align-items: center; /* Centrado horizontal */
-    flex-grow: 1; /* Hace que este elemento ocupe el espacio sobrante */
-    text-align: center; /* Centra el texto */
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    flex-grow: 1; 
+    text-align: center; 
     color: var(--text-disabled);
     margin: 20px 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -133,16 +131,16 @@ input {
 }
 
 .icon-placeholder {
-    font-size: 6rem; /* Tamaño del ícono */
+    font-size: 6rem; 
     color: var(--border-color);
-    margin-top: 10px; /* Espaciado entre el texto y el ícono */
+    margin-top: 10px; 
 }
 
 .qr-codes-container {
     display: grid;
-    grid-template-columns: repeat(1, 1fr); /* Dos columnas */
-    grid-template-rows: repeat(3, auto); /* Tres filas, tamaño automático */
-    gap: 20px; /* Espacio entre los QR */
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 20px; 
     justify-content: center;
 }
 
@@ -156,77 +154,78 @@ input {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo para la imagen QR */
 .qr-code-card img {
     width: 100px;
     height: 100px;
 }
 
-/* Contenedor para el texto y el botón */
 .qr-code-card .content {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Estilo para el texto */
 .qr-code-card p {
     margin: 0 0 10px;
     font-size: 14px;
     color: #333;
 }
 
-/* Estilo para el botón */
 .qr-code-card button {
     align-self: start;
 }
 
-/* Posicionamiento específico */
 .qr-code-card:nth-child(1) {
-    flex-direction: row; /* Contenido a la derecha del QR */
+    flex-direction: row; 
     .content {
-        margin-left: 80px; /* 100px entre QR y contenido */
-        margin-right: 10px;/* Sin margen adicional */
+        margin-left: 80px; 
+        margin-right: 10px;
     }
 }
 
 .qr-code-card:nth-child(2) {
-    flex-direction: row-reverse; /* Contenido a la izquierda del QR */
+    flex-direction: row-reverse; 
     .content {
-        margin-right: 80px; /* 100px entre QR y contenido */
-        margin-left: 10px;   /* Sin margen adicional */
+        margin-right: 80px; 
+        margin-left: 10px;   
     }
 }
 
 .qr-code-card:nth-child(3) {
-    flex-direction: row; /* Contenido a la derecha del QR */
+    flex-direction: row; 
     .content {
-        margin-left: 80px; /* 100px entre QR y contenido */
-        margin-right: 10px; /* Sin margen adicional */
+        margin-left: 80px; 
+        margin-right: 10px; 
     }
 }
 
-/* Responsividad 0 - 468 px*/
-@media screen and (max-width: 468px) {
+@media screen and (max-width: 768px) {
     .home-main {
         display: flex;
         flex-direction: column; 
         gap: 20px; 
-        align-items: stretch; 
+        align-items: center; 
         margin: 0 auto; 
-        padding: 20px; 
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 0px;
+        margin-top: 40px;
     }
     
     .combined-info {
         flex: none; 
-        margin-left: -160px; 
-        margin-right: -220px;
+        margin-left: 30px; 
+        margin-right: 30px;
+        width: 100%;
     }
     
     .code-generator {
         flex: none; 
-        margin-left: -160px; 
-        margin-right: -220px;
+        margin-left: 30px; 
+        margin-right: 30px;
+        width: 90%;
+        margin-bottom: 30px;
     }
 
     .info-item {
@@ -258,7 +257,7 @@ input {
 
     .id-photo img {
         max-width: 100%;
-        max-height: 150px;
+        max-height: 180px;
         object-fit: cover;
         border-radius: 5px;
         margin-top: 20px;
@@ -267,7 +266,6 @@ input {
     .id-photo .no-image {
         margin-top: 30px;
         font-size: 1.2rem;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     }
 
     .no-code {
@@ -276,14 +274,16 @@ input {
     }
 
     .icon-placeholder {
-        font-size: 4rem; /* Tamaño del ícono */
+        font-size: 4rem; 
         margin-bottom: 20px;
     }
 
     .qr-codes-container {
         margin-top: 30px;
     }
-    
+}
+
+@media screen and (max-width: 468px) {
     .qr-code-card:nth-child(1) {
         flex-direction: row; 
         .content {
@@ -309,84 +309,7 @@ input {
     }
 }
 
-/* Responsividad 469 - 568 px*/
 @media screen and (min-width: 469px) and (max-width: 568px) {
-    .home-main {
-        display: flex;
-        flex-direction: column; 
-        gap: 20px; 
-        align-items: stretch; 
-        margin: 0 auto; 
-        padding: 20px; 
-    }
-    
-    .combined-info {
-        flex: none; 
-        margin-left: -190px; 
-        margin-right: -260px;
-    }
-    
-    .code-generator {
-        flex: none; 
-        margin-left: -190px; 
-        margin-right: -260px;
-    }
-
-    .info-item {
-        margin-bottom: -20px;
-        color: var(--primary-color);
-        font-size: 0.9rem;
-        margin-left: 0;
-        margin-right: -40px
-    }
-
-    h2 {
-        margin-bottom: -10px;
-    }
-
-    input {
-        width: calc(100% - 80px);
-        padding: 8px;
-        margin-top: 5px;
-        margin-left: 15px;
-        border: 1px solid var(--border-color);
-        border-radius: 5px;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        font-size: .8rem;
-    }
-
-    .resident-info .edit-button {
-        margin-top: 30px;
-    }
-
-    .id-photo img {
-        max-width: 120%;
-        max-height: 180px;
-        object-fit: cover;
-        border-radius: 5px;
-        margin-top: 20px;
-    }
-
-    .id-photo .no-image {
-        margin-top: 30px;
-        font-size: 1.2rem;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    }
-
-    .no-code {
-        font-size: 1.2rem;
-        margin-top: 80px;
-    }
-
-    .icon-placeholder {
-        font-size: 4rem; /* Tamaño del ícono */
-        margin-bottom: 20px;
-    }
-
-    .qr-codes-container {
-        margin-top: 30px;
-    }
-    
     .qr-code-card:nth-child(1) {
         flex-direction: row; 
         .content {
@@ -412,84 +335,7 @@ input {
     }
 }
 
-/* Responsividad 569 - 768 px*/
 @media screen and (min-width: 569px) and (max-width: 900px) {
-    .home-main {
-        display: flex;
-        flex-direction: column; 
-        gap: 20px; 
-        align-items: stretch; 
-        margin: 0 auto; 
-        padding: 20px; 
-    }
-    
-    .combined-info {
-        flex: none; 
-        margin-left: -250px; 
-        margin-right: -320px;
-    }
-    
-    .code-generator {
-        flex: none; 
-        margin-left: -250px; 
-        margin-right: -320px;
-    }
-
-    .info-item {
-        margin-bottom: -20px;
-        color: var(--primary-color);
-        font-size: 0.9rem;
-        margin-left: 0;
-        margin-right: -40px
-    }
-
-    h2 {
-        margin-bottom: -10px;
-    }
-
-    input {
-        width: calc(100% - 80px);
-        padding: 8px;
-        margin-top: 5px;
-        margin-left: 15px;
-        border: 1px solid var(--border-color);
-        border-radius: 5px;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        font-size: .8rem;
-    }
-
-    .resident-info .edit-button {
-        margin-top: 30px;
-    }
-
-    .id-photo img {
-        max-width: 120%;
-        max-height: 180px;
-        object-fit: cover;
-        border-radius: 5px;
-        margin-top: 20px;
-    }
-
-    .id-photo .no-image {
-        margin-top: 30px;
-        font-size: 1.2rem;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    }
-
-    .no-code {
-        font-size: 1.2rem;
-        margin-top: 80px;
-    }
-
-    .icon-placeholder {
-        font-size: 4rem; /* Tamaño del ícono */
-        margin-bottom: 20px;
-    }
-
-    .qr-codes-container {
-        margin-top: 30px;
-    }
-    
     .qr-code-card:nth-child(1) {
         flex-direction: row; 
         gap: 50px;
@@ -515,18 +361,17 @@ input {
     }
 }
 
-/* Responsividad 769 - 1068 px*/
 @media screen and (min-width: 769px) and (max-width: 1068px) {
     .combined-info {
         display: flex;
         flex-direction: column;
-        gap: 20px; /* Espaciado entre las secciones dentro del combined-info */
-        flex: 1; /* Ocupa el 70% del espacio */
+        gap: 20px; 
+        flex: 1; 
         margin-left: 20px;
     }
     
     .code-generator {
-        flex: 0 1 40%; /* La sección de generador de códigos ocupa el 40% del ancho del contenedor */
+        flex: 0 1 40%; 
         padding: 20px;
         margin-right: 20px;
     }
@@ -551,6 +396,6 @@ input {
         padding: 10px 20px;
         cursor: pointer;
         margin-top: 15px;
-        align-self: center; /* Centra el botón horizontalmente */
+        align-self: center; 
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDoorOpen, faQrcode, faHouse, faReceipt, faCar, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -16,6 +16,14 @@ const Navbar = () => {
     const [name, setName] = useState("Alexandra Anchondo Robles");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const isMobile = useMediaQuery("(max-width: 768px)"); // Detecta tamaño de pantalla
+
+    useEffect(() => {
+        if (isSidebarOpen) {
+            document.body.style.overflow = 'hidden'; 
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    });
 
     /* Function for asigning the corresponding value for active view state and open the sidebar */
     const handleNavClick = (view) => {
@@ -45,21 +53,14 @@ const Navbar = () => {
 
     /* Function for toggling the sidebar open and closed */
     const toggleSidebar = () => {
-        const newSidebarState = !isSidebarOpen;
-        setIsSidebarOpen(newSidebarState); 
-    
-        if (newSidebarState) {
-            document.body.style.overflow = 'hidden'; 
-        } else {
-            document.body.style.overflow = '';
-        }
+        setIsSidebarOpen(!isSidebarOpen);
     };
 
     return (
         /* Home container that contains all the values for the navbar */
-        <div className="home-container">
+        <div className="nav-container">
             {/* Header that contains the pages when desktop screen or the bars icon when tablet or cellphone */}
-            <header className="home-header">
+            <header className="nav-header">
                 {isMobile && // Only show icon when is tablet or cellphone
                     <FontAwesomeIcon
                     icon={faBars}
