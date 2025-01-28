@@ -1,17 +1,16 @@
 @import '../colors.css';
 
-body {
-    overflow-x: auto; /* Permite scroll horizontal si el contenido no cabe */
-    overflow-y: auto; /* Permite scroll vertical si el contenido no cabe */
+.autos-container {
+    width: 100%;
 }
 
 .no-data {
-    display: flex; /* Activa Flexbox para centrar su contenido */
-    flex-direction: column; /* Acomoda texto e ícono verticalmente */
-    justify-content: center; /* Centrado vertical */
-    align-items: center; /* Centrado horizontal */
-    flex-grow: 1; /* Hace que este elemento ocupe el espacio sobrante */
-    text-align: center; /* Centra el texto */
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    flex-grow: 1; 
+    text-align: center; 
     color: var(--text-disabled);
     margin: 20px 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -19,14 +18,12 @@ body {
 }
 
 .no-data .icon-placeholder {
-    font-size: 10rem; /* Tamaño del ícono */
+    font-size: 10rem; 
     color: var(--border-color);
-    margin-top: 10px; /* Espaciado entre el texto y el ícono */
+    margin-top: 10px; 
 }
 
 .autos-cards {
-    margin-left: 40px;
-    margin-right: 40px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -39,11 +36,11 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 250px;
     padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center; 
+    margin-left: 40px;
 }
 
 .auto-card-header {
@@ -73,3 +70,35 @@ body {
     margin-top: 15px;
     align-self: flex-end;
 }
+
+@media screen and (max-width: 568px) {
+    .autos-main {
+        align-items: center; 
+        margin: 0 auto; 
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .no-data {
+        margin: 20px 0 0 60px;
+        font-size: 1.8rem;
+    }
+
+    .autos-cards {
+        display: flex;
+        gap: 30px;
+    }
+
+    .auto-card {
+        width: 100%;
+        margin-right: 0px;
+        flex: none; 
+        margin-left: 60px;
+    }
+
+    .auto-card-actions {
+        align-self: center;
+    }
+}
+

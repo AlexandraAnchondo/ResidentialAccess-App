@@ -1,10 +1,5 @@
 @import '../colors.css';
 
-body {
-    overflow-x: auto; /* Permite scroll horizontal si el contenido no cabe */
-    overflow-y: auto; /* Permite scroll vertical si el contenido no cabe */
-}
-
 .agregar-visitante-button {
     background-color: var(--secondary-color);
     color: white;

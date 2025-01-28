@@ -5,6 +5,7 @@ import { faUserGroup, faTrashAlt, faPencil, faCircleInfo, faLock, faUnlock } fro
 import AddVisitanteModal from "./modals/AddVisitanteModal";
 import DeleteModal from "./modals/DeleteModal";
 import { Button, Typography } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Visitantes = () => {
     const [visitantesData, setVisitantesData] = useState([
@@ -29,6 +30,8 @@ const Visitantes = () => {
     const [showModal, setShowModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [indexToDelete, setIndexToDelete] = useState(null);
+
+    const isMobile = useMediaQuery("(max-width: 568px)");
 
     const handleAgregarVisitanteClick = () => {
         setShowModal(true);
@@ -74,10 +77,12 @@ const Visitantes = () => {
                 variant="h2"
                 align="center"
                 sx={{
-                    marginLeft: "60px",
-                    marginRight: "60px",
-                    fontWeight: 500,
-                    fontSize: "1.3rem",
+                    marginLeft: isMobile ? '20px' : '60px',
+                    marginRight: isMobile ? '-40px' :  '60px',
+                    marginTop: isMobile ? '30px' : '0',
+                    marginBottom: isMobile ? '-10px' : '0',
+                    fontWeight: 500, 
+                    fontSize: isMobile ? '1rem' : '1.3rem',
                     border: "1px solid",
                     borderRadius: 2,
                     padding: 2,
