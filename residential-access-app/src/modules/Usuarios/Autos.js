@@ -145,7 +145,10 @@ const Autos = () => {
                                 </Button>
                                 <Button
                                     variant="text"
-                                    onClick={() => handleBorrarAuto(index)}
+                                    onClick={() => {
+                                        handleDeleteClick();
+                                        setIndexToDelete(index);
+                                    }}
                                     color="error"
                                     startIcon={<FontAwesomeIcon icon={faTrashAlt} />}
                                     size="small"
