@@ -14,7 +14,10 @@ const Login = () => {
         e.preventDefault(); // Evita que se recargue la página
         if (username === "Usuario") {
             navigate("/users"); // Redirige a HomePage si el usuario es "Usuario"
-        } else {
+        } else if (username === "Guardia")  {
+            navigate("/guards"); // Redirige a Registro si el usuario es "Guardia"
+        }
+        else{
             alert("Usuario no válido"); // Mensaje si el usuario no es válido
         }
     };
