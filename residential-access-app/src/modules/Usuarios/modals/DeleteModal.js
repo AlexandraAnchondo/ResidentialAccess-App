@@ -3,13 +3,17 @@ import { Button } from "@mui/material";
 import "../../../styles/Usuarios/DeleteModal.css";
 
 const DeleteModal =({showDeleteModal, onCloseDeleteModal, onDelete}) => {
-    if (!showDeleteModal) return null;
+    if (!showDeleteModal) { 
+        document.body.style.overflow = 'auto'; 
+        return null;
+    }
 
+    document.body.style.overflow = 'hidden'; 
     return (
         <div className="delete-modal-overlay">
             <div className="delete-modal">
                 <div className="delete-modal-header">
-                    <h2>¿Estas seguro?</h2>
+                    <h2>¿Estás seguro?</h2>
                 </div>
                 <div className="delete-modal-content">
                     <div className="delete-modal-options">
