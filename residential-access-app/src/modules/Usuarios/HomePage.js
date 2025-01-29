@@ -20,6 +20,7 @@ const HomePage = () => {
 
     const handleGenerateClick = () => {
         setShowModal(true); 
+        document.body.style.overflow = 'hidden'; 
     };
 
     const handleCloseModal = (newQrCodes) => {
@@ -27,6 +28,7 @@ const HomePage = () => {
         if (newQrCodes && newQrCodes.length > 0) {
             setQrCodes(() => [...newQrCodes]);
         }
+        document.body.style.overflow = 'auto'; 
     };
 
     const handleShareClick = (code) => {

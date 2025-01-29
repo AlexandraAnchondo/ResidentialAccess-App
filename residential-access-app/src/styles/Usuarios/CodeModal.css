@@ -102,7 +102,7 @@
     }
 }
 
-@media screen and (max-width: 468px) {
+@media screen and (max-width: 1068px) {
     .code-modal {
         border-radius: 10px;
         width: 400px; 
@@ -122,89 +122,5 @@
     .code-modal-actions {
         margin-left: -30px;
         margin-top: -10px;
-    }
-}
-
-@media screen and (min-width: 469px) and (max-width: 568px) {
-    .code-modal {
-        border-radius: 10px;
-        width: 500px; 
-        height: 500px;
-    }
-
-    .code-modal-header h2 {
-        font-size: 1.9rem;
-    }
-
-    .code-modal-options {
-        gap: 35px;
-        margin-left: 70px;
-        margin-top: 40px;
-    }
-
-    .code-modal-actions {
-        gap: 10px;
-        margin-left: -50px;
-        margin-top: 50px;
-    }
-
-    .code-modal-options label {
-        font-size: 1.3rem;
-    }
-}
-
-@media screen and (min-width: 569px) and (max-width: 768px) {
-    .code-modal {
-        border-radius: 10px;
-        width: 500px; 
-        height: 500px;
-    }
-
-    .code-modal-header h2 {
-        font-size: 1.9rem;
-    }
-
-    .code-modal-options {
-        gap: 35px;
-        margin-left: 70px;
-        margin-top: 40px;
-    }
-
-    .code-modal-actions {
-        gap: 10px;
-        margin-left: -50px;
-        margin-top: 50px;
-    }
-
-    .code-modal-options label {
-        font-size: 1.3rem;
-    }
-}
-
-@media screen and (min-width: 769px) and (max-width: 1068px) {
-    .code-modal {
-        border-radius: 10px;
-        width: 500px; 
-        height: 500px;
-    }
-
-    .code-modal-header h2 {
-        font-size: 1.9rem;
-    }
-
-    .code-modal-options {
-        gap: 35px;
-        margin-left: 70px;
-        margin-top: 10px;
-    }
-
-    .code-modal-actions {
-        gap: 10px;
-        margin-left: -50px;
-        margin-top: 40px;
-    }
-
-    .code-modal-options label {
-        font-size: 1.3rem;
     }
 }
