@@ -1,5 +1,5 @@
-/* Importar variables globales */
-@import '../colors.css';
+
+@import '../Colors.css';
 
 .code-modal-overlay {
     position: fixed;
@@ -18,7 +18,7 @@
 .code-modal {
     background-color: white;
     border-radius: 10px;
-    width: 800px; /* Más ancho para que todo quepa */
+    width: 800px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
     overflow: hidden;
@@ -27,12 +27,12 @@
 }
 
 .code-modal-header {
-    background-color: var(--primary-color); /* El color azul del header */
+    background-color: var(--primary-color); 
 }
 
 .code-modal-header h2 {
-    background-color: var(--primary-color); /* El color azul del header */
-    color: white !important; /* Letras blancas en el header */
+    background-color: var(--primary-color); 
+    color: white !important; 
     text-align: center;
     font-size: 2rem;
     letter-spacing: 0.1rem;
@@ -48,26 +48,26 @@
 
 .code-modal-options {
     display: flex;
-    flex-direction: column; /* Mantener las opciones en una sola columna */
-    gap: 15px; /* Espaciado uniforme entre opciones */
+    flex-direction: column; 
+    gap: 15px; 
     margin-left: 100px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .code-modal-options label {
     display: flex;
-    align-items: center; /* Alinear checkbox y texto verticalmente */
-    gap: 10px; /* Espaciado entre checkbox y texto */
+    align-items: center; 
+    gap: 10px; 
     color: var(--text-primary);
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     margin-bottom: 15px;
     letter-spacing: 1px;
 }
 
 .code-modal-options input[type="checkbox"] {
-    margin: 0  15px; /* Quitar márgenes adicionales del checkbox */
-    width: 20px; /* Tamaño del checkbox */
-    height: 20px; /* Tamaño del checkbox */
+    margin: 0  15px; 
+    width: 20px; 
+    height: 20px; 
 }
 
 @keyframes fadeIn {
@@ -102,25 +102,46 @@
     }
 }
 
-@media screen and (max-width: 1068px) {
+@media screen and (max-width: 768px) {
     .code-modal {
         border-radius: 10px;
-        width: 400px; 
+        width: 300px; 
         height: 300px;
     }
 
     .code-modal-header h2 {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
 
     .code-modal-options {
         gap: 15px;
-        margin-left: 30px;
-        margin-top: 10px;
+        margin-left: 0px;
+        margin-top: 5px;
     }
 
-    .code-modal-actions {
-        margin-left: -30px;
+    .code-modal-options label {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+    .code-modal {
+        border-radius: 10px;
+        width: 500px; 
+        height: 350px;
+    }
+
+    .code-modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .code-modal-options {
+        gap: 15px;
+        margin-left: 40px;
         margin-top: -10px;
+    }
+
+    .code-modal-options label {
+        font-size: 1.4rem;
     }
 }

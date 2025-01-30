@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import "../../../styles/Usuarios/CodeModal.css";
 import { Button } from "@mui/material";
 import { Check as CheckIcon, Cancel as CancelIcon } from "@mui/icons-material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const CodeModal = ({ show, onClose, existingCodes }) => {
     const [selectedCodes, setSelectedCodes] = useState([]);
     const [disabledOptions, setDisabledOptions] = useState([]);
+
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     useEffect(() => {
         if (show) {
@@ -98,10 +101,11 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
                         variant="contained"
                         startIcon={<CheckIcon />}
                         disabled={selectedCodes.length === 0 || existingCodes.length === 3}
+                        size={isMobile ? "small" : "large"}
                         sx={{
                             color: "#fff",
-                            marginBottom: 4,
-                            marginLeft: 5,
+                            marginBottom: isMobile ? 0 : 4,
+                            marginLeft: isMobile ? 2 : 5,
                             backgroundColor: selectedCodes.length > 0 ? "#00a8cc" : "#cccccc",
                             "&:hover": {
                                 backgroundColor: selectedCodes.length > 0
@@ -117,9 +121,10 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
                         variant="outlined"
                         startIcon={<CancelIcon />}
                         color="error"
+                        size={isMobile ? "small" : "large"}
                         sx={{
-                            marginBottom: 4,
-                            marginLeft: 5,
+                            marginBottom: isMobile ? 0 : 4,
+                            marginLeft: isMobile ? 2 : 5,
                         }}
                     >
                         Cancelar

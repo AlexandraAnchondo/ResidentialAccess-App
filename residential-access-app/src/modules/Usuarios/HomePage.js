@@ -42,9 +42,9 @@ const HomePage = () => {
         <div className="home-container">
             <main className="home-main">
                 <div className="combined-info">
-                    <section className="resident-info">
+                    <section className="homepage-info">
                         <h2>Información del residente:</h2>
-                        <div className="info-item">
+                        <div className="homepage-info-item">
                             <strong>Dirección:</strong>
                             <input
                                 type="text"
@@ -52,11 +52,11 @@ const HomePage = () => {
                                 readOnly
                             />
                         </div>
-                        <div className="info-item">
+                        <div className="homepage-info-item">
                             <strong>Teléfono:</strong>
                             <input type="text" value={phone} readOnly /> {/* Mostrar teléfono */}
                         </div>
-                        <div className="info-item">
+                        <div className="homepage-info-item">
                             <strong>Correo:</strong>
                             <input type="email" value={email} readOnly /> {/* Mostrar correo */}
                         </div>

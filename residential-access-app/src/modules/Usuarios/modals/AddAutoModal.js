@@ -16,6 +16,7 @@ import {
     Check as CheckIcon,
 } from "@mui/icons-material";
 import "../../../styles/Usuarios/AddModal.css";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
     const [formData, setFormData] = useState({
@@ -23,6 +24,8 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
         modelo: "",
         color: "",
     });
+
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     useEffect(() => {
         if (!show) {
@@ -117,7 +120,12 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                         variant="contained"
                         startIcon={<CheckIcon />}
                         disabled={!isFormValid()}
-                        style={{ marginLeft: 20 }}
+                        style={{ marginLeft: 20, marginBottom:10}}
+                        size={isMobile ? "small" : "large"}
+                        sx={{
+                            backgroundColor: "#00a8cc",
+                            "&:hover": "#00a8ccCC"
+                        }}
                     >
                         Aceptar
                     </Button>
@@ -127,6 +135,7 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                         color="error"
                         startIcon={<CloseIcon />}
                         style={{ marginLeft: 20 }}
+                        size={isMobile ? "small" : "large"}
                     >
                         Cancelar
                     </Button>
