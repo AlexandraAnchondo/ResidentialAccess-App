@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from "react";
-import "../../styles/Usuarios/Autos.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
-import AddAutoModal from "./modals/AddAutoModal";
-import { Button, Typography } from "@mui/material";
-import { AddCircle, DirectionsCar as CarIcon, Lock, LockOpen } from "@mui/icons-material";
-import DeleteModal from "./modals/DeleteModal";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import React, { useState, useEffect } from "react"
+import "../../styles/Usuarios/Autos.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
+import AddAutoModal from "./modals/AddAutoModal"
+import { Button, Typography } from "@mui/material"
+import { AddCircle, DirectionsCar as CarIcon, Lock, LockOpen } from "@mui/icons-material"
+import DeleteModal from "./modals/DeleteModal"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const Autos = () => {
     const [autosData, setAutosData] = useState([
         { placas: "93903KFJS", modelo: "Hyundai Sonata", color: "Gris", bloqueado: false },
-        { placas: "FJF9FS09", modelo: "Volkswagen Jetta", color: "Blanco", bloqueado: false },
-    ]);
+        { placas: "FJF9FS09", modelo: "Volkswagen Jetta", color: "Blanco", bloqueado: false }
+    ])
 
-    const [showModal, setShowModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [indexToDelete, setIndexToDelete] = useState(null);
-    
-    const isMobile = useMediaQuery("(max-width: 1068px)");
+    const [showModal, setShowModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [indexToDelete, setIndexToDelete] = useState(null)
 
-    const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"];
+    const isMobile = useMediaQuery("(max-width: 1068px)")
+
+    const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
 
     useEffect(() => {
         if (showModal || showDeleteModal) {
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = "auto"
         }
-    });
+    })
 
     const colorMap = {
         Gris: "#808080",
@@ -42,79 +42,79 @@ const Autos = () => {
         Plata: "rgb(192, 192, 192)",
         Morado: "rgb(138, 61, 138)",
         Cafe: "rgb(88, 64, 39)",
-        Naranja: "rgb(255, 128, 0)",
-    };
+        Naranja: "rgb(255, 128, 0)"
+    }
 
-    const handleAgregarAutoClick = () => setShowModal(true);
-    const handleCloseModal = () => setShowModal(false);
+    const handleAgregarAutoClick = () => setShowModal(true)
+    const handleCloseModal = () => setShowModal(false)
 
     const handleAgregarAuto = (nuevoAuto) => {
-        setAutosData([...autosData, { ...nuevoAuto, bloqueado: false }]);
-        setShowModal(false);
-    };
+        setAutosData([...autosData, { ...nuevoAuto, bloqueado: false }])
+        setShowModal(false)
+    }
 
     const handleDeleteClick = () => {
-        setShowDeleteModal(true);
+        setShowDeleteModal(true)
     }
 
     const handleCloseDeleteModal = () => {
-        setShowDeleteModal(false);
+        setShowDeleteModal(false)
     }
 
     const handleBorrarAuto = (index) => {
-        const newAutos = autosData.filter((_, i) => i !== index);
-        setAutosData(newAutos);
-        setShowDeleteModal(false);
-    };
+        const newAutos = autosData.filter((_, i) => i !== index)
+        setAutosData(newAutos)
+        setShowDeleteModal(false)
+    }
 
     const toggleBloqueo = (index) => {
         const updatedAutos = autosData.map((auto, i) =>
             i === index ? { ...auto, bloqueado: !auto.bloqueado } : auto
-        );
-        setAutosData(updatedAutos);
-    };
+        )
+        setAutosData(updatedAutos)
+    }
 
     return (
         <div className="autos-container">
             <main className="autos-main">
-                <Typography 
-                    variant="h2" 
-                    align="center" 
-                    sx={{ 
-                        marginTop: isMobile ? '30px' : '0',
-                        marginBottom: isMobile ? '10px' : '0',
-                        fontWeight: 500, 
-                        fontSize: isMobile ? '.9rem' : '1.3rem',
-                        border: '1px solid', 
-                        borderRadius: 2, 
-                        padding: 2, 
-                        backgroundColor: 'rgba(255, 255, 255)', 
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
-                        opacity: '80%',
-                        width: 'calc(90% - 70px)', 
-                        mx: isMobile ? '12px' : '80px', 
-                        wordWrap: 'break-word', 
+                <Typography
+                    variant="h2"
+                    align="center"
+                    sx={{
+                        marginTop: isMobile ? "30px" : "0",
+                        marginBottom: isMobile ? "10px" : "0",
+                        fontWeight: 500,
+                        fontSize: isMobile ? ".9rem" : "1.3rem",
+                        border: "1px solid",
+                        borderRadius: 2,
+                        padding: 2,
+                        backgroundColor: "rgba(255, 255, 255)",
+                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                        opacity: "80%",
+                        width: "calc(90% - 70px)",
+                        mx: isMobile ? "12px" : "80px",
+                        wordWrap: "break-word"
                     }}
                 >
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre los autos de su propiedad. Utilice el candado para bloquear / desbloquear el acceso.
                 </Typography>
-                    {autosData.length === 0 ? (
-                        <div className="auto-no-data">
-                            <CarIcon className="icon-placeholder" />
-                            <p>No existe ningún auto registrado</p>
-                            <Button
-                                variant="contained"
-                                onClick={handleAgregarAutoClick}
-                                endIcon={<AddCircle />}
-                                sx={{
-                                    backgroundColor: "#00a8cc",
-                                    "&:hover": { backgroundColor: "#00a8cc" },
-                                }}
-                            >
+                {autosData.length === 0 ? (
+                    <div className="auto-no-data">
+                        <CarIcon className="icon-placeholder" />
+                        <p>No existe ningún auto registrado</p>
+                        <Button
+                            variant="contained"
+                            onClick={handleAgregarAutoClick}
+                            endIcon={<AddCircle />}
+                            sx={{
+                                backgroundColor: "#00a8cc",
+                                "&:hover": { backgroundColor: "#00a8cc" }
+                            }}
+                        >
                                 Agregar auto
-                            </Button>
-                        </div>
-                    ) : (
+                        </Button>
+                    </div>
+                ) : (
                     <div className="autos-cards">
                         {autosData.map((item, index) => (
                             <div className="auto-card" key={index}>
@@ -123,7 +123,7 @@ const Autos = () => {
                                     <CarIcon
                                         style={{
                                             fontSize: 100,
-                                            color: colorMap[item.color] || "#CCCCCC",
+                                            color: colorMap[item.color] || "#CCCCCC"
                                         }}
                                     />
                                 </div>
@@ -156,8 +156,8 @@ const Autos = () => {
                                     <Button
                                         variant="text"
                                         onClick={() => {
-                                            handleDeleteClick();
-                                            setIndexToDelete(index);
+                                            handleDeleteClick()
+                                            setIndexToDelete(index)
                                         }}
                                         color="error"
                                         startIcon={<FontAwesomeIcon icon={faTrashAlt} />}
@@ -174,7 +174,7 @@ const Autos = () => {
                             onClick={handleAgregarAutoClick}
                             sx={{
                                 backgroundColor: "#00a8cc",
-                                "&:hover": { backgroundColor: "#00a8ccCC" },
+                                "&:hover": { backgroundColor: "#00a8ccCC" }
                             }}
                         >
                             Agregar auto
@@ -196,7 +196,7 @@ const Autos = () => {
                 onDelete={() => handleBorrarAuto(indexToDelete)}
             />
         </div>
-    );
-};
+    )
+}
 
-export default Autos;
+export default Autos

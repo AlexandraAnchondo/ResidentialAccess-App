@@ -1,48 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faShareAlt, faQrcode, faPencil } from "@fortawesome/free-solid-svg-icons";
-import CodeModal from "./modals/CodeModal";
-import "../../styles/Usuarios/HomePage.css";
-import { Button } from "@mui/material";
-import { QRCodeCanvas } from "qrcode.react"; 
-import useMediaQuery from "@mui/material/useMediaQuery";
+import React, { useState, useEffect } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faImage, faShareAlt, faQrcode, faPencil } from "@fortawesome/free-solid-svg-icons"
+import CodeModal from "./modals/CodeModal"
+import "../../styles/Usuarios/HomePage.css"
+import { Button } from "@mui/material"
+import { QRCodeCanvas } from "qrcode.react"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const HomePage = () => {
-    const [address, setAddress] = useState("Av. Ficticia 1234 Fraccionamiento Inexistente Para Pruebas");
-    const [phone, setPhone] = useState("(686) 420-49-24");
-    const [email, setEmail] = useState("correo@gmail.com");
-    const [ineSrc, setIneSrc] = useState("INE.png"); 
-    const [showModal, setShowModal] = useState(false); 
-    const [qrCodes, setQrCodes] = useState([]); 
-    const isUnder568 = useMediaQuery("(max-width: 568px)");
-    const isUnder768 = useMediaQuery("(max-width: 768px)");
-    const isUnder1068 = useMediaQuery("(max-width: 1068px)");
+    const [address, setAddress] = useState("Av. Ficticia 1234 Fraccionamiento Inexistente Para Pruebas")
+    const [phone, setPhone] = useState("(686) 420-49-24")
+    const [email, setEmail] = useState("correo@gmail.com")
+    const [ineSrc, setIneSrc] = useState("INE.png")
+    const [showModal, setShowModal] = useState(false)
+    const [qrCodes, setQrCodes] = useState([])
+    const isUnder568 = useMediaQuery("(max-width: 568px)")
+    const isUnder768 = useMediaQuery("(max-width: 768px)")
+    const isUnder1068 = useMediaQuery("(max-width: 1068px)")
 
     useEffect(() => {
         if (showModal) {
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = "auto"
         }
-    });
+    })
 
     const handleGenerateClick = () => {
-        setShowModal(true); 
-    };
+        setShowModal(true)
+    }
 
     const handleCloseModal = (newQrCodes) => {
-        setShowModal(false);
+        setShowModal(false)
         if (newQrCodes && newQrCodes.length > 0) {
-            setQrCodes(() => [...newQrCodes]);
+            setQrCodes(() => [...newQrCodes])
         }
-    };
+    }
 
     const handleShareClick = (code) => {
         navigator.share({
             title: "Código QR",
-            text: `Aquí tienes un código QR con vencimiento en ${code.duration}`,
-        });
-    };
+            text: `Aquí tienes un código QR con vencimiento en ${code.duration}`
+        })
+    }
 
     return (
         <div className="home-container">
@@ -54,7 +54,7 @@ const HomePage = () => {
                             <strong>Dirección:</strong>
                             <input
                                 type="text"
-                                value={address} 
+                                value={address}
                                 readOnly
                             />
                         </div>
@@ -70,10 +70,10 @@ const HomePage = () => {
                             variant="contained"
                             className="edit-button"
                             sx={{
-                                color: '#ffff',
+                                color: "#ffff",
                                 backgroundColor: "#00a8cc",
                                 borderColor: "#00a8cc",
-                                "&:hover": { borderColor: "#00a8ccCC", backgroundColor: "#00a8ccCC" },
+                                "&:hover": { borderColor: "#00a8ccCC", backgroundColor: "#00a8ccCC" }
                             }}
                         >
                             <FontAwesomeIcon icon={faPencil} /> Editar
@@ -148,7 +148,7 @@ const HomePage = () => {
                 existingCodes={qrCodes}
             />
         </div>
-    );
-};
+    )
+}
 
-export default HomePage;
+export default HomePage

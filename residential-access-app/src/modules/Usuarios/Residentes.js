@@ -1,12 +1,12 @@
-import React, { use, useState, useEffect } from "react";
-import "../../styles/Usuarios/Residentes.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGroup, faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
-import { AddCircle } from "@mui/icons-material";
-import AddResidenteModal from "./modals/AddResidenteModal";
-import { Button, Typography } from "@mui/material";
-import DeleteModal from "./modals/DeleteModal";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import React, { useState, useEffect } from "react"
+import "../../styles/Usuarios/Residentes.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUserGroup, faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
+import { AddCircle } from "@mui/icons-material"
+import AddResidenteModal from "./modals/AddResidenteModal"
+import { Button, Typography } from "@mui/material"
+import DeleteModal from "./modals/DeleteModal"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const Residentes = () => {
     const [residentesData, setResidentesData] = useState([
@@ -14,77 +14,77 @@ const Residentes = () => {
             nombre: "Alexandra",
             apellido: "Anchondo Robles",
             telefono: "686-420-49-24",
-            correo: "correo1@gmail.com",
+            correo: "correo1@gmail.com"
         },
         {
             nombre: "Hael Giovanni",
             apellido: "Osuna Cota",
             telefono: "686-420-49-24",
-            correo: "correo2@gmail.com",
-        },
-    ]);
+            correo: "correo2@gmail.com"
+        }
+    ])
 
-    const [showModal, setShowModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [indexToDelete, setIndexToDelete] = useState(null);
+    const [showModal, setShowModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [indexToDelete, setIndexToDelete] = useState(null)
 
-    const isMobile = useMediaQuery("(max-width: 1068px)");
+    const isMobile = useMediaQuery("(max-width: 1068px)")
 
     useEffect(() => {
         if (showModal || showDeleteModal) {
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = "auto"
         }
-    });
+    })
 
     const handleAgregarResidenteClick = () => {
-        setShowModal(true);
-    };
+        setShowModal(true)
+    }
 
     const handleDeleteClick = () => {
-        setShowDeleteModal(true);
+        setShowDeleteModal(true)
     }
 
     const handleCloseModal = () => {
-        setShowModal(false);
-    };
+        setShowModal(false)
+    }
 
     const handleCloseDeleteModal = () => {
-        setShowDeleteModal(false);
+        setShowDeleteModal(false)
     }
 
     const handleAgregarResidente = (nuevoResidente) => {
-        setResidentesData([...residentesData, nuevoResidente]);
-        setShowModal(false);
-    };
+        setResidentesData([...residentesData, nuevoResidente])
+        setShowModal(false)
+    }
 
     const handleBorrarResidente = (index) => {
-        const newResidentes = residentesData.filter((_, i) => i !== index);
-        setResidentesData(newResidentes);
-        setShowDeleteModal(false);
-    };
+        const newResidentes = residentesData.filter((_, i) => i !== index)
+        setResidentesData(newResidentes)
+        setShowDeleteModal(false)
+    }
 
     return (
         <div className="residentes-container">
             <main className="residentes-main">
-                <Typography 
-                    variant="h2" 
-                    align="center" 
-                    sx={{ 
-                        marginTop: isMobile ? '30px' : '0',
-                        marginBottom: isMobile ? '10px' : '0',
-                        fontWeight: 500, 
-                        fontSize: isMobile ? '.9rem' : '1.3rem',
-                        border: '1px solid', 
-                        borderRadius: 2, 
-                        padding: 2, 
-                        backgroundColor: 'rgba(255, 255, 255)', 
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
-                        opacity: '80%',
-                        width: 'calc(90% - 70px)', 
-                        mx: isMobile ? '12px' : '80px', 
-                        wordWrap: 'break-word', 
+                <Typography
+                    variant="h2"
+                    align="center"
+                    sx={{
+                        marginTop: isMobile ? "30px" : "0",
+                        marginBottom: isMobile ? "10px" : "0",
+                        fontWeight: 500,
+                        fontSize: isMobile ? ".9rem" : "1.3rem",
+                        border: "1px solid",
+                        borderRadius: 2,
+                        padding: 2,
+                        backgroundColor: "rgba(255, 255, 255)",
+                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                        opacity: "80%",
+                        width: "calc(90% - 70px)",
+                        mx: isMobile ? "12px" : "80px",
+                        wordWrap: "break-word"
                     }}
                 >
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre las personas que viven en su vivienda.
@@ -99,7 +99,7 @@ const Residentes = () => {
                             endIcon={<AddCircle />}
                             sx={{
                                 backgroundColor: "#00a8cc",
-                                "&:hover": { backgroundColor: "#00a8cc" },
+                                "&:hover": { backgroundColor: "#00a8cc" }
                             }}
                         >
                             Agregar residente
@@ -133,12 +133,11 @@ const Residentes = () => {
                                         variant="outlined"
                                         startIcon={<FontAwesomeIcon icon={faPencil} />}
                                         sx={{
-                                            color: "#ffff",
                                             color: "#00a8cc",
-                                            borderColor: 'transparent',
+                                            borderColor: "transparent",
                                             marginRight: 2,
                                             marginTop: 2,
-                                            marginLeft: 3,
+                                            marginLeft: 3
                                         }}
                                     >
                                         Editar
@@ -146,10 +145,10 @@ const Residentes = () => {
                                 </section>
                                 <Button
                                     onClick={() => {
-                                        handleDeleteClick();
-                                        setIndexToDelete(index);
+                                        handleDeleteClick()
+                                        setIndexToDelete(index)
                                     }}
-                                ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: '20px' }} />
+                                ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: "20px" }} />
                                 </Button>
                             </div>
                         ))}
@@ -160,8 +159,8 @@ const Residentes = () => {
                             sx={{
                                 backgroundColor: "#00a8cc",
                                 "&:hover": { backgroundColor: "#00a8ccCC" },
-                                width: isMobile ? "60%" : "50%", 
-                                marginBottom: '20px'
+                                width: isMobile ? "60%" : "50%",
+                                marginBottom: "20px"
                             }}
                         >
                             Agregar residente
@@ -169,7 +168,7 @@ const Residentes = () => {
                     </div>
                 )}
             </main>
-            
+
             <AddResidenteModal
                 show={showModal}
                 onClose={handleCloseModal}
@@ -182,7 +181,7 @@ const Residentes = () => {
                 onDelete={() => handleBorrarResidente(indexToDelete)}
             />
         </div>
-    );
-};
+    )
+}
 
-export default Residentes;
+export default Residentes

@@ -1,60 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDoorOpen, faQrcode, faHouse, faReceipt, faCar, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Historial from "./Historial";
-import Visitantes from "./Visitantes";
-import Residentes from "./Residentes";
-import Autos from "./Autos";
-import HomePage from "./HomePage";
-import "../../styles/Usuarios/Navbar.css";
-import { Button } from "@mui/material";
+import React, { useState, useEffect } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faDoorOpen, faQrcode, faHouse, faReceipt, faCar, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import Historial from "./Historial"
+import Visitantes from "./Visitantes"
+import Residentes from "./Residentes"
+import Autos from "./Autos"
+import HomePage from "./HomePage"
+import "../../styles/Usuarios/Navbar.css"
+import { Button } from "@mui/material"
 
 const Navbar = () => {
-    const [activeView, setActiveView] = useState("home");
-    const [showLogoutModal, setShowLogoutModal] = useState(false);
-    const [name, setName] = useState("Alexandra Anchondo Robles");
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const isMobile = useMediaQuery("(max-width: 768px)"); // Detecta tamaño de pantalla
+    const [activeView, setActiveView] = useState("home")
+    const [showLogoutModal, setShowLogoutModal] = useState(false)
+    const [name, setName] = useState("Alexandra Anchondo Robles")
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
 
     useEffect(() => {
         if (isSidebarOpen || showLogoutModal) {
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = "auto"
         }
-    });
+    })
 
     /* Function for asigning the corresponding value for active view state and open the sidebar */
     const handleNavClick = (view) => {
-        setActiveView(view);
-        setIsSidebarOpen(false); 
-    };
+        setActiveView(view)
+        setIsSidebarOpen(false)
+    }
 
     /* Function for opening the logout modal */
     const handleLogoutClick = () => {
-        setIsSidebarOpen(false);
+        setIsSidebarOpen(false)
         setTimeout(() => {
-            setShowLogoutModal(true);
-        }, 450);
-        
-    };
+            setShowLogoutModal(true)
+        }, 450)
+
+    }
 
     /* Function for closing the logout modal and redirecting to log in page*/
     const handleLogoutConfirm = () => {
-        setShowLogoutModal(false);
-        window.location.href = "http://localhost:3000/";
-    };
+        setShowLogoutModal(false)
+        window.location.href = "http://localhost:3000/"
+    }
 
     /* Function for closing the logout modal when cancel button is pressed */
     const handleLogoutCancel = () => {
-        setShowLogoutModal(false);
-    };
+        setShowLogoutModal(false)
+    }
 
     /* Function for toggling the sidebar open and closed */
     const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
+        setIsSidebarOpen(!isSidebarOpen)
+    }
 
     return (
         /* Home container that contains all the values for the navbar */
@@ -80,54 +80,54 @@ const Navbar = () => {
                     color: "white",
                     padding: "20px",
                     textAlign: "center",
-                    position: "relative",
+                    position: "relative"
                 }}
-                >
+            >
                 {isMobile && // Only show icon when is tablet or cellphone
                     <FontAwesomeIcon
-                    icon={faBars}
-                    className="menu-icon"
-                    onClick={toggleSidebar}
-                />
+                        icon={faBars}
+                        className="menu-icon"
+                        onClick={toggleSidebar}
+                    />
                 }
                 {!isSidebarOpen && // Hide user name from header when sidebar is open
                     <h1 className="user-name">{name}</h1>
                 }
                 {!isMobile && // Show nav pages when desktop screen
                     <nav className="nav-links">
-                    <button
-                        className={`nav-button ${activeView === "home" ? "active" : ""}`}
-                        onClick={() => handleNavClick("home")}
-                    >
-                        <FontAwesomeIcon icon={faQrcode} />&nbsp;Códigos QR 
-                    </button>
-                    <button
-                        className={`nav-button ${activeView === "historial" ? "active" : ""}`}
-                        onClick={() => handleNavClick("historial")}
-                    >
-                        <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas
-                    </button>
-                    <button
-                        className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
-                        onClick={() => handleNavClick("visitantes")}
-                    >
-                        <FontAwesomeIcon icon={faUserGroup} />&nbsp;Visitantes
-                    </button>
-                    <button
-                        className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
-                        onClick={() => handleNavClick("residentes")}
-                    >
-                        <FontAwesomeIcon icon={faHouse} />&nbsp;Residentes
-                    </button>
-                    <button
-                        className={`nav-button ${activeView === "autos" ? "active" : ""}`}
-                        onClick={() => handleNavClick("autos")}
-                    >
-                        <FontAwesomeIcon icon={faCar} />&nbsp;Autos
-                    </button>
-                    <button className="nav-button logout" onClick={handleLogoutClick}>
-                        <FontAwesomeIcon icon={faDoorOpen} />
-                    </button>
+                        <button
+                            className={`nav-button ${activeView === "home" ? "active" : ""}`}
+                            onClick={() => handleNavClick("home")}
+                        >
+                            <FontAwesomeIcon icon={faQrcode} />&nbsp;Códigos QR
+                        </button>
+                        <button
+                            className={`nav-button ${activeView === "historial" ? "active" : ""}`}
+                            onClick={() => handleNavClick("historial")}
+                        >
+                            <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas
+                        </button>
+                        <button
+                            className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
+                            onClick={() => handleNavClick("visitantes")}
+                        >
+                            <FontAwesomeIcon icon={faUserGroup} />&nbsp;Visitantes
+                        </button>
+                        <button
+                            className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
+                            onClick={() => handleNavClick("residentes")}
+                        >
+                            <FontAwesomeIcon icon={faHouse} />&nbsp;Residentes
+                        </button>
+                        <button
+                            className={`nav-button ${activeView === "autos" ? "active" : ""}`}
+                            onClick={() => handleNavClick("autos")}
+                        >
+                            <FontAwesomeIcon icon={faCar} />&nbsp;Autos
+                        </button>
+                        <button className="nav-button logout" onClick={handleLogoutClick}>
+                            <FontAwesomeIcon icon={faDoorOpen} />
+                        </button>
                     </nav>
                 }
             </header>
@@ -140,7 +140,7 @@ const Navbar = () => {
                         <h1 className="sidebar-user-name">{name}</h1>
                         <h2 className="sidebar-perfil-title">Perfil</h2>
                     </div>
-                    {isSidebarOpen && 
+                    {isSidebarOpen &&
                         <nav className="nav-links-sidebar">
                             <button
                                 className={`nav-button ${activeView === "home" ? "active" : ""}`}
@@ -180,7 +180,7 @@ const Navbar = () => {
                 </div>
             </div>
             }
-            
+
             {/* Container that has the logic for pushing the main content when sidebar is open */}
             <div className={`st-pusher ${isSidebarOpen ? "active" : ""}`}>
                 <div
@@ -234,7 +234,7 @@ const Navbar = () => {
                         <p>
                             ¿Deseas cerrar sesión?&nbsp;<FontAwesomeIcon icon={faDoorOpen} />
                         </p>
-                        <svg 
+                        <svg
                             className="modal-svg"
                             xmlns="http://www.w3.org/2000/svg"
                             width="100%"
@@ -258,7 +258,7 @@ const Navbar = () => {
                                 onClick={handleLogoutConfirm}
                                 sx={{
                                     backgroundColor: "#00a8cc",
-                                    "&:hover": { backgroundColor: "#00a8ccCC" },
+                                    "&:hover": { backgroundColor: "#00a8ccCC" }
                                 }}
                             >
                                 Aceptar
@@ -275,7 +275,7 @@ const Navbar = () => {
                 </div>
             )}
         </div>
-    );
-};
+    )
+}
 
-export default Navbar;
+export default Navbar

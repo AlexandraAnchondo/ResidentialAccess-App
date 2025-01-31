@@ -1,8 +1,8 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
-import UserNavbar from "./modules/Usuarios/Navbar";
-import GuardsNavbar from "./modules/Guardias/Navbar";
+import React from "react"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Login from "./components/Login"
+import UserNavbar from "./modules/Usuarios/Navbar"
+import GuardsNavbar from "./modules/Guardias/Navbar"
 
 function App() {
     return (
@@ -13,8 +13,8 @@ function App() {
                 <Route path="/guards" element={<GuardsNavbar />} />
             </Routes>
         </Router>
-    );
+    )
 }
 
-export default App;
+export default App
 

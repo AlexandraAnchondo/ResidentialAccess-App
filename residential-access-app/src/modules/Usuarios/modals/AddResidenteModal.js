@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
     TextField,
     InputAdornment,
     Button,
     Box,
-    Typography,
-} from "@mui/material";
+    Typography
+} from "@mui/material"
 import {
     Person as PersonIcon,
     Phone as PhoneIcon,
     Email as EmailIcon,
     Close as CloseIcon,
-    Check as CheckIcon,
-} from "@mui/icons-material";
-import "../../../styles/Usuarios/AddModal.css";
+    Check as CheckIcon
+} from "@mui/icons-material"
+import "../../../styles/Usuarios/AddModal.css"
 
 const AddResidenteModal = ({ show, onClose, onAdd }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
         telefono: "",
-        correo: "",
-    });
+        correo: ""
+    })
 
     useEffect(() => {
         if (!show) {
@@ -29,39 +29,41 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                 nombre: "",
                 apellido: "",
                 telefono: "",
-                correo: "",
-            });
+                correo: ""
+            })
         }
-    }, [show]);
+    }, [show])
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+    }
 
     const handlePhoneChange = (e) => {
-        const value = e.target.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+        const value = e.target.value.replace(/\D/g, "") // Elimina caracteres no numéricos
         const formattedPhone = value
             .slice(0, 10) // Limita a 10 dígitos
-            .replace(/(\d{3})(\d{3})(\d{0,4})/, "($1) $2-$3"); // Formato (###) ###-####
-        setFormData({ ...formData, telefono: formattedPhone });
-    };
+            .replace(/(\d{3})(\d{3})(\d{0,4})/, "($1) $2-$3") // Formato (###) ###-####
+        setFormData({ ...formData, telefono: formattedPhone })
+    }
 
     const handleAcceptClick = () => {
-        onAdd(formData);
-        onClose();
-    };
+        onAdd(formData)
+        onClose()
+    }
 
     const isFormValid = () => {
         return (
             formData.nombre &&
             formData.apellido &&
             formData.telefono &&
-            formData.correo 
-        );
-    };
+            formData.correo
+        )
+    }
 
-    if (!show) return null;
+    if (!show) {
+        return null
+    }
 
     return (
         <div className="add-modal-overlay">
@@ -83,7 +85,7 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <PersonIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -97,7 +99,7 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <PersonIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -111,7 +113,7 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <PhoneIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                             inputProps={{ maxLength: 14 }}
@@ -126,7 +128,7 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <EmailIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -142,8 +144,8 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                             backgroundColor: isFormValid() ? "#00a8cc" : "rgba(0, 0, 0, 0.12)", // Color principal o gris deshabilitado
                             color: isFormValid() ? "#fff" : "rgba(0, 0, 0, 0.26)", // Color del texto según el estado
                             "&:hover": {
-                                backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)", // Color en hover si está activo
-                            },
+                                backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)" // Color en hover si está activo
+                            }
                         }}
                         style={{ marginLeft: 20 }}
                     >
@@ -161,7 +163,7 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default AddResidenteModal;
+export default AddResidenteModal

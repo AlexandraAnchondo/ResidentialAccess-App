@@ -1,12 +1,12 @@
-import React, { use, useState, useEffect } from "react";
-import "../../styles/Usuarios/Visitantes.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGroup, faTrashAlt, faPencil, faCircleInfo, faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
-import { AddCircle } from "@mui/icons-material";
-import AddVisitanteModal from "./modals/AddVisitanteModal";
-import DeleteModal from "./modals/DeleteModal";
-import { Button, Typography } from "@mui/material";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import React, { useState, useEffect } from "react"
+import "../../styles/Usuarios/Visitantes.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUserGroup, faTrashAlt, faPencil, faCircleInfo, faLock, faUnlock } from "@fortawesome/free-solid-svg-icons"
+import { AddCircle } from "@mui/icons-material"
+import AddVisitanteModal from "./modals/AddVisitanteModal"
+import DeleteModal from "./modals/DeleteModal"
+import { Button, Typography } from "@mui/material"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const Visitantes = () => {
     const [visitantesData, setVisitantesData] = useState([
@@ -16,7 +16,7 @@ const Visitantes = () => {
             telefono: "686-420-49-24",
             placas: "ORALE123J",
             modelo: "Hyundai Sonata",
-            bloqueado: false, 
+            bloqueado: false
         },
         {
             nombre: "Alexandra",
@@ -24,81 +24,81 @@ const Visitantes = () => {
             telefono: "686-420-49-24",
             placas: "ORALE123J",
             modelo: "Hyundai Sonata",
-            bloqueado: false, 
-        },
-    ]);
+            bloqueado: false
+        }
+    ])
 
-    const [showModal, setShowModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [indexToDelete, setIndexToDelete] = useState(null);
+    const [showModal, setShowModal] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [indexToDelete, setIndexToDelete] = useState(null)
 
-    const isMobile = useMediaQuery("(max-width: 1068px)");
+    const isMobile = useMediaQuery("(max-width: 1068px)")
 
     useEffect(() => {
         if (showModal || showDeleteModal) {
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = "auto"
         }
-    });
+    })
 
     const handleAgregarVisitanteClick = () => {
-        setShowModal(true);
-    };
+        setShowModal(true)
+    }
 
     const handleDeleteClick = () => {
-        setShowDeleteModal(true);
+        setShowDeleteModal(true)
     }
 
     const handleCloseModal = () => {
-        setShowModal(false);
-    };
+        setShowModal(false)
+    }
 
     const handleCloseDeleteModal = () => {
-        setShowDeleteModal(false);
+        setShowDeleteModal(false)
     }
 
     const handleAgregarVisitante = (nuevoVisitante) => {
         setVisitantesData([
             ...visitantesData,
-            { ...nuevoVisitante, bloqueado: false }, 
-        ]);
-        setShowModal(false);
-    };
+            { ...nuevoVisitante, bloqueado: false }
+        ])
+        setShowModal(false)
+    }
 
     const handleBorrarVisitante = (index) => {
-        const newVisitantes = visitantesData.filter((_, i) => i !== index);
-        setVisitantesData(newVisitantes);
-        setShowDeleteModal(false);
-    };
+        const newVisitantes = visitantesData.filter((_, i) => i !== index)
+        setVisitantesData(newVisitantes)
+        setShowDeleteModal(false)
+    }
 
     const toggleBloqueo = (index) => {
         const updatedVisitantes = visitantesData.map((visitante, i) =>
             i === index ? { ...visitante, bloqueado: !visitante.bloqueado } : visitante
-        );
-        setVisitantesData(updatedVisitantes);
-    };
+        )
+        setVisitantesData(updatedVisitantes)
+    }
 
     return (
         <div className="visitantes-container">
             <main className="visitantes-main">
-                <Typography 
-                    variant="h2" 
-                    align="center" 
-                    sx={{ 
-                        marginTop: isMobile ? '30px' : '0',
-                        marginBottom: isMobile ? '10px' : '0',
-                        fontWeight: 500, 
-                        fontSize: isMobile ? '.9rem' : '1.3rem',
-                        border: '1px solid', 
-                        borderRadius: 2, 
-                        padding: 2, 
-                        backgroundColor: 'rgba(255, 255, 255)', 
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
-                        opacity: '80%',
-                        width: 'calc(90% - 70px)', 
-                        mx: isMobile ? '12px' : '80px', 
-                        wordWrap: 'break-word', 
+                <Typography
+                    variant="h2"
+                    align="center"
+                    sx={{
+                        marginTop: isMobile ? "30px" : "0",
+                        marginBottom: isMobile ? "10px" : "0",
+                        fontWeight: 500,
+                        fontSize: isMobile ? ".9rem" : "1.3rem",
+                        border: "1px solid",
+                        borderRadius: 2,
+                        padding: 2,
+                        backgroundColor: "rgba(255, 255, 255)",
+                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                        opacity: "80%",
+                        width: "calc(90% - 70px)",
+                        mx: isMobile ? "12px" : "80px",
+                        wordWrap: "break-word"
                     }}
                 >
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre las visitas frecuentes autorizadas. Siempre y cuando estén activas podrán acceder al residencial sin código.
@@ -113,7 +113,7 @@ const Visitantes = () => {
                             endIcon={<AddCircle />}
                             sx={{
                                 backgroundColor: "#00a8cc",
-                                "&:hover": { backgroundColor: "#00a8cc" },
+                                "&:hover": { backgroundColor: "#00a8cc" }
                             }}
                         >
                             Agregar visitante
@@ -152,9 +152,8 @@ const Visitantes = () => {
                                         className="edit-button"
                                         startIcon={<FontAwesomeIcon icon={faPencil} />}
                                         sx={{
-                                            color: "#ffff",
                                             color: "#00a8cc",
-                                            borderColor: 'transparent',
+                                            borderColor: "transparent",
                                             marginRight: 2,
                                             marginTop: 2,
                                             marginLeft: 3
@@ -175,17 +174,17 @@ const Visitantes = () => {
                                         }
                                         sx={{
                                             color: item.bloqueado ? "red" : "green",
-                                            marginTop: 2,
+                                            marginTop: 2
                                         }}
                                     >
                                         {item.bloqueado ? "SIN ACCESO" : "CON ACCESO"}
                                     </Button>
                                 </section>
                                 <Button onClick={ () =>{
-                                    handleDeleteClick();
-                                    setIndexToDelete(index);
+                                    handleDeleteClick()
+                                    setIndexToDelete(index)
                                 }}
-                                ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: '20px' }} />
+                                ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: "20px" }} />
                                 </Button>
                             </div>
                         ))}
@@ -197,8 +196,8 @@ const Visitantes = () => {
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" },
-                                    width: "50%", 
-                                    marginBottom: '20px'
+                                    width: "50%",
+                                    marginBottom: "20px"
                                 }}
                             >
                                 Agregar visitante
@@ -207,7 +206,7 @@ const Visitantes = () => {
                     </div>
                 )}
             </main>
-            
+
             <AddVisitanteModal
                 show={showModal}
                 onClose={handleCloseModal}
@@ -220,7 +219,7 @@ const Visitantes = () => {
                 onDelete={() => handleBorrarVisitante(indexToDelete)}
             />
         </div>
-    );
-};
+    )
+}
 
-export default Visitantes;
+export default Visitantes
