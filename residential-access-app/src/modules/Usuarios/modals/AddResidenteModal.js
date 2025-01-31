@@ -9,20 +9,18 @@ import {
 import {
     Person as PersonIcon,
     Phone as PhoneIcon,
-    DirectionsCar as CarIcon,
-    FormatListNumbered as LicensePlateIcon,
+    Email as EmailIcon,
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
 import "../../../styles/Usuarios/AddModal.css"
 
-const AddVisitanteModal = ({ show, onClose, onAdd }) => {
+const AddResidenteModal = ({ show, onClose, onAdd }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
         telefono: "",
-        placas: "",
-        modelo: ""
+        correo: ""
     })
 
     useEffect(() => {
@@ -31,8 +29,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                 nombre: "",
                 apellido: "",
                 telefono: "",
-                placas: "",
-                modelo: ""
+                correo: ""
             })
         }
     }, [show])
@@ -60,8 +57,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
             formData.nombre &&
             formData.apellido &&
             formData.telefono &&
-            formData.placas &&
-            formData.modelo
+            formData.correo
         )
     }
 
@@ -74,7 +70,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del visitante
+                        Ingresa la información del residente
                     </Typography>
                 </div>
                 <div className="add-modal-content">
@@ -123,28 +119,14 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                             inputProps={{ maxLength: 14 }}
                         />
                         <TextField
-                            label="Placas"
-                            name="placas"
-                            value={formData.placas}
+                            label="Correo"
+                            name="correo"
+                            value={formData.correo}
                             onChange={handleInputChange}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <LicensePlateIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <TextField
-                            label="Modelo"
-                            name="modelo"
-                            value={formData.modelo}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <CarIcon />
+                                        <EmailIcon />
                                     </InputAdornment>
                                 )
                             }}
@@ -152,7 +134,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                         />
                     </Box>
                 </div>
-                <div className="add-modal-buttons" style={{ marginTop: 16 }}>
+                <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     <Button
                         onClick={handleAcceptClick}
                         variant="contained"
@@ -165,7 +147,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                                 backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)" // Color en hover si está activo
                             }
                         }}
-                        style={{ marginLeft: 20, marginBottom: 20 }}
+                        style={{ marginLeft: 20 }}
                     >
                         Aceptar
                     </Button>
@@ -174,7 +156,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20, marginBottom: 20 }}
+                        style={{ marginLeft: 20 }}
                     >
                         Cancelar
                     </Button>
@@ -184,4 +166,4 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
     )
 }
 
-export default AddVisitanteModal
+export default AddResidenteModal

@@ -1,0 +1,66 @@
+/* Importar variables globales */
+@import '../styles/Colors.css';
+
+/* Estilos generales para los encabezados */
+.MuiDataGrid-columnHeader {
+    background-color: var(--primary-color); /* Fondo del encabezado */
+    color: white; /* Color del texto */
+    font-weight: bold; /* Negrita */
+    font-size: 1rem; /* Tamaño de fuente */
+    text-align: center !important; /* Centrar el texto */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* Estilos para cada celda del encabezado */
+/*.MuiDataGrid-columnHeader {
+    border-right: 1px solid #000000 !important; //Lineas divisoras
+}*/
+
+.MuiDataGrid-columnHeader:last-of-type {
+    border-right: none !important; /* Sin línea divisoria en la última celda */
+}
+
+.data-table-container {
+    display: flex;
+    justify-content: center;
+    height: auto; /* Altura completa de la ventana */
+    width: 100%;
+    padding: 20px; /* Espaciado para bordes */
+    box-sizing: border-box;
+}
+
+/* Estilo adicional para limitar el tamaño de la tabla */
+.data-table {
+    max-width: 1540px;
+    width: 100%;
+    overflow: auto;
+    padding: 10px;
+    background-color: white; /* Fondo del Paper */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+/* Alternar colores en las filas */
+.MuiDataGrid-row:nth-of-type(odd) {
+    background-color: var(--child-row); /* Color para filas impares */
+}
+
+.MuiDataGrid-row:nth-of-type(even) {
+    background-color: white; /* Color para filas pares */
+}
+
+/* Cambiar el color al pasar el mouse */
+.MuiDataGrid-row:hover {
+    background-color: var(--row-hover) !important; /* Color al hacer hover */
+}
+
+/* Aumentar la especificidad para centrar el texto en todas las celdas */
+.MuiDataGrid-root .MuiDataGrid-cell {
+    text-align: left !important; /* Centrar el texto en todas las celdas */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.MuiDataGrid-root .MuiTablePagination-displayedRows {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: var(--primary-color)
+}
