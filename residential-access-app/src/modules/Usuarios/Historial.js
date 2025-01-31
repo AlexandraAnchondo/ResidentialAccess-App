@@ -6,7 +6,7 @@ import DataTable from "../../components/DataGrid"
 
 const Historial = () => {
     const columns = [
-        { field: "id", headerName: "ID", width: 70 },
+        { field: "id", headerName: "ID", width: 30 },
         { field: "ingreso", headerName: "Ingreso", width: 150 },
         { field: "nombre", headerName: "Nombre", width: 150 },
         { field: "apellido", headerName: "Apellido", width: 150 },

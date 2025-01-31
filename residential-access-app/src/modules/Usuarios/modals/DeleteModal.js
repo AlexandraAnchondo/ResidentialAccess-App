@@ -1,8 +1,12 @@
 import React from "react"
 import { Button } from "@mui/material"
 import "../../../styles/Usuarios/DeleteModal.css"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const DeleteModal =({ showDeleteModal, onCloseDeleteModal, onDelete }) => {
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
+
     if (!showDeleteModal) {
         return null
     }
@@ -17,12 +21,14 @@ const DeleteModal =({ showDeleteModal, onCloseDeleteModal, onDelete }) => {
                     <div className="delete-modal-options">
                         <Button
                             variant="contained"
+                            size={isMobile ? "small" : "large"}
                             color="error"
                             onClick={onDelete}>
                             Borrar
                         </Button>
                         <Button
                             variant="outlined"
+                            size={isMobile ? "small" : "large"}
                             sx={
                                 {
                                     color:"gray",

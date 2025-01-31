@@ -196,7 +196,7 @@ const Visitantes = () => {
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" },
-                                    width: "50%",
+                                    width: "60%",
                                     marginBottom: "20px"
                                 }}
                             >

@@ -8,6 +8,7 @@
     --background-blur: rgba(255, 255, 255, 0.4);
     --background-border: rgba(255, 255, 255, 0.8);
     --lighter-color: #5bc7f1;
+    --subtitle-color : #bdf7ff;
 
     /* Texto */
     --text-primary: #555;
@@ -28,6 +29,7 @@
     --button-border-radius: 5px;
     --button-transition: background-color 0.3s ease-in-out;
     --active-button: #aceaf8;
+    --active-button-hover: #93e1f3;
 
     /* Inputs */
     --input-background: rgb(236, 249, 253);
