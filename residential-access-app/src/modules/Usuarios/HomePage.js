@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage, faShareAlt, faQrcode, faPencil } from "@fortawesome/free-solid-svg-icons";
 import CodeModal from "./modals/CodeModal";
@@ -18,9 +18,16 @@ const HomePage = () => {
     const isUnder768 = useMediaQuery("(max-width: 768px)");
     const isUnder1068 = useMediaQuery("(max-width: 1068px)");
 
+    useEffect(() => {
+        if (showModal) {
+            document.body.style.overflow = 'hidden'; 
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    });
+
     const handleGenerateClick = () => {
         setShowModal(true); 
-        document.body.style.overflow = 'hidden'; 
     };
 
     const handleCloseModal = (newQrCodes) => {
@@ -28,7 +35,6 @@ const HomePage = () => {
         if (newQrCodes && newQrCodes.length > 0) {
             setQrCodes(() => [...newQrCodes]);
         }
-        document.body.style.overflow = 'auto'; 
     };
 
     const handleShareClick = (code) => {

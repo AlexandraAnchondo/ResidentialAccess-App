@@ -1,6 +1,6 @@
 @import '../Colors.css';
 
-.no-data {
+.auto-no-data {
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -13,7 +13,7 @@
     font-size: 2.5rem;
 }
 
-.no-data .icon-placeholder {
+.auto-no-data .icon-placeholder {
     font-size: 10rem; 
     color: var(--border-color);
     margin-top: 10px; 
@@ -93,6 +93,14 @@
     .auto-card-actions {
         align-self: center;
     }
+
+    .auto-no-data {
+        font-size: 1.5rem;
+    }
+    
+    .auto-no-data .icon-placeholder {
+        font-size: 8rem; 
+    }
 }
 
 @media screen and (min-width: 769px) and (max-width: 1068px) {
@@ -100,6 +108,14 @@
         display: flex;
         flex-direction: column;
         align-items: center; 
+    }
+
+    .auto-no-data {
+        font-size: 1.8rem;
+    }
+    
+    .auto-no-data .icon-placeholder {
+        font-size: 10rem; 
     }
 }
 

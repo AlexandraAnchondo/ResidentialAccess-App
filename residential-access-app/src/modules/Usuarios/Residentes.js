@@ -1,7 +1,8 @@
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import "../../styles/Usuarios/Residentes.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { AddCircle } from "@mui/icons-material";
 import AddResidenteModal from "./modals/AddResidenteModal";
 import { Button, Typography } from "@mui/material";
 import DeleteModal from "./modals/DeleteModal";
@@ -28,6 +29,14 @@ const Residentes = () => {
     const [indexToDelete, setIndexToDelete] = useState(null);
 
     const isMobile = useMediaQuery("(max-width: 1068px)");
+
+    useEffect(() => {
+        if (showModal || showDeleteModal) {
+            document.body.style.overflow = 'hidden'; 
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    });
 
     const handleAgregarResidenteClick = () => {
         setShowModal(true);
@@ -81,12 +90,13 @@ const Residentes = () => {
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre las personas que viven en su vivienda.
                 </Typography>
                 {residentesData.length === 0 ? (
-                    <div className="no-data">
+                    <div className="resident-no-data">
                         <FontAwesomeIcon icon={faUserGroup} className="icon-placeholder" />
                         <p>No existe ningún residente registrado</p>
                         <Button
                             variant="contained"
                             onClick={handleAgregarResidenteClick}
+                            endIcon={<AddCircle />}
                             sx={{
                                 backgroundColor: "#00a8cc",
                                 "&:hover": { backgroundColor: "#00a8cc" },
@@ -146,6 +156,7 @@ const Residentes = () => {
                         <Button
                             variant="contained"
                             onClick={handleAgregarResidenteClick}
+                            endIcon={<AddCircle />}
                             sx={{
                                 backgroundColor: "#00a8cc",
                                 "&:hover": { backgroundColor: "#00a8ccCC" },

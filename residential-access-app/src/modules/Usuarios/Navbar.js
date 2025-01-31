@@ -18,7 +18,7 @@ const Navbar = () => {
     const isMobile = useMediaQuery("(max-width: 768px)"); // Detecta tamaño de pantalla
 
     useEffect(() => {
-        if (isSidebarOpen) {
+        if (isSidebarOpen || showLogoutModal) {
             document.body.style.overflow = 'hidden'; 
         } else {
             document.body.style.overflow = 'auto';
@@ -60,7 +60,29 @@ const Navbar = () => {
         /* Home container that contains all the values for the navbar */
         <div className="nav-container">
             {/* Header that contains the pages when desktop screen or the bars icon when tablet or cellphone */}
-            <header className="nav-header">
+            <header
+                className="nav-header"
+                style={{
+                    "--s": "60px", // Tamaño del patrón
+                    "--c1": "#004f79",
+                    "--c2": "#008db8",
+                    "--_g": "radial-gradient(#0000 60%, var(--c1) 61% 63%, #0000 64% 77%, var(--c1) 78% 80%, #0000 81%)",
+                    "--_c": ",#0000 75%, var(--c2) 0",
+                    background: `
+                    conic-gradient(at 12% 20% var(--_c)) calc(var(--s) * 0.44) calc(0.9 * var(--s)),
+                    conic-gradient(at 12% 20% var(--_c)) calc(var(--s) * -0.06) calc(0.4 * var(--s)),
+                    conic-gradient(at 20% 12% var(--_c)) calc(0.9 * var(--s)) calc(var(--s) * 0.44),
+                    conic-gradient(at 20% 12% var(--_c)) calc(0.4 * var(--s)) calc(var(--s) * -0.06),
+                    var(--_g),
+                    var(--_g) calc(var(--s) / 2) calc(var(--s) / 2) var(--c2)
+                    `,
+                    backgroundSize: "var(--s) var(--s)",
+                    color: "white",
+                    padding: "20px",
+                    textAlign: "center",
+                    position: "relative",
+                }}
+                >
                 {isMobile && // Only show icon when is tablet or cellphone
                     <FontAwesomeIcon
                     icon={faBars}

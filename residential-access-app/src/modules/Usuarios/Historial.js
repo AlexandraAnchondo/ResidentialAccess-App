@@ -28,16 +28,18 @@ const Historial = () => {
 
     return (
         <>
-        {
-            rows.length === 0 ? (
-                <div className="no-data">
-                    <FontAwesomeIcon icon={faList} className="icon-placeholder" />
-                    <p>No hay datos que mostrar</p>
-                </div>
-            ):(
-                <DataTable rows={rows} columns={columns} />
-            )
-        }
+            {rows.length === 0 ? (
+                    <div className="no-data">
+                        <FontAwesomeIcon icon={faList} className="icon-placeholder" />
+                        <p>No hay datos que mostrar</p>
+                    </div>
+                ): (
+                    <DataTable 
+                        rows={rows} 
+                        columns={columns}
+                    />
+                )
+            }
         </>
     );
 };

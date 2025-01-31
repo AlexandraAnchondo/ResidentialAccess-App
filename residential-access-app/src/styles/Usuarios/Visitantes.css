@@ -86,7 +86,7 @@ h3 {
     font-size: 1.2rem;
 }
 
-.no-data {
+.visitor-no-data {
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -99,8 +99,8 @@ h3 {
     font-size: 2.5rem;
 }
 
-.no-data .icon-placeholder {
-    font-size: 10rem; 
+.visitor-no-data .icon-placeholder {
+    font-size: 12rem; 
     color: var(--border-color);
     margin-top: 10px; 
 }
@@ -155,6 +155,14 @@ h3 {
         margin: 0;
         color:rgb(61, 61, 61);
         letter-spacing: 4px;
+    }
+
+    .visitor-no-data {
+        font-size: 1.4rem;
+    }
+    
+    .visitor-no-data .icon-placeholder {
+        font-size: 8rem; 
     }
 }
 

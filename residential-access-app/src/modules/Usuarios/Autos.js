@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/Usuarios/Autos.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
@@ -21,6 +21,14 @@ const Autos = () => {
     const isMobile = useMediaQuery("(max-width: 1068px)");
 
     const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"];
+
+    useEffect(() => {
+        if (showModal || showDeleteModal) {
+            document.body.style.overflow = 'hidden'; 
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    });
 
     const colorMap = {
         Gris: "#808080",
@@ -91,12 +99,13 @@ const Autos = () => {
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre los autos de su propiedad. Utilice el candado para bloquear / desbloquear el acceso.
                 </Typography>
                     {autosData.length === 0 ? (
-                        <div className="no-data">
+                        <div className="auto-no-data">
                             <CarIcon className="icon-placeholder" />
                             <p>No existe ningún auto registrado</p>
                             <Button
                                 variant="contained"
                                 onClick={handleAgregarAutoClick}
+                                endIcon={<AddCircle />}
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8cc" },

@@ -1,7 +1,8 @@
-import React, { use, useState } from "react";
+import React, { use, useState, useEffect } from "react";
 import "../../styles/Usuarios/Visitantes.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserGroup, faTrashAlt, faPencil, faCircleInfo, faLock, faUnlock } from "@fortawesome/free-solid-svg-icons";
+import { AddCircle } from "@mui/icons-material";
 import AddVisitanteModal from "./modals/AddVisitanteModal";
 import DeleteModal from "./modals/DeleteModal";
 import { Button, Typography } from "@mui/material";
@@ -32,6 +33,14 @@ const Visitantes = () => {
     const [indexToDelete, setIndexToDelete] = useState(null);
 
     const isMobile = useMediaQuery("(max-width: 1068px)");
+
+    useEffect(() => {
+        if (showModal || showDeleteModal) {
+            document.body.style.overflow = 'hidden'; 
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    });
 
     const handleAgregarVisitanteClick = () => {
         setShowModal(true);
@@ -95,12 +104,13 @@ const Visitantes = () => {
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre las visitas frecuentes autorizadas. Siempre y cuando estén activas podrán acceder al residencial sin código.
                 </Typography>
                 {visitantesData.length === 0 ? (
-                    <div className="no-data">
+                    <div className="visitor-no-data">
                         <FontAwesomeIcon icon={faUserGroup} className="icon-placeholder" />
                         <p>No existe ningún visitante frecuente registrado</p>
                         <Button
                             variant="contained"
                             onClick={handleAgregarVisitanteClick}
+                            endIcon={<AddCircle />}
                             sx={{
                                 backgroundColor: "#00a8cc",
                                 "&:hover": { backgroundColor: "#00a8cc" },
@@ -183,6 +193,7 @@ const Visitantes = () => {
                             <Button
                                 variant="contained"
                                 onClick={handleAgregarVisitanteClick}
+                                endIcon={<AddCircle />}
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" },

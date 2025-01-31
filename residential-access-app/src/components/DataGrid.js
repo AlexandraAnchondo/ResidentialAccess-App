@@ -5,7 +5,7 @@ import "../styles/DataGrid.css";
 
 const paginationModel = {page: 0, pageSize: 5};
 
-export default function DataTable({ rows, columns }) {
+export default function DataTable({ rows, columns, checkboxSelection = false }) {
     return (
         <div className="data-table-container">
             <Paper className="data-table">
@@ -13,7 +13,8 @@ export default function DataTable({ rows, columns }) {
                     rows={rows}
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
-                    pageSizeOptions={[5, 10]}
+                    pageSizeOptions={[5, 10, 20, 30]}
+                    checkboxSelection={checkboxSelection ? true : false}
                     sx={{
                         border: 0,
                     }}
