@@ -41,4 +41,8 @@
     /* Table */
     --child-row: #d6f7f8;
     --row-hover: #9bc4ce;
+
+    /* Cards gradient */
+    --gradient-first-color: #ffffff;
+    --gradient-second-color: #96daeb;
 }

@@ -1,5 +1,4 @@
-
-@import '../Colors.css';
+@import './Colors.css';
 
 .add-modal-overlay {
     position: fixed;

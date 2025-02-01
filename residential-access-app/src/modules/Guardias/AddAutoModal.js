@@ -15,10 +15,10 @@ import {
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
-import "../../../styles/AddModal.css"
+import "../../styles/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
+const AddAutoModal = ({ show, onClose, onAdd }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
@@ -26,6 +26,8 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
+
+    const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
 
     useEffect(() => {
         if (!show) {

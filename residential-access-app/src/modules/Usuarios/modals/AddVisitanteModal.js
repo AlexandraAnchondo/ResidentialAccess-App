@@ -14,7 +14,7 @@ import {
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
-import "../../../styles/Usuarios/AddModal.css"
+import "../../../styles/AddModal.css"
 
 const AddVisitanteModal = ({ show, onClose, onAdd }) => {
     const [formData, setFormData] = useState({
