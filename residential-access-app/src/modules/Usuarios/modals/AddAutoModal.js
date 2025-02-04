@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
     TextField,
     InputAdornment,
@@ -6,49 +6,54 @@ import {
     Box,
     Typography,
     Select,
-    MenuItem,
-} from "@mui/material";
+    MenuItem
+} from "@mui/material"
 import {
     DirectionsCar as CarIcon,
     ColorLens as ColorIcon,
     FormatListNumbered as LicensePlateIcon,
     Close as CloseIcon,
-    Check as CheckIcon,
-} from "@mui/icons-material";
-import "../../../styles/Usuarios/AddModal.css";
+    Check as CheckIcon
+} from "@mui/icons-material"
+import "../../../styles/Usuarios/AddModal.css"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
-        color: "",
-    });
+        color: ""
+    })
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
 
     useEffect(() => {
         if (!show) {
             setFormData({
                 placas: "",
                 modelo: "",
-                color: "",
-            });
+                color: ""
+            })
         }
-    }, [show]);
+    }, [show])
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+    }
 
     const handleAcceptClick = () => {
-        onAdd(formData);
-        onClose();
-    };
+        onAdd(formData)
+        onClose()
+    }
 
     const isFormValid = () => {
-        return formData.placas && formData.modelo && formData.color;
-    };
+        return formData.placas && formData.modelo && formData.color
+    }
 
-    if (!show) return null;
+    if (!show) {
+        return null
+    }
 
     return (
         <div className="add-modal-overlay">
@@ -70,7 +75,7 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                                     <InputAdornment position="start">
                                         <CarIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -84,7 +89,7 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                                     <InputAdornment position="start">
                                         <LicensePlateIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -111,13 +116,18 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                         </Select>
                     </Box>
                 </div>
-                <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16}}>
+                <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     <Button
                         onClick={handleAcceptClick}
                         variant="contained"
                         startIcon={<CheckIcon />}
                         disabled={!isFormValid()}
-                        style={{ marginLeft: 20 }}
+                        style={{ marginLeft: 20, marginBottom:10 }}
+                        size={isMobile ? "small" : "large"}
+                        sx={{
+                            backgroundColor: "#00a8cc",
+                            "&:hover": "#00a8ccCC"
+                        }}
                     >
                         Aceptar
                     </Button>
@@ -127,13 +137,14 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                         color="error"
                         startIcon={<CloseIcon />}
                         style={{ marginLeft: 20 }}
+                        size={isMobile ? "small" : "large"}
                     >
                         Cancelar
                     </Button>
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default AddAutoModal;
+export default AddAutoModal

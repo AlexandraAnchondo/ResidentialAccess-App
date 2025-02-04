@@ -2,5 +2,9 @@
   "workbench.iconTheme": "material-icon-theme",
   "breadcrumbs.icons": true,
   "workbench.editor.showIcons": true,
-  "outline.icons": true
+  "outline.icons": true,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "eslint.validate": ["javascript", "javascriptreact"],
+  "eslint.format.enable": true
 }

@@ -1,3 +1,4 @@
+
 @import '../Colors.css';
 
 .nav-container {
@@ -36,28 +37,21 @@
 .nav-button {
     background-color: white;
     border-radius: 15px;
-    border: none;
+    border: 1px solid white !important;
     padding: 10px 15px;
     cursor: pointer;
     font-size: 1rem;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.nav-button:hover {
-    background-color: rgb(194, 194, 194);
-}
-
 .nav-button.active {
     background-color: var(--active-button);
-    border: none;
+    border: 1px solid var(--primary-color);
     color: var(--primary-color);
     font-weight: 900;
-}
-
-.nav-button.active:hover {
-    background-color: var(--active-button-hover);
 }
 
 .nav-button.logout {
@@ -67,6 +61,13 @@
 
 .nav-button.logout:hover {
     background-color: var(--secondary-hover-color);
+}
+
+.nav-main {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;
 }
 
 .welcome-message {
@@ -188,6 +189,16 @@ h2 {
 }
 
 @media screen and (max-width: 768px) {
+    .nav-main {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        gap: 0px;
+        padding: 0px;
+        flex-wrap: none;
+    }
+
     .sidebar-container {
         -webkit-perspective: 1500px;
         perspective: 1500px;
@@ -208,9 +219,11 @@ h2 {
 
     .sidebar {
         position: fixed;
+        top: 0;
         width: 260px;
-        height: 1200px;
+        height: 1170px;
         background-color: rgb(255, 255, 255);
+        color: white;
         padding: 20px;
         display: flex;
         flex-direction: column;
@@ -227,24 +240,12 @@ h2 {
         -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
         z-index: 1000;
-        margin-top: -60px;
+        margin-top: -50px;
         box-shadow: 25px 24px 26px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar-header {
-        --s: 50px; /* control the size */
-        --c1: #004f79;
-        --c2: #008db8;
-        
-        --_g:radial-gradient(#0000 60%,var(--c1) 61% 63%,#0000 64% 77%,var(--c1) 78% 80%,#0000 81%);
-        --_c:,#0000 75%,var(--c2) 0;
-        background:
-        conic-gradient(at 12% 20% var(--_c)) calc(var(--s)* .44) calc(.9*var(--s)),
-        conic-gradient(at 12% 20% var(--_c)) calc(var(--s)*-.06) calc(.4*var(--s)),
-        conic-gradient(at 20% 12% var(--_c)) calc(.9*var(--s)) calc(var(--s)* .44),
-        conic-gradient(at 20% 12% var(--_c)) calc(.4*var(--s)) calc(var(--s)*-.06),
-        var(--_g),var(--_g) calc(var(--s)/2) calc(var(--s)/2) var(--c2);
-        background-size: var(--s) var(--s);
+        background-color: var(--secondary-color);
         padding: 30px 30px 30px 30px;
         margin-top: -30px;
         margin-left: -30px;
@@ -255,7 +256,7 @@ h2 {
         width: 100%;
         right: 0;
         color: white;
-        font-size: 1.6rem;
+        font-size: 1.3rem;
         margin-left: 15px;
         margin-top: 25px;
         margin-bottom: 30px;
@@ -263,12 +264,11 @@ h2 {
     }
 
     .sidebar-perfil-title {
-        color: var(--subtitle-color);
-        font-size: 1.2rem;
+        color: #000000;
+        font-size: 1rem;
         margin-left: 15px;
         font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         margin-top: -15px;
-        letter-spacing: 1px;
     }
 
     .sidebar.open .nav-links-sidebar {
@@ -279,20 +279,29 @@ h2 {
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 
+    .nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+        color: var(--primary-color);
+        width: 100%;
+    }
+
     .user-name {
         font-size: 1.2rem;
         font-family: 'Times New Roman', Times, serif;
         font-weight: lighter;
         margin-left: -50px;
+        color: var(--primary-color);
         text-overflow: ellipsis;
     }
 
     .welcome-message {
         font-size: 2.5rem;
-        margin-left: 0;
+        margin-left: 40px;
         margin-bottom: -60px;
         margin-top: -20px;
-        text-align: center;
     }
 
     .nav-links-sidebar {
@@ -310,7 +319,9 @@ h2 {
         grid-template-columns: 30px auto;
         align-items: center;
         border: none;
+        padding: 10px 15px;
         border-radius: 5px;
+        cursor: pointer;
         text-align: left;
         gap: 10px;
         transition: background-color 0.3s ease;
@@ -318,21 +329,29 @@ h2 {
         padding-right: 30px;
         font-size: 1.2rem;
         width: 100%;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     }
 
     .overlay {
         position: fixed;
+        top: 0;
+        left: 0;
+        width: 115%;
+        height: 110%;
+        background-color: rgba(0, 0, 0, 0);
+        opacity: 0;
         visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
         z-index: 999;
     }
 
     .overlay.active {
         background-color: rgba(77, 77, 77, 0.5);
+        opacity: 1;
         visibility: visible;
-        margin-top: -80px;
-        width: 100%;
-        height: 100%;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+        margin-top: -50px;
+        width: 115%;
+        height: 1170px;
     }
 }
 

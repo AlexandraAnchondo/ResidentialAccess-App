@@ -1,10 +1,6 @@
-@import '../colors.css';
+@import '../Colors.css';
 
-.autos-container {
-    width: 100%;
-}
-
-.no-data {
+.auto-no-data {
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -17,7 +13,7 @@
     font-size: 2.5rem;
 }
 
-.no-data .icon-placeholder {
+.auto-no-data .icon-placeholder {
     font-size: 10rem; 
     color: var(--border-color);
     margin-top: 10px; 
@@ -71,18 +67,16 @@
     align-self: flex-end;
 }
 
-@media screen and (max-width: 568px) {
+@media screen and (max-width: 768px) {
     .autos-main {
+        display: flex;
+        flex-direction: column;
         align-items: center; 
-        margin: 0 auto; 
-        justify-content: center;
-        width: 100%;
-        height: 100%;
     }
 
     .no-data {
-        margin: 20px 0 0 60px;
-        font-size: 1.8rem;
+        margin: 0;
+        font-size: 1.5rem;
     }
 
     .autos-cards {
@@ -91,14 +85,37 @@
     }
 
     .auto-card {
-        width: 100%;
+        width: 80%;
         margin-right: 0px;
-        flex: none; 
-        margin-left: 60px;
+        margin-left: 0px;
     }
 
     .auto-card-actions {
         align-self: center;
+    }
+
+    .auto-no-data {
+        font-size: 1.5rem;
+    }
+    
+    .auto-no-data .icon-placeholder {
+        font-size: 8rem; 
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+    .autos-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    .auto-no-data {
+        font-size: 1.8rem;
+    }
+    
+    .auto-no-data .icon-placeholder {
+        font-size: 10rem; 
     }
 }
 

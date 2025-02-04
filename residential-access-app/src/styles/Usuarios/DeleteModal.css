@@ -1,4 +1,4 @@
-@import '../colors.css';
+@import '../Colors.css';
 
 .delete-modal-overlay {
     position: fixed;
@@ -77,5 +77,20 @@
 
     100% {
         transform: scale(1);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .delete-modal {
+        width: 300px;
+    }
+
+    .delete-modal-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .delete-modal-options {
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 }

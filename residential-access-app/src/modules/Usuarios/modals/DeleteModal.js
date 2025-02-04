@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@mui/material";
-import "../../../styles/Usuarios/DeleteModal.css";
+import React from "react"
+import { Button } from "@mui/material"
+import "../../../styles/Usuarios/DeleteModal.css"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
-const DeleteModal =({showDeleteModal, onCloseDeleteModal, onDelete}) => {
-    if (!showDeleteModal) { 
-        document.body.style.overflow = 'auto'; 
-        return null;
+const DeleteModal =({ showDeleteModal, onCloseDeleteModal, onDelete }) => {
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
+
+    if (!showDeleteModal) {
+        return null
     }
 
-    document.body.style.overflow = 'hidden'; 
     return (
         <div className="delete-modal-overlay">
             <div className="delete-modal">
@@ -17,35 +19,37 @@ const DeleteModal =({showDeleteModal, onCloseDeleteModal, onDelete}) => {
                 </div>
                 <div className="delete-modal-content">
                     <div className="delete-modal-options">
-                        <Button 
-                            variant="contained" 
-                            color="error" 
+                        <Button
+                            variant="contained"
+                            size={isMobile ? "small" : "large"}
+                            color="error"
                             onClick={onDelete}>
                             Borrar
                         </Button>
-                        <Button 
-                            variant="outlined" 
+                        <Button
+                            variant="outlined"
+                            size={isMobile ? "small" : "large"}
                             sx={
-                                    {
-                                        color:"gray", 
-                                        borderColor: "gray",
-                                        backgroundColor: "white", 
-                                        "&:hover":
+                                {
+                                    color:"gray",
+                                    borderColor: "gray",
+                                    backgroundColor: "white",
+                                    "&:hover":
                                             {
                                                 backgroundColor:"rgba(240, 240, 240, 0.8)"
                                             }
-                                    }
-                                } 
+                                }
+                            }
                             onClick=
-                            {
-                                onCloseDeleteModal
-                            }>
+                                {
+                                    onCloseDeleteModal
+                                }>
                             Cancelar
                         </Button>
                     </div>
                 </div>
             </div>
         </div>
-    );
+    )
 }
 export default DeleteModal

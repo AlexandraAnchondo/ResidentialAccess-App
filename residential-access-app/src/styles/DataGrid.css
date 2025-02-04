@@ -1,5 +1,5 @@
 /* Importar variables globales */
-@import '../styles/colors.css';
+@import '../styles/Colors.css';
 
 /* Estilos generales para los encabezados */
 .MuiDataGrid-columnHeader {
@@ -8,12 +8,13 @@
     font-weight: bold; /* Negrita */
     font-size: 1rem; /* Tamaño de fuente */
     text-align: center !important; /* Centrar el texto */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 /* Estilos para cada celda del encabezado */
-.MuiDataGrid-columnHeader {
-    border-right: 1px solid #e0e0e0 !important; /* Líneas divisorias */
-}
+/*.MuiDataGrid-columnHeader {
+    border-right: 1px solid #000000 !important; //Lineas divisoras
+}*/
 
 .MuiDataGrid-columnHeader:last-of-type {
     border-right: none !important; /* Sin línea divisoria en la última celda */
@@ -26,7 +27,6 @@
     width: 100%;
     padding: 20px; /* Espaciado para bordes */
     box-sizing: border-box;
-    margin-left: 40px;
 }
 
 /* Estilo adicional para limitar el tamaño de la tabla */
@@ -56,5 +56,11 @@
 
 /* Aumentar la especificidad para centrar el texto en todas las celdas */
 .MuiDataGrid-root .MuiDataGrid-cell {
-    text-align: center !important; /* Centrar el texto en todas las celdas */
+    text-align: left !important; /* Centrar el texto en todas las celdas */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.MuiDataGrid-root .MuiTablePagination-displayedRows {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: var(--primary-color)
 }

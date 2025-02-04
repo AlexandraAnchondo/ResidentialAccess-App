@@ -1,23 +1,25 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import "../styles/Login.css";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUser, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
+import "../styles/Login.css"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
-    const [username, setUsername] = useState(""); // Estado para el usuario
-    const [passwordVisible, setPasswordVisible] = useState(false); // Estado para mostrar u ocultar la contraseña
-    const navigate = useNavigate(); // Hook para redirigir a otras páginas
+    const [username, setUsername] = useState("") // Estado para el usuario
+    const [passwordVisible, setPasswordVisible] = useState(false) // Estado para mostrar u ocultar la contraseña
+    const navigate = useNavigate() // Hook para redirigir a otras páginas
 
     // Función para manejar el inicio de sesión
     const handleLogin = (e) => {
-        e.preventDefault(); // Evita que se recargue la página
+        e.preventDefault() // Evita que se recargue la página
         if (username === "Usuario") {
-            navigate("/users"); // Redirige a HomePage si el usuario es "Usuario"
-        } else {
-            alert("Usuario no válido"); // Mensaje si el usuario no es válido
+            navigate("/users") // Redirige a HomePage si el usuario es "Usuario"
+        } else if (username === "Guardia")  {
+            navigate("/guards") // Redirige a Registro si el usuario es "Guardia"
+        } else{
+            alert("Usuario no válido") // Mensaje si el usuario no es válido
         }
-    };
+    }
 
     return (
         <div className="login-container">
@@ -68,7 +70,7 @@ const Login = () => {
                 </p>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

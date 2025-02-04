@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faQrcode, faHouse, faReceipt, faCar, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faPaperclip, faReceipt, faBars } from "@fortawesome/free-solid-svg-icons"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import Historial from "./Historial"
-import Visitantes from "./Visitantes"
-import Residentes from "./Residentes"
-import Autos from "./Autos"
-import HomePage from "./HomePage"
 import "../../styles/Usuarios/Navbar.css"
 import { Button } from "@mui/material"
 
 const Navbar = () => {
-    const [activeView, setActiveView] = useState("home")
+    const [activeView, setActiveView] = useState("registro")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [name, setName] = useState("Alexandra Anchondo Robles")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
 
     useEffect(() => {
-        if (isSidebarOpen || showLogoutModal) {
+        if (isSidebarOpen) {
             document.body.style.overflow = "hidden"
         } else {
             document.body.style.overflow = "auto"
@@ -57,32 +52,10 @@ const Navbar = () => {
     }
 
     return (
-        /* Home container that contains all the values for the navbar */
+        /* registro container that contains all the values for the navbar */
         <div className="nav-container">
             {/* Header that contains the pages when desktop screen or the bars icon when tablet or cellphone */}
-            <header
-                className="nav-header"
-                style={{
-                    "--s": "60px", // Tamaño del patrón
-                    "--c1": "#004f79",
-                    "--c2": "#008db8",
-                    "--_g": "radial-gradient(#0000 60%, var(--c1) 61% 63%, #0000 64% 77%, var(--c1) 78% 80%, #0000 81%)",
-                    "--_c": ",#0000 75%, var(--c2) 0",
-                    background: `
-                    conic-gradient(at 12% 20% var(--_c)) calc(var(--s) * 0.44) calc(0.9 * var(--s)),
-                    conic-gradient(at 12% 20% var(--_c)) calc(var(--s) * -0.06) calc(0.4 * var(--s)),
-                    conic-gradient(at 20% 12% var(--_c)) calc(0.9 * var(--s)) calc(var(--s) * 0.44),
-                    conic-gradient(at 20% 12% var(--_c)) calc(0.4 * var(--s)) calc(var(--s) * -0.06),
-                    var(--_g),
-                    var(--_g) calc(var(--s) / 2) calc(var(--s) / 2) var(--c2)
-                    `,
-                    backgroundSize: "var(--s) var(--s)",
-                    color: "white",
-                    padding: "20px",
-                    textAlign: "center",
-                    position: "relative"
-                }}
-            >
+            <header className="nav-header">
                 {isMobile && // Only show icon when is tablet or cellphone
                     <FontAwesomeIcon
                         icon={faBars}
@@ -91,39 +64,21 @@ const Navbar = () => {
                     />
                 }
                 {!isSidebarOpen && // Hide user name from header when sidebar is open
-                    <h1 className="user-name">{name}</h1>
+                    <h1 className="user-name">Guardia&nbsp;&nbsp;{name}</h1>
                 }
                 {!isMobile && // Show nav pages when desktop screen
                     <nav className="nav-links">
                         <button
-                            className={`nav-button ${activeView === "home" ? "active" : ""}`}
-                            onClick={() => handleNavClick("home")}
+                            className={`nav-button ${activeView === "registro" ? "active" : ""}`}
+                            onClick={() => handleNavClick("registro")}
                         >
-                            <FontAwesomeIcon icon={faQrcode} />&nbsp;Códigos QR
+                            <FontAwesomeIcon icon={faPaperclip} />&nbsp;Registro
                         </button>
                         <button
-                            className={`nav-button ${activeView === "historial" ? "active" : ""}`}
-                            onClick={() => handleNavClick("historial")}
+                            className={`nav-button ${activeView === "visitas" ? "active" : ""}`}
+                            onClick={() => handleNavClick("visitas")}
                         >
-                            <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
-                            onClick={() => handleNavClick("visitantes")}
-                        >
-                            <FontAwesomeIcon icon={faUserGroup} />&nbsp;Visitantes
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
-                            onClick={() => handleNavClick("residentes")}
-                        >
-                            <FontAwesomeIcon icon={faHouse} />&nbsp;Residentes
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "autos" ? "active" : ""}`}
-                            onClick={() => handleNavClick("autos")}
-                        >
-                            <FontAwesomeIcon icon={faCar} />&nbsp;Autos
+                            <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas activas
                         </button>
                         <button className="nav-button logout" onClick={handleLogoutClick}>
                             <FontAwesomeIcon icon={faDoorOpen} />
@@ -143,34 +98,16 @@ const Navbar = () => {
                     {isSidebarOpen &&
                         <nav className="nav-links-sidebar">
                             <button
-                                className={`nav-button ${activeView === "home" ? "active" : ""}`}
-                                onClick={() => handleNavClick("home")}
+                                className={`nav-button ${activeView === "registro" ? "active" : ""}`}
+                                onClick={() => handleNavClick("registro")}
                             >
-                                <FontAwesomeIcon icon={faQrcode} />&nbsp;&nbsp;Códigos QR
+                                <FontAwesomeIcon icon={faPaperclip} />&nbsp;&nbsp;Registro
                             </button>
                             <button
-                                className={`nav-button ${activeView === "historial" ? "active" : ""}`}
-                                onClick={() => handleNavClick("historial")}
+                                className={`nav-button ${activeView === "visitas" ? "active" : ""}`}
+                                onClick={() => handleNavClick("visitas")}
                             >
                                 <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas
-                            </button>
-                            <button
-                                className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
-                                onClick={() => handleNavClick("visitantes")}
-                            >
-                                <FontAwesomeIcon icon={faUserGroup} />&nbsp;&nbsp;Visitantes
-                            </button>
-                            <button
-                                className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
-                                onClick={() => handleNavClick("residentes")}
-                            >
-                                <FontAwesomeIcon icon={faHouse} />&nbsp;&nbsp;Residentes
-                            </button>
-                            <button
-                                className={`nav-button ${activeView === "autos" ? "active" : ""}`}
-                                onClick={() => handleNavClick("autos")}
-                            >
-                                <FontAwesomeIcon icon={faCar} />&nbsp;&nbsp;Autos
                             </button>
                             <button className="nav-button logout" onClick={handleLogoutClick}>
                                 <FontAwesomeIcon icon={faDoorOpen} />&nbsp;&nbsp;Cerrar sesión
@@ -189,40 +126,22 @@ const Navbar = () => {
                 />
 
                 {/* Welcome message for corresponding view */}
-                {activeView === "home" ? (
+                {activeView === "registro" ? (
                     <div className="welcome-message">
-                        <p>Bienvenido&nbsp;(a)</p>
-                    </div>
-                ) : activeView === "historial" ? (
-                    <div className="welcome-message">
-                        <p>Historial de visitas</p>
-                    </div>
-                ) : activeView === "visitantes" ? (
-                    <div className="welcome-message">
-                        <p>Visitantes frecuentes</p>
-                    </div>
-                ) : activeView === "residentes" ? (
-                    <div className="welcome-message">
-                        <p>Residentes</p>
+                        <p>Registro de visitas</p>
                     </div>
                 ) : (
                     <div className="welcome-message">
-                        <p>Autos</p>
+                        <p>Visitas activas</p>
                     </div>
                 )}
 
                 {/* Main container that contains the active view */}
                 <main className="nav-main">
-                    {activeView === "historial" ? (
-                        <Historial />
-                    ) : activeView === "visitantes" ? (
-                        <Visitantes />
-                    ) : activeView === "residentes" ? (
-                        <Residentes />
-                    ) : activeView === "autos" ? (
-                        <Autos />
+                    {activeView === "registro" ? (
+                        <></>
                     ) : (
-                        <HomePage />
+                        <></>
                     )}
                 </main>
             </div>

@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 import {
     TextField,
     InputAdornment,
     Button,
     Box,
-    Typography,
-} from "@mui/material";
+    Typography
+} from "@mui/material"
 import {
     Person as PersonIcon,
     Phone as PhoneIcon,
     DirectionsCar as CarIcon,
     FormatListNumbered as LicensePlateIcon,
     Close as CloseIcon,
-    Check as CheckIcon,
-} from "@mui/icons-material";
-import "../../../styles/Usuarios/AddModal.css";
+    Check as CheckIcon
+} from "@mui/icons-material"
+import "../../../styles/Usuarios/AddModal.css"
 
 const AddVisitanteModal = ({ show, onClose, onAdd }) => {
     const [formData, setFormData] = useState({
@@ -22,8 +22,8 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
         apellido: "",
         telefono: "",
         placas: "",
-        modelo: "",
-    });
+        modelo: ""
+    })
 
     useEffect(() => {
         if (!show) {
@@ -32,28 +32,28 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                 apellido: "",
                 telefono: "",
                 placas: "",
-                modelo: "",
-            });
+                modelo: ""
+            })
         }
-    }, [show]);
+    }, [show])
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
+        const { name, value } = e.target
+        setFormData({ ...formData, [name]: value })
+    }
 
     const handlePhoneChange = (e) => {
-        const value = e.target.value.replace(/\D/g, ""); // Elimina caracteres no numéricos
+        const value = e.target.value.replace(/\D/g, "") // Elimina caracteres no numéricos
         const formattedPhone = value
             .slice(0, 10) // Limita a 10 dígitos
-            .replace(/(\d{3})(\d{3})(\d{0,4})/, "($1) $2-$3"); // Formato (###) ###-####
-        setFormData({ ...formData, telefono: formattedPhone });
-    };
+            .replace(/(\d{3})(\d{3})(\d{0,4})/, "($1) $2-$3") // Formato (###) ###-####
+        setFormData({ ...formData, telefono: formattedPhone })
+    }
 
     const handleAcceptClick = () => {
-        onAdd(formData);
-        onClose();
-    };
+        onAdd(formData)
+        onClose()
+    }
 
     const isFormValid = () => {
         return (
@@ -62,10 +62,12 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
             formData.telefono &&
             formData.placas &&
             formData.modelo
-        );
-    };
+        )
+    }
 
-    if (!show) return null;
+    if (!show) {
+        return null
+    }
 
     return (
         <div className="add-modal-overlay">
@@ -87,7 +89,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <PersonIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -101,7 +103,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <PersonIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -115,7 +117,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <PhoneIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                             inputProps={{ maxLength: 14 }}
@@ -130,7 +132,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <LicensePlateIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -144,7 +146,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                                     <InputAdornment position="start">
                                         <CarIcon />
                                     </InputAdornment>
-                                ),
+                                )
                             }}
                             fullWidth
                         />
@@ -160,8 +162,8 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                             backgroundColor: isFormValid() ? "#00a8cc" : "rgba(0, 0, 0, 0.12)", // Color principal o gris deshabilitado
                             color: isFormValid() ? "#fff" : "rgba(0, 0, 0, 0.26)", // Color del texto según el estado
                             "&:hover": {
-                                backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)", // Color en hover si está activo
-                            },
+                                backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)" // Color en hover si está activo
+                            }
                         }}
                         style={{ marginLeft: 20, marginBottom: 20 }}
                     >
@@ -179,7 +181,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default AddVisitanteModal;
+export default AddVisitanteModal
