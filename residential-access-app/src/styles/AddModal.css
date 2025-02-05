@@ -96,6 +96,10 @@
         font-size: 1.4rem;
     }
 
+    .add-modal-content {
+        margin-bottom: 40px;
+    }
+
     .add-modal-options {
         display: grid;
         grid-template-columns: 1fr; 

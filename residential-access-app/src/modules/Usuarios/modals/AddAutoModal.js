@@ -136,7 +136,7 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20 }}
+                        style={{ marginLeft: 20, marginBottom:10 }}
                         size={isMobile ? "small" : "large"}
                     >
                         Cancelar

@@ -56,11 +56,19 @@
 
 /* Aumentar la especificidad para centrar el texto en todas las celdas */
 .MuiDataGrid-root .MuiDataGrid-cell {
-    text-align: left !important; /* Centrar el texto en todas las celdas */
+    text-align: center !important; /* Centrar el texto en todas las celdas */
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .MuiDataGrid-root .MuiTablePagination-displayedRows {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: var(--primary-color)
+}
+
+.MuiDataGrid-root .MuiDataGrid-toolbarContainer {
+    gap: 20px;
+}
+
+.css-1ccsd5i-MuiButtonBase-root-MuiButton-root {
+    color: var(--primary-color) !important
 }

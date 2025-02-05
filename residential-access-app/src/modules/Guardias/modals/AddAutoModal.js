@@ -15,10 +15,10 @@ import {
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
-import "../../styles/AddModal.css"
+import "../../../styles/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddAutoModal = ({ show, onClose, onAdd }) => {
+const AddAutoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
@@ -45,6 +45,15 @@ const AddAutoModal = ({ show, onClose, onAdd }) => {
     }
 
     const handleAcceptClick = () => {
+        if(visitanteId != null) {
+            const visitante = {
+                visitante_id: visitanteId,
+                auto: { ...formData }
+            }
+            onAdd(visitante)
+            onClose()
+            return
+        }
         onAdd(formData)
         onClose()
     }
