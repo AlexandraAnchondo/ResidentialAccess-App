@@ -3,22 +3,50 @@ import {
     TextField,
     InputAdornment,
     Button,
-    Box,
-    Typography,
-    Select,
-    MenuItem
+    Typography
 } from "@mui/material"
 import {
-    DirectionsCar as CarIcon,
-    ColorLens as ColorIcon,
-    FormatListNumbered as LicensePlateIcon,
     Close as CloseIcon,
-    Check as CheckIcon
+    Check as CheckIcon,
+    AddCard
 } from "@mui/icons-material"
 import "../../../styles/AddModal.css"
-import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddVisitaFrecuenteModal = ({ show, onClose, visitante }) => {
+const AddVisitaFrecuenteModal = ({ show, onClose, visitante, auto, setSelectedOption, setSelectedRow, setSelectedAuto }) => {
+    const [formData, setFormData] = useState({
+        tarjeton: ""
+    })
+
+    useEffect(() => {
+        if (!show) {
+            setFormData({
+                tarjeton: ""
+            })
+        }
+    }, [show])
+
+    const visitanteWithAuto = {
+        visitante_id: visitante?.id,
+        auto_id: auto?.id
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setFormData({ ...visitanteWithAuto, [name]: value })
+    }
+
+    const handleAcceptClick = () => {
+        console.log(formData)
+        setSelectedOption("Registro de visitas")
+        setSelectedRow(null)
+        setSelectedAuto(null)
+        onClose()
+    }
+
+    const isFormValid = () => {
+        return formData.tarjeton
+    }
+
     if (!show) {
         return null
     }
@@ -28,17 +56,31 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante }) => {
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del auto
+                        Ingresa el número del tarjetón
                     </Typography>
                 </div>
-                <div className="add-modal-content">
-                    
+                <div className="add-modal-content" style={{ animation: "none" }}>
+                    <TextField
+                        label="Tarjetón"
+                        name="tarjeton"
+                        value={formData.tarjeton}
+                        onChange={handleInputChange}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <AddCard />
+                                </InputAdornment>
+                            )
+                        }}
+                    />
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     <Button
+                        onClick={handleAcceptClick}
                         variant="contained"
                         startIcon={<CheckIcon />}
-                        style={{ marginLeft: 20, marginBottom:10 }}
+                        disabled={!isFormValid()}
+                        style={{ marginLeft: 20 }}
                         sx={{
                             backgroundColor: "#00a8cc",
                             "&:hover": "#00a8ccCC"

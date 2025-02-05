@@ -24,20 +24,19 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             headerAlign: "center",
             align: "center",
             renderCell: (params) => (
-                <button
+                <Button
                     onClick={() => handleViewAutoVisitanteClick(params?.row)}
-                    style={{
+                    sx={{
                         backgroundColor: "#008db8",
+                        "&:hover": { backgroundColor: "#0a395f" },
                         color: "white",
                         border: "none",
-                        padding: "5px 10px",
                         cursor: "pointer",
-                        borderRadius: "5px",
-                        marginTop: "5px"
+                        borderRadius: "5px"
                     }}
                 >
                     <DirectionsCar />
-                </button>
+                </Button>
             )
         }
     ]
@@ -70,6 +69,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const [showViewAutoVisitanteModal, setShowViewAutoVisitanteModal] = useState(false)
     const [showAddVisitaFrecuenteModal, setShowAddVisitaFrecuenteModal] = useState(false)
     const [selectedVisitante, setSelectedVisitante] = useState(null)
+    const [selectedAuto, setSelectedAuto] = useState(null)
     const [selectedRow, setSelectedRow] = useState(null)
 
     useEffect(() => {
@@ -119,6 +119,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             setSelectedRow(selectedRowData)
         } else {
             setSelectedRow(null)
+            setSelectedAuto(null)
         }
     }
 
@@ -152,7 +153,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                         ) : (
                             <div className="visitante-frecuente-table-section">
                                 <div className="registrar-visita-button-container">
-                                    {selectedRow && (
+                                    {selectedRow && selectedAuto != null && (
                                         <Button
                                             variant="contained"
                                             sx={{ backgroundColor: "#004f79", "&:hover": { backgroundColor: "#0a395f" } }}
@@ -228,12 +229,19 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 onClose={() => setShowViewAutoVisitanteModal(false)}
                 visitante={selectedVisitante}
                 onAdd={handleAddVehiculoClick}
+                setSelectedAuto={setSelectedAuto}
+                selectedAuto={selectedAuto}
+                isRowSelected={selectedRow != null}
             />
 
-            <AddVisitaFrecuenteModal /* TODO: TE QUEDASTE HACIENDO EL MODAL PARA EL TARJETÓN */
+            <AddVisitaFrecuenteModal
                 show={showAddVisitaFrecuenteModal}
-                onClose={() => setShowViewAutoVisitanteModal(false)}
+                onClose={() => setShowAddVisitaFrecuenteModal(false)}
                 visitante={selectedRow}
+                auto={selectedAuto}
+                setSelectedOption={setSelectedOption}
+                setSelectedRow={setSelectedRow}
+                setSelectedAuto={setSelectedAuto}
             />
         </div>
     )

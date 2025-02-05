@@ -133,7 +133,7 @@ const AddAutoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
                         variant="contained"
                         startIcon={<CheckIcon />}
                         disabled={!isFormValid()}
-                        style={{ marginLeft: 20, marginBottom:10 }}
+                        style={{ marginLeft: 20 }}
                         size={isMobile ? "small" : "large"}
                         sx={{
                             backgroundColor: "#00a8cc",
