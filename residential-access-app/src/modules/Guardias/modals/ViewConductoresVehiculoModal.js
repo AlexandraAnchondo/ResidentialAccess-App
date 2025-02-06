@@ -65,8 +65,6 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
 
     const [showAddConductorModal, setShowAddConductorModal] = useState(false)
 
-    const isMobile = useMediaQuery("(max-width: 768px)")
-
     return (
         <div className="add-modal-overlay">
             <div className="add-modal">

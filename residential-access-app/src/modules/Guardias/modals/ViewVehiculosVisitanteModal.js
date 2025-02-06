@@ -65,8 +65,6 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
 
     const [showAddVehiculoModal, setShowAddVehiculoModal] = useState(false)
 
-    const isMobile = useMediaQuery("(max-width: 768px)")
-
     return (
         <div className="add-modal-overlay">
             <div className="add-modal">
