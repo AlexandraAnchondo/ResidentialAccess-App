@@ -6,6 +6,7 @@ import "../../styles/Navbar.css"
 import { Button } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import Registro from "../Guardias/Registro"
+import VisitasActivas from "../Guardias/VisitasActivas"
 
 const Navbar = () => {
     const [activeView, setActiveView] = useState("Registro de visitas")
@@ -164,7 +165,7 @@ const Navbar = () => {
                             setSelectedOption={setSelectedOption}
                         />
                     ) : (
-                        <></>
+                        <VisitasActivas />
                     )}
                 </main>
             </div>
