@@ -18,7 +18,7 @@ import {
 import "../../../styles/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddAutoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
+const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
@@ -48,7 +48,7 @@ const AddAutoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
         if(visitanteId != null) {
             const visitante = {
                 visitante_id: visitanteId,
-                auto: { ...formData }
+                vehiculo: { ...formData }
             }
             onAdd(visitante)
             onClose()
@@ -71,7 +71,7 @@ const AddAutoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del auto
+                        Ingresa la información del vehículo
                     </Typography>
                 </div>
                 <div className="add-modal-content">
@@ -158,4 +158,4 @@ const AddAutoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
     )
 }
 
-export default AddAutoModal
+export default AddVehiculoModal

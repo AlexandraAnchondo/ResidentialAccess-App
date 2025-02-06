@@ -9,14 +9,14 @@ import {
 } from "@mui/icons-material"
 import "../../../styles/AddModal.css"
 import DataTable from "../../../components/DataGrid"
-import AddVehiculoModal from "./AddAutoModal"
+import AddVehiculoModal from "./AddVehiculoModal"
 
-const ViewAutosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedAuto, selectedAuto, isRowSelected }) => {
+const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedVehiculo, selectedVehiculo, isRowSelected }) => {
     if (!show) {
         return null
     }
 
-    const columns_autos_visitantes = [
+    const columns_vehiculos_visitantes = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "placas", headerAlign: "center", headerName: "Placas", flex: 1, minWidth: 250 },
         { field: "modelo", headerAlign: "center", headerName: "Modelo", flex: 1, minWidth: 250 },
@@ -31,11 +31,11 @@ const ViewAutosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedA
                     headerAlign: "center",
                     align: "center",
                     renderCell: (params) => {
-                        const isSelected = selectedAuto?.id === params.row.id
+                        const isSelected = selectedVehiculo?.id === params.row.id
                         return (
                             <Button
                                 onClick={() => {
-                                    setSelectedAuto(params?.row)
+                                    setSelectedVehiculo(params?.row)
                                     onClose()
                                 }}
                                 size="small"
@@ -51,7 +51,7 @@ const ViewAutosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedA
                                     borderRadius: "5px"
                                 }}
                             >
-                                {isSelected ? "Auto seleccionado" : "Seleccionar auto"}
+                                {isSelected ? "Seleccionado" : "Seleccionar"}
                             </Button>
                         )
                     }
@@ -67,11 +67,11 @@ const ViewAutosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedA
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Autos Registrados
+                        Vehículos Registrados
                     </Typography>
                 </div>
                 <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
-                    <DataTable rows={visitante.autos} columns={columns_autos_visitantes} />
+                    <DataTable rows={visitante.vehiculos} columns={columns_vehiculos_visitantes} />
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     <Button
@@ -102,4 +102,4 @@ const ViewAutosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedA
     )
 }
 
-export default ViewAutosVisitanteModal
+export default ViewVehiculosVisitanteModal

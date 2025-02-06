@@ -11,12 +11,12 @@ import "../../../styles/AddModal.css"
 import DataTable from "../../../components/DataGrid"
 import AddConductorModal from "./AddConductorModal"
 
-const ViewConductoresAutoModal = ({ show, onClose, auto, onAdd, setSelectedConductor, selectedConductor, isRowSelected }) => {
+const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelectedConductor, selectedConductor, isRowSelected }) => {
     if (!show) {
         return null
     }
 
-    const columns_autos_visitantes = [
+    const columns_vehiculos_visitantes = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 300 },
         { field: "apellido", headerAlign: "center", headerName: "Apellido", flex: 1, minWidth: 150 },
@@ -71,7 +71,7 @@ const ViewConductoresAutoModal = ({ show, onClose, auto, onAdd, setSelectedCondu
                     </Typography>
                 </div>
                 <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
-                    <DataTable rows={auto.conductores} columns={columns_autos_visitantes} />
+                    <DataTable rows={vehiculo.conductores} columns={columns_vehiculos_visitantes} />
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     <Button
@@ -101,4 +101,4 @@ const ViewConductoresAutoModal = ({ show, onClose, auto, onAdd, setSelectedCondu
     )
 }
 
-export default ViewConductoresAutoModal
+export default ViewConductoresVehiculoModal

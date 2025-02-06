@@ -4,9 +4,9 @@ import { Button } from "@mui/material"
 import { ArrowBack, AddCircle, DirectionsCar } from "@mui/icons-material"
 import DataTable from "../../components/DataGrid"
 import "../../styles/Guardias/Registro.css"
-import AddVehiculoModal from "./modals/AddAutoModal"
-import ViewAutoVisitanteModal from "./modals/ViewAutosVisitanteModal"
-import ViewConductoresAutoModal from "./modals/ViewConductoresAutoModal"
+import AddVehiculoModal from "./modals/AddVehiculoModal"
+import ViewVehiculoVisitanteModal from "./modals/ViewVehiculosVisitanteModal"
+import ViewConductoresVehiculoModal from "./modals/ViewConductoresVehiculoModal"
 import AddVisitaFrecuenteModal from "./modals/AddVisitaFrecuenteModal"
 import AddVisitaVehiculoModal from "./modals/AddVisitaVehiculoModal"
 
@@ -27,7 +27,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             align: "center",
             renderCell: (params) => (
                 <Button
-                    onClick={() => handleViewAutoVisitanteClick(params?.row)}
+                    onClick={() => handleViewVehiculoVisitanteClick(params?.row)}
                     sx={{
                         backgroundColor: "#008db8",
                         "&:hover": { backgroundColor: "#0a395f" },
@@ -44,9 +44,9 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     ]
 
     const rows_visitante = [
-        { id: 1, calle: "Av. Libertador", numero: 123, nombre: "Alexandra", apellido: "Anchondo", telefono: "686-420-49-24", autos: [{ id: "1", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "2", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] },
-        { id: 2, calle: "Av. Libertador", numero: 456, nombre: "Benito", apellido: "Juarez", telefono: "686-453-4376", autos: [{ id: "3", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "4", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] },
-        { id: 3, calle: "Av. Libertador", numero: 789, nombre: "Carlos", apellido: "Perez", telefono: "686-543-2178", autos: [{ id: "5", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "6", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] }
+        { id: 1, calle: "Av. Libertador", numero: 123, nombre: "Alexandra", apellido: "Anchondo", telefono: "686-420-49-24", vehiculos: [{ id: "1", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "2", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] },
+        { id: 2, calle: "Av. Libertador", numero: 456, nombre: "Benito", apellido: "Juarez", telefono: "686-453-4376", vehiculos: [{ id: "3", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "4", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] },
+        { id: 3, calle: "Av. Libertador", numero: 789, nombre: "Carlos", apellido: "Perez", telefono: "686-543-2178", vehiculos: [{ id: "5", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "6", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] }
     ]
 
     const columns_vehiculo = [
@@ -63,7 +63,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             align: "center",
             renderCell: (params) => (
                 <Button
-                    onClick={() => handleViewConductoresAutoClick(params?.row)}
+                    onClick={() => handleViewConductoresVehiculoClick(params?.row)}
                     sx={{
                         backgroundColor: "#008db8",
                         "&:hover": { backgroundColor: "#0a395f" },
@@ -88,21 +88,21 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const [rows, setRows] = useState([])
     const [columns, setColumns] = useState([])
     const [showAddVehiculoModal, setShowAddVehiculoModal] = useState(false)
-    const [showViewAutosVisitanteModal, setShowViewAutosVisitanteModal] = useState(false) // Open the modal for viewing the visitor's cars
-    const [showViewConductoresAutoModal, setShowViewConductoresAutoModal] = useState(false) // Open the modal for viewing the car's conductors
+    const [showViewVehiculosVisitanteModal, setShowViewVehiculosVisitanteModal] = useState(false) // Open the modal for viewing the visitor's cars
+    const [showViewConductoresVehiculoModal, setShowViewConductoresVehiculoModal] = useState(false) // Open the modal for viewing the car's conductors
     const [showAddVisitaFrecuenteModal, setShowAddVisitaFrecuenteModal] = useState(false) // Open the modal for add a new visit for a frecuent visitor
     const [showAddVisitaVehiculoModal, setShowAddVisitaVehiculoModal] = useState(false) // Open the modal for add a new visit for a vehicle
-    const [selectedVisitante, setSelectedVisitante] = useState(null) // Means the selected visitor when open autos-visitor modal without clicking the row
-    const [selectedAutoFromVisitante, setSelectedAutoFromVisitante] = useState(null) // Means the current selected auto for the visit from the autos-visitor modal
-    const [selectedAutoFromConductor, setSelectedAutoFromConductor] = useState(null) // Means the current selected auto for the visit from the conductors-auto modal
-    const [selectedConductor, setSelectedConductor] = useState(null) // Means the current selected conductor for the visit from the conductors-auto modal
+    const [selectedVisitante, setSelectedVisitante] = useState(null) // Means the selected visitor when open vehiculos-visitor modal without clicking the row
+    const [selectedVehiculoFromVisitante, setSelectedVehiculoFromVisitante] = useState(null) // Means the current selected vehiculo for the visit from the vehiculos-visitor modal
+    const [selectedVehiculoFromConductor, setSelectedVehiculoFromConductor] = useState(null) // Means the current selected vehiculo for the visit from the conductors-vehiculo modal
+    const [selectedConductor, setSelectedConductor] = useState(null) // Means the current selected conductor for the visit from the conductors-vehiculo modal
     const [selectedRow, setSelectedRow] = useState(null) // Means the visitor row selected in frecuent-visitor table
 
     useEffect(() => {
-        if (showAddVehiculoModal || showViewAutosVisitanteModal || showAddVisitaFrecuenteModal || showAddVisitaVehiculoModal) {
+        if (showAddVehiculoModal || showViewVehiculosVisitanteModal || showAddVisitaFrecuenteModal || showAddVisitaVehiculoModal) {
             document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = "auto"
+            document.body.style.overflow = "vehiculo"
         }
     })
 
@@ -120,14 +120,18 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const handleBackClick = () => {
         setSelectedOption("Registro de visitas")
         setSelectedRow(null)
+        setSelectedVisitante(null)
+        setSelectedVehiculoFromConductor(null)
+        setSelectedVehiculoFromVisitante(null)
+        setSelectedConductor(null)
     }
 
     const handleAddVehiculoClick = (nuevoVehiculo) => {
         if(nuevoVehiculo.visitante_id != null) {
-            console.log("Voy a registrar un auto al nombre de un visitante")
+            console.log("Voy a registrar un vehiculo al nombre de un visitante")
             return
         } else {
-            console.log("Voy a registrar un auto de un conductor cualquiera")
+            console.log("Voy a registrar un vehiculo de un conductor cualquiera")
             return
         }
     }
@@ -137,17 +141,17 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         console.log(nuevoConductor)
     }
 
-    const handleViewAutoVisitanteClick = (rowData) => {
-        setShowViewAutosVisitanteModal(true)
-        if (rowData.autos !== null && rowData.autos.length > 0) {
+    const handleViewVehiculoVisitanteClick = (rowData) => {
+        setShowViewVehiculosVisitanteModal(true)
+        if (rowData.vehiculos !== null && rowData.vehiculos.length > 0) {
             setSelectedVisitante(rowData)
         }
     }
 
-    const handleViewConductoresAutoClick = (rowData) => {
-        setShowViewConductoresAutoModal(true)
+    const handleViewConductoresVehiculoClick = (rowData) => {
+        setShowViewConductoresVehiculoModal(true)
         if (rowData.conductores !== null && rowData.conductores.length > 0) {
-            setSelectedAutoFromConductor(rowData)
+            setSelectedVehiculoFromConductor(rowData)
         }
     }
 
@@ -157,7 +161,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             setSelectedRow(selectedRowData)
         } else {
             setSelectedRow(null)
-            setSelectedAutoFromVisitante(null)
+            setSelectedVehiculoFromVisitante(null)
             setSelectedConductor(null)
         }
     }
@@ -192,7 +196,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                         ) : (
                             <div className="visitante-frecuente-table-section">
                                 <div className="registrar-visita-button-container">
-                                    {selectedRow && selectedAutoFromVisitante != null && (
+                                    {selectedRow && selectedVehiculoFromVisitante != null && (
                                         <Button
                                             variant="contained"
                                             sx={{ backgroundColor: "#004f79", "&:hover": { backgroundColor: "#0a395f" } }}
@@ -280,20 +284,20 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 onAdd={handleAddVehiculoClick}
             />
 
-            <ViewAutoVisitanteModal
-                show={showViewAutosVisitanteModal}
-                onClose={() => setShowViewAutosVisitanteModal(false)}
+            <ViewVehiculoVisitanteModal
+                show={showViewVehiculosVisitanteModal}
+                onClose={() => setShowViewVehiculosVisitanteModal(false)}
                 visitante={selectedVisitante}
                 onAdd={handleAddVehiculoClick}
-                setSelectedAuto={setSelectedAutoFromVisitante}
-                selectedAuto={selectedAutoFromVisitante}
+                setSelectedVehiculo={setSelectedVehiculoFromVisitante}
+                selectedVehiculo={selectedVehiculoFromVisitante}
                 isRowSelected={selectedRow != null}
             />
 
-            <ViewConductoresAutoModal
-                show={showViewConductoresAutoModal}
-                onClose={() => setShowViewConductoresAutoModal(false)}
-                auto={selectedAutoFromConductor}
+            <ViewConductoresVehiculoModal
+                show={showViewConductoresVehiculoModal}
+                onClose={() => setShowViewConductoresVehiculoModal(false)}
+                vehiculo={selectedVehiculoFromConductor}
                 onAdd={handleAddConductorClick}
                 setSelectedConductor={setSelectedConductor}
                 selectedConductor={selectedConductor}
@@ -304,10 +308,10 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 show={showAddVisitaFrecuenteModal}
                 onClose={() => setShowAddVisitaFrecuenteModal(false)}
                 visitante={selectedRow}
-                auto={selectedAutoFromVisitante}
+                vehiculo={selectedVehiculoFromVisitante}
                 setSelectedOption={setSelectedOption}
                 setSelectedRow={setSelectedRow}
-                setSelectedAuto={setSelectedAutoFromVisitante}
+                setSelectedVehiculo={setSelectedVehiculoFromVisitante}
             />
 
             <AddVisitaVehiculoModal

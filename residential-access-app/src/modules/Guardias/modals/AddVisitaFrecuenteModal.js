@@ -12,7 +12,7 @@ import {
 } from "@mui/icons-material"
 import "../../../styles/AddModal.css"
 
-const AddVisitaFrecuenteModal = ({ show, onClose, visitante, auto, setSelectedOption, setSelectedRow, setSelectedAuto }) => {
+const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelectedOption, setSelectedRow, setSelectedVehiculo }) => {
     const [formData, setFormData] = useState({
         numero_tarjeton: ""
     })
@@ -25,21 +25,21 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, auto, setSelectedOp
         }
     }, [show])
 
-    const visitanteWithAuto = {
+    const visitanteWithVehiculo = {
         visitante_id: visitante?.id,
-        auto_id: auto?.id
+        vehiculo_id: vehiculo?.id
     }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
-        setFormData({ ...visitanteWithAuto, [name]: value })
+        setFormData({ ...visitanteWithVehiculo, [name]: value })
     }
 
     const handleAcceptClick = () => {
         console.log(formData)
         setSelectedOption("Registro de visitas")
         setSelectedRow(null)
-        setSelectedAuto(null)
+        setSelectedVehiculo(null)
         onClose()
     }
 
