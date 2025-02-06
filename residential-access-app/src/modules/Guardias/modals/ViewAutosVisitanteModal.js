@@ -5,14 +5,13 @@ import {
 } from "@mui/material"
 import {
     Close as CloseIcon,
-    AddCircle,
-    Warning as WarningIcon
+    AddCircle
 } from "@mui/icons-material"
 import "../../../styles/AddModal.css"
 import DataTable from "../../../components/DataGrid"
 import AddVehiculoModal from "./AddAutoModal"
 
-const ViewAutoVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedAuto, selectedAuto, isRowSelected }) => {
+const ViewAutosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedAuto, selectedAuto, isRowSelected }) => {
     if (!show) {
         return null
     }
@@ -103,4 +102,4 @@ const ViewAutoVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedAu
     )
 }
 
-export default ViewAutoVisitanteModal
+export default ViewAutosVisitanteModal
