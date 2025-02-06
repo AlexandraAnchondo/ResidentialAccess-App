@@ -78,7 +78,7 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
                         variant="contained"
                         onClick={() => setShowAddVehiculoModal(true)}
                         endIcon={<AddCircle />}
-                        sx={{ backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
+                        sx={{ marginBottom: 2, marginTop: -5, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
                     >Agregar vehículo</Button>
                     <Button
                         onClick={onClose}

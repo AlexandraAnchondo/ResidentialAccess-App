@@ -9,13 +9,14 @@ import ViewVehiculoVisitanteModal from "./modals/ViewVehiculosVisitanteModal"
 import ViewConductoresVehiculoModal from "./modals/ViewConductoresVehiculoModal"
 import AddVisitaFrecuenteModal from "./modals/AddVisitaFrecuenteModal"
 import AddVisitaVehiculoModal from "./modals/AddVisitaVehiculoModal"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const Registro = ({ selectedOption, setSelectedOption }) => {
     const columns_visitante = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 100 },
         { field: "calle", headerAlign: "center", headerName: "Calle", flex: 1, minWidth: 250 },
         { field: "numero", headerAlign: "center", headerName: "Número", flex: 1, minWidth: 150 },
-        { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 250 },
+        { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 150 },
         { field: "apellido", headerAlign: "center", headerName: "Apellido", flex: 1, minWidth: 250 },
         { field: "telefono", headerAlign: "center", headerName: "Teléfono", flex: 1, minWidth: 150 },
         {
@@ -100,6 +101,8 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const [selectedConductor, setSelectedConductor] = useState(null) // Means the current selected conductor for the visit from the conductors-vehiculo modal
     const [selectedRow, setSelectedRow] = useState(null) // Means the visitor row selected in frecuent-visitor table
 
+    const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
+
     useEffect(() => {
         if (showAddVehiculoModal || showViewVehiculosVisitanteModal || showAddVisitaFrecuenteModal || showAddVisitaVehiculoModal) {
             document.body.style.overflow = "hidden"
@@ -173,11 +176,11 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             {selectedOption === "Registro de visitas" ? (
                 <div className="card-container">
                     <button className="card" onClick={() => handleCardSelection("Visitante frecuente")}>
-                        <FaUserFriends size={200} />
+                        <FaUserFriends size={isMobile ? 130 : 200} />
                         <span>Visitante frecuente</span>
                     </button>
                     <button className="card" onClick={() => handleCardSelection("Vehículos")}>
-                        <FaIdCard size={230} />
+                        <FaIdCard size={isMobile ? 150 : 230} />
                         <span>Conductor</span>
                     </button>
                 </div>

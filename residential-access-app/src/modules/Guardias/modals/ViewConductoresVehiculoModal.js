@@ -78,7 +78,7 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
                         variant="contained"
                         onClick={() => setShowAddConductorModal(true)}
                         endIcon={<AddCircle />}
-                        sx={{ backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
+                        sx={{ marginBottom: 2, marginTop: -5, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
                     >Agregar conductor</Button>
                     <Button
                         onClick={onClose}
