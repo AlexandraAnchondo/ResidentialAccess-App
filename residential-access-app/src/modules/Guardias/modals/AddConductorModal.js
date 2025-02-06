@@ -4,7 +4,7 @@ import {
     InputAdornment,
     Button,
     Box,
-    Typography,
+    Typography
 } from "@mui/material"
 import {
     People,
@@ -12,7 +12,7 @@ import {
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
-import "../../../styles/AddModal.css"
+import "../../../styles/General/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddConductorModal = ({ show, onClose, onAdd }) => {
@@ -59,6 +59,20 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
                     <Typography variant="h5" component="h2" gutterBottom>
                         Ingresa la información del conductor
                     </Typography>
+                    <div className="add-modal-close-button">
+                        <Button
+                            onClick={onClose}
+                            startIcon={<CloseIcon />}
+                            color="white"
+                            size={isMobile ? "small" : "large"}
+                            sx={{
+                                marginBottom: isMobile ? 0 : 4,
+                                marginLeft: isMobile ? 2 : 5,
+                                margin: "auto",
+                                padding:"auto"
+                            }}
+                        />
+                    </div>
                 </div>
                 <div className="add-modal-content">
                     <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>

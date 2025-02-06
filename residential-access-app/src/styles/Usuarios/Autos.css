@@ -1,4 +1,4 @@
-@import '../Colors.css';
+@import '../General/Colors.css';
 
 .auto-no-data {
     display: flex; 

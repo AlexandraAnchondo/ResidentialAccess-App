@@ -7,7 +7,7 @@ import Visitantes from "./Visitantes"
 import Residentes from "./Residentes"
 import Autos from "./Autos"
 import HomePage from "./HomePage"
-import "../../styles/Navbar.css"
+import "../../styles/General/Navbar.css"
 import { Button } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 

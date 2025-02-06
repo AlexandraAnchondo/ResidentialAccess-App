@@ -1,7 +1,7 @@
 import * as React from "react"
 import Paper from "@mui/material/Paper"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import "../styles/DataGrid.css"
+import "../styles/General/DataGrid.css"
 
 const paginationModel = { page: 0, pageSize: 5 }
 
