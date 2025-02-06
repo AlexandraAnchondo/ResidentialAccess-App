@@ -18,7 +18,7 @@ import {
 import "../../../styles/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
+const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
@@ -26,6 +26,8 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
+
+    const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
 
     useEffect(() => {
         if (!show) {
@@ -43,6 +45,15 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
     }
 
     const handleAcceptClick = () => {
+        if(visitanteId != null) {
+            const visitante = {
+                visitante_id: visitanteId,
+                vehiculo: { ...formData }
+            }
+            onAdd(visitante)
+            onClose()
+            return
+        }
         onAdd(formData)
         onClose()
     }
@@ -60,22 +71,8 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del auto
+                        Ingresa la información del vehículo
                     </Typography>
-                    <div className="add-modal-close-button">
-                        <Button
-                            onClick={onClose}
-                            startIcon={<CloseIcon />}
-                            color="white"
-                            size={isMobile ? "small" : "large"}
-                            sx={{
-                                marginBottom: isMobile ? 0 : 4,
-                                marginLeft: isMobile ? 2 : 5,
-                                margin: "auto",
-                                padding:"auto"
-                            }}
-                        />
-                    </div>
                 </div>
                 <div className="add-modal-content">
                     <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
@@ -136,7 +133,7 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                         variant="contained"
                         startIcon={<CheckIcon />}
                         disabled={!isFormValid()}
-                        style={{ marginLeft: 20, marginBottom:10 }}
+                        style={{ marginLeft: 20 }}
                         size={isMobile ? "small" : "large"}
                         sx={{
                             backgroundColor: "#00a8cc",
@@ -150,7 +147,7 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20, marginBottom:10 }}
+                        style={{ marginLeft: 20 }}
                         size={isMobile ? "small" : "large"}
                     >
                         Cancelar
@@ -161,4 +158,4 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
     )
 }
 
-export default AddAutoModal
+export default AddVehiculoModal

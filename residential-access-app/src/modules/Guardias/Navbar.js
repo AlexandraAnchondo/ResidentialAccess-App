@@ -2,18 +2,23 @@ import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDoorOpen, faPaperclip, faReceipt, faBars } from "@fortawesome/free-solid-svg-icons"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import "../../styles/Usuarios/Navbar.css"
+import "../../styles/Navbar.css"
 import { Button } from "@mui/material"
+import { useNavigate } from "react-router-dom"
+import Registro from "../Guardias/Registro"
+import VisitasActivas from "../Guardias/VisitasActivas"
 
 const Navbar = () => {
-    const [activeView, setActiveView] = useState("registro")
+    const [activeView, setActiveView] = useState("Registro de visitas")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [name, setName] = useState("Alexandra Anchondo Robles")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
+    const navigate = useNavigate() // Hook para redirigir a otras páginas
+    const [selectedOption, setSelectedOption] = useState("Registro de visitas")
 
     useEffect(() => {
-        if (isSidebarOpen) {
+        if (isSidebarOpen || showLogoutModal) {
             document.body.style.overflow = "hidden"
         } else {
             document.body.style.overflow = "auto"
@@ -24,6 +29,7 @@ const Navbar = () => {
     const handleNavClick = (view) => {
         setActiveView(view)
         setIsSidebarOpen(false)
+        setSelectedOption(view)
     }
 
     /* Function for opening the logout modal */
@@ -32,13 +38,13 @@ const Navbar = () => {
         setTimeout(() => {
             setShowLogoutModal(true)
         }, 450)
-
     }
 
     /* Function for closing the logout modal and redirecting to log in page*/
     const handleLogoutConfirm = () => {
         setShowLogoutModal(false)
-        window.location.href = "http://localhost:3000/"
+        // Can you use relative redirects instead
+        navigate("/login")
     }
 
     /* Function for closing the logout modal when cancel button is pressed */
@@ -55,7 +61,29 @@ const Navbar = () => {
         /* registro container that contains all the values for the navbar */
         <div className="nav-container">
             {/* Header that contains the pages when desktop screen or the bars icon when tablet or cellphone */}
-            <header className="nav-header">
+            <header
+                className="nav-header"
+                style={{
+                    "--s": "60px", // Tamaño del patrón
+                    "--c1": "#004f79",
+                    "--c2": "#008db8",
+                    "--_g": "radial-gradient(#0000 60%, var(--c1) 61% 63%, #0000 64% 77%, var(--c1) 78% 80%, #0000 81%)",
+                    "--_c": ",#0000 75%, var(--c2) 0",
+                    background: `
+                    conic-gradient(at 12% 20% var(--_c)) calc(var(--s) * 0.44) calc(0.9 * var(--s)),
+                    conic-gradient(at 12% 20% var(--_c)) calc(var(--s) * -0.06) calc(0.4 * var(--s)),
+                    conic-gradient(at 20% 12% var(--_c)) calc(0.9 * var(--s)) calc(var(--s) * 0.44),
+                    conic-gradient(at 20% 12% var(--_c)) calc(0.4 * var(--s)) calc(var(--s) * -0.06),
+                    var(--_g),
+                    var(--_g) calc(var(--s) / 2) calc(var(--s) / 2) var(--c2)
+                    `,
+                    backgroundSize: "var(--s) var(--s)",
+                    color: "white",
+                    padding: "20px",
+                    textAlign: "center",
+                    position: "relative"
+                }}
+            >
                 {isMobile && // Only show icon when is tablet or cellphone
                     <FontAwesomeIcon
                         icon={faBars}
@@ -64,19 +92,19 @@ const Navbar = () => {
                     />
                 }
                 {!isSidebarOpen && // Hide user name from header when sidebar is open
-                    <h1 className="user-name">Guardia&nbsp;&nbsp;{name}</h1>
+                    <h1 className="user-name">Guardia.&nbsp;{name}</h1>
                 }
                 {!isMobile && // Show nav pages when desktop screen
                     <nav className="nav-links">
                         <button
-                            className={`nav-button ${activeView === "registro" ? "active" : ""}`}
-                            onClick={() => handleNavClick("registro")}
+                            className={`nav-button ${activeView === "Registro de visitas" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Registro de visitas")}
                         >
                             <FontAwesomeIcon icon={faPaperclip} />&nbsp;Registro
                         </button>
                         <button
-                            className={`nav-button ${activeView === "visitas" ? "active" : ""}`}
-                            onClick={() => handleNavClick("visitas")}
+                            className={`nav-button ${activeView === "Visitas activas" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Visitas activas")}
                         >
                             <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas activas
                         </button>
@@ -98,14 +126,14 @@ const Navbar = () => {
                     {isSidebarOpen &&
                         <nav className="nav-links-sidebar">
                             <button
-                                className={`nav-button ${activeView === "registro" ? "active" : ""}`}
-                                onClick={() => handleNavClick("registro")}
+                                className={`nav-button ${activeView === "Registro de visitas" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Registro de visitas")}
                             >
                                 <FontAwesomeIcon icon={faPaperclip} />&nbsp;&nbsp;Registro
                             </button>
                             <button
-                                className={`nav-button ${activeView === "visitas" ? "active" : ""}`}
-                                onClick={() => handleNavClick("visitas")}
+                                className={`nav-button ${activeView === "Visitas activas" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Visitas activas")}
                             >
                                 <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas
                             </button>
@@ -125,23 +153,19 @@ const Navbar = () => {
                     onClick={toggleSidebar}
                 />
 
-                {/* Welcome message for corresponding view */}
-                {activeView === "registro" ? (
-                    <div className="welcome-message">
-                        <p>Registro de visitas</p>
-                    </div>
-                ) : (
-                    <div className="welcome-message">
-                        <p>Visitas activas</p>
-                    </div>
-                )}
+                <div className="welcome-message">
+                    <p>{selectedOption}</p>
+                </div>
 
                 {/* Main container that contains the active view */}
                 <main className="nav-main">
-                    {activeView === "registro" ? (
-                        <></>
+                    {activeView === "Registro de visitas" ? (
+                        <Registro
+                            selectedOption={selectedOption}
+                            setSelectedOption={setSelectedOption}
+                        />
                     ) : (
-                        <></>
+                        <VisitasActivas />
                     )}
                 </main>
             </div>

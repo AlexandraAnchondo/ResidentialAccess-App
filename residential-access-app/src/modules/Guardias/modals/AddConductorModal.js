@@ -4,36 +4,32 @@ import {
     InputAdornment,
     Button,
     Box,
-    Typography
+    Typography,
 } from "@mui/material"
 import {
-    Person as PersonIcon,
-    Phone as PhoneIcon,
-    Email as EmailIcon,
+    People,
+    AddCard,
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
 import "../../../styles/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddResidenteModal = ({ show, onClose, onAdd }) => {
-
-    const isMobile = useMediaQuery("(max-width: 768px)")
-
+const AddConductorModal = ({ show, onClose, onAdd }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
-        telefono: "",
-        correo: ""
+        ine: ""
     })
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
 
     useEffect(() => {
         if (!show) {
             setFormData({
                 nombre: "",
                 apellido: "",
-                telefono: "",
-                correo: ""
+                ine: ""
             })
         }
     }, [show])
@@ -43,26 +39,13 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
         setFormData({ ...formData, [name]: value })
     }
 
-    const handlePhoneChange = (e) => {
-        const value = e.target.value.replace(/\D/g, "") // Elimina caracteres no numéricos
-        const formattedPhone = value
-            .slice(0, 10) // Limita a 10 dígitos
-            .replace(/(\d{3})(\d{3})(\d{0,4})/, "($1) $2-$3") // Formato (###) ###-####
-        setFormData({ ...formData, telefono: formattedPhone })
-    }
-
     const handleAcceptClick = () => {
         onAdd(formData)
         onClose()
     }
 
     const isFormValid = () => {
-        return (
-            formData.nombre &&
-            formData.apellido &&
-            formData.telefono &&
-            formData.correo
-        )
+        return formData.nombre && formData.apellido && formData.ine
     }
 
     if (!show) {
@@ -74,22 +57,8 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del residente
+                        Ingresa la información del conductor
                     </Typography>
-                    <div className="add-modal-close-button">
-                        <Button
-                            onClick={onClose}
-                            startIcon={<CloseIcon />}
-                            color="white"
-                            size={isMobile ? "small" : "large"}
-                            sx={{
-                                marginBottom: isMobile ? 0 : 4,
-                                marginLeft: isMobile ? 2 : 5,
-                                margin: "auto",
-                                padding:"auto"
-                            }}
-                        />
-                    </div>
                 </div>
                 <div className="add-modal-content">
                     <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
@@ -101,50 +70,35 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <PersonIcon />
+                                        <People />
                                     </InputAdornment>
                                 )
                             }}
                             fullWidth
                         />
                         <TextField
-                            label="Apellidos"
+                            label="Apellido"
                             name="apellido"
                             value={formData.apellido}
                             onChange={handleInputChange}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <PersonIcon />
+                                        <People />
                                     </InputAdornment>
                                 )
                             }}
                             fullWidth
                         />
                         <TextField
-                            label="Teléfono"
-                            name="telefono"
-                            value={formData.telefono}
-                            onChange={handlePhoneChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <PhoneIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                            inputProps={{ maxLength: 14 }}
-                        />
-                        <TextField
-                            label="Correo"
-                            name="correo"
-                            value={formData.correo}
+                            label="Ine"
+                            name="ine"
+                            value={formData.ine}
                             onChange={handleInputChange}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <EmailIcon />
+                                        <AddCard />
                                     </InputAdornment>
                                 )
                             }}
@@ -157,24 +111,23 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
                         onClick={handleAcceptClick}
                         variant="contained"
                         startIcon={<CheckIcon />}
-                        disabled={!isFormValid()} // Deshabilita el botón si el formulario no es válido
-                        sx={{
-                            backgroundColor: isFormValid() ? "#00a8cc" : "rgba(0, 0, 0, 0.12)", // Color principal o gris deshabilitado
-                            color: isFormValid() ? "#fff" : "rgba(0, 0, 0, 0.26)", // Color del texto según el estado
-                            "&:hover": {
-                                backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)" // Color en hover si está activo
-                            }
-                        }}
+                        disabled={!isFormValid()}
                         style={{ marginLeft: 20 }}
+                        size={isMobile ? "small" : "large"}
+                        sx={{
+                            backgroundColor: "#00a8cc",
+                            "&:hover": "#00a8ccCC"
+                        }}
                     >
                         Aceptar
                     </Button>
                     <Button
                         onClick={onClose}
                         variant="outlined"
-                        color="error"
+                        ine="error"
                         startIcon={<CloseIcon />}
                         style={{ marginLeft: 20 }}
+                        size={isMobile ? "small" : "large"}
                     >
                         Cancelar
                     </Button>
@@ -184,4 +137,4 @@ const AddResidenteModal = ({ show, onClose, onAdd }) => {
     )
 }
 
-export default AddResidenteModal
+export default AddConductorModal
