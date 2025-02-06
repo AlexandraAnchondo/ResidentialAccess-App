@@ -15,9 +15,12 @@ import {
     Numbers as NumbersIcon,
     QrCode as QRCodeIcon
 } from "@mui/icons-material"
-import "../../../styles/AddModal.css"
+import "../../../styles/General/AddModal.css"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, setSelectedRow, setSelectedConductor }) => {
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
     const [step, setStep] = useState(1) // Controla la vista (1 = cámara, 2 = check, 3 = formulario)
     const [formData, setFormData] = useState({
         numero_calle_tarjeton: "",
@@ -64,6 +67,20 @@ const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, s
                     <Typography variant="h5" component="h2" gutterBottom>
                         {step === 3 ? "Ingresa la información de la visita" : "Captura la información"}
                     </Typography>
+                    <div className="add-modal-close-button">
+                        <Button
+                            onClick={onClose}
+                            startIcon={<CloseIcon />}
+                            color="white"
+                            size={isMobile ? "small" : "large"}
+                            sx={{
+                                marginBottom: isMobile ? 0 : 4,
+                                marginLeft: isMobile ? 2 : 5,
+                                margin: "auto",
+                                padding:"auto"
+                            }}
+                        />
+                    </div>
                 </div>
 
                 {/* Paso 1: Botón de cámara */}

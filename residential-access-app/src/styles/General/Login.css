@@ -1,5 +1,5 @@
 /* Importar variables globales */
-@import '../styles/Colors.css';
+@import '../General/Colors.css';
 
 /* Evitar scroll y configurar fondo */
 body {
@@ -14,7 +14,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('../assets/background-residential-access.jpg') no-repeat center center fixed;
+    background: url('../../assets/background-residential-access.jpg') no-repeat center center fixed;
     background-size: cover;
     filter: grayscale(50%);
 }

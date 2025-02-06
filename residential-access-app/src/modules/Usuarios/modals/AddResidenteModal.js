@@ -13,7 +13,7 @@ import {
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
-import "../../../styles/AddModal.css"
+import "../../../styles/General/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddResidenteModal = ({ show, onClose, onAdd }) => {
