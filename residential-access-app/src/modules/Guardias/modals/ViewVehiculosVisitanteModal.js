@@ -10,6 +10,7 @@ import {
 import "../../../styles/AddModal.css"
 import DataTable from "../../../components/DataGrid"
 import AddVehiculoModal from "./AddVehiculoModal"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedVehiculo, selectedVehiculo, isRowSelected }) => {
     if (!show) {
@@ -62,6 +63,8 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
 
     const [showAddVehiculoModal, setShowAddVehiculoModal] = useState(false)
 
+    const isMobile = useMediaQuery("(max-width: 768px)")
+
     return (
         <div className="add-modal-overlay">
             <div className="add-modal">
@@ -78,7 +81,7 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
                         variant="contained"
                         onClick={() => setShowAddVehiculoModal(true)}
                         endIcon={<AddCircle />}
-                        sx={{ marginBottom: 2, marginTop: -5, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
+                        sx={{ marginBottom: isMobile ? 2 : 0, marginTop: isMobile ? -5 : 0, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
                     >Agregar vehículo</Button>
                     <Button
                         onClick={onClose}
