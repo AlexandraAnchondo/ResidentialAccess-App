@@ -15,8 +15,12 @@ import {
     Check as CheckIcon
 } from "@mui/icons-material"
 import "../../../styles/Usuarios/AddModal.css"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddVisitanteModal = ({ show, onClose, onAdd }) => {
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
+
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
@@ -76,6 +80,20 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                     <Typography variant="h5" component="h2" gutterBottom>
                         Ingresa la información del visitante
                     </Typography>
+                    <div className="add-modal-close-button">
+                        <Button
+                            onClick={onClose}
+                            startIcon={<CloseIcon />}
+                            color="white"
+                            size={isMobile ? "small" : "large"}
+                            sx={{
+                                marginBottom: isMobile ? 0 : 4,
+                                marginLeft: isMobile ? 2 : 5,
+                                margin: "auto",
+                                padding:"auto"
+                            }}
+                        />
+                    </div>
                 </div>
                 <div className="add-modal-content">
                     <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>

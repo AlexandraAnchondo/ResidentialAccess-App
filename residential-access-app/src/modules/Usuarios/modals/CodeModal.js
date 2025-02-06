@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import "../../../styles/Usuarios/CodeModal.css"
 import { Button } from "@mui/material"
-import { Check as CheckIcon, Cancel as CancelIcon } from "@mui/icons-material"
+import { Check as CheckIcon, Cancel as CancelIcon, Close } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const CodeModal = ({ show, onClose, existingCodes }) => {
@@ -63,6 +63,21 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
             <div className="code-modal">
                 <div className="code-modal-header">
                     <h2>¿Qué tipo de código desea crear?</h2>
+                    <div className="close-button">
+                        <Button
+                            onClick={handleCancelClick}
+                            startIcon={<Close />}
+                            color="white"
+                            size={isMobile ? "small" : "large"}
+                            sx={{
+                                marginBottom: isMobile ? 0 : 4,
+                                marginLeft: isMobile ? 2 : 5,
+                                margin: "auto",
+                                padding: "auto",
+                                justifyContent: "center"
+                            }}
+                        />
+                    </div>
                 </div>
                 <div className="code-modal-content">
                     <div className="code-modal-options">
