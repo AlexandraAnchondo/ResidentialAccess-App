@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
-import { FaIdCard, FaUserFriends, FaList } from "react-icons/fa"
+import { FaIdCard, FaUserFriends, FaList, FaUserPlus } from "react-icons/fa"
 import { Button } from "@mui/material"
-import { ArrowBack, AddCircle, DirectionsCar } from "@mui/icons-material"
+import { ArrowBack, AddCircle, DirectionsCar, CarCrash } from "@mui/icons-material"
 import DataTable from "../../components/DataGrid"
 import "../../styles/Guardias/Registro.css"
 import AddVehiculoModal from "./modals/AddVehiculoModal"
@@ -20,7 +20,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         { field: "telefono", headerAlign: "center", headerName: "Teléfono", flex: 1, minWidth: 150 },
         {
             field: "action",
-            headerName: "Acciones",
+            headerName: "Vehículos",
             flex: 1,
             minWidth: 150,
             headerAlign: "center",
@@ -28,8 +28,9 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             renderCell: (params) => (
                 <Button
                     onClick={() => handleViewVehiculoVisitanteClick(params?.row)}
+                    disabled={params.row.vehiculos == null}
                     sx={{
-                        backgroundColor: "#008db8",
+                        backgroundColor: params.row.vehiculos != null ? "#008db8" : "#ffff",
                         "&:hover": { backgroundColor: "#0a395f" },
                         color: "white",
                         border: "none",
@@ -37,7 +38,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                         borderRadius: "5px"
                     }}
                 >
-                    <DirectionsCar />
+                    {params.row.vehiculos != null ? <DirectionsCar /> : <CarCrash />}
                 </Button>
             )
         }
@@ -46,7 +47,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const rows_visitante = [
         { id: 1, calle: "Av. Libertador", numero: 123, nombre: "Alexandra", apellido: "Anchondo", telefono: "686-420-49-24", vehiculos: [{ id: "1", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "2", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] },
         { id: 2, calle: "Av. Libertador", numero: 456, nombre: "Benito", apellido: "Juarez", telefono: "686-453-4376", vehiculos: [{ id: "3", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "4", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] },
-        { id: 3, calle: "Av. Libertador", numero: 789, nombre: "Carlos", apellido: "Perez", telefono: "686-543-2178", vehiculos: [{ id: "5", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "6", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] }
+        { id: 3, calle: "Av. Libertador", numero: 789, nombre: "Carlos", apellido: "Perez", telefono: "686-543-2178" }
     ]
 
     const columns_vehiculo = [
@@ -56,7 +57,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         { field: "color", headerAlign: "center", headerName: "Color", flex: 1, minWidth: 150 },
         {
             field: "action",
-            headerName: "Acciones",
+            headerName: "Conductores",
             flex: 1,
             minWidth: 150,
             headerAlign: "center",
@@ -64,8 +65,9 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             renderCell: (params) => (
                 <Button
                     onClick={() => handleViewConductoresVehiculoClick(params?.row)}
+                    disabled={params.row.conductores == null}
                     sx={{
-                        backgroundColor: "#008db8",
+                        backgroundColor: params.row.conductores != null ? "#008db8" : "#ffff",
                         "&:hover": { backgroundColor: "#0a395f" },
                         color: "white",
                         border: "none",
@@ -73,7 +75,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                         borderRadius: "5px"
                     }}
                 >
-                    <FaUserFriends />
+                    {params.row.conductores != null ? <FaUserFriends /> : <FaUserPlus />}
                 </Button>
             )
         }
@@ -82,7 +84,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const rows_vehiculo = [
         { id: 1, placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo", conductores: [{ id: "1", nombre: "Alexandra", apellido: "Anchondo", identificacion: "1234567890" }, { id: "2", nombre: "Alexandra", apellido: "Anchondo", identificacion: "1234567890" }] },
         { id: 2, placas: "FJF9FS09", modelo: "Volkswagen Jetta", color: "Azul",  conductores: [{ id: "3", nombre: "Benito", apellido: "Juarez", identificacion: "0987654321" }] },
-        { id: 3, placas: "ORALE456H", modelo: "Honda Civic", color: "Negro", conductores: [{ id: "4", nombre: "Carlos", apellido: "Perez", identificacion: "9876543210" }] }
+        { id: 3, placas: "ORALE456H", modelo: "Honda Civic", color: "Negro" }
     ]
 
     const [rows, setRows] = useState([])
