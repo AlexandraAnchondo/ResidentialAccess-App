@@ -7,36 +7,29 @@ import {
     Typography
 } from "@mui/material"
 import {
-    Person as PersonIcon,
-    Phone as PhoneIcon,
-    DirectionsCar as CarIcon,
-    FormatListNumbered as LicensePlateIcon,
+    People,
+    AddCard,
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddVisitanteModal = ({ show, onClose, onAdd }) => {
-
-    const isMobile = useMediaQuery("(max-width: 768px)")
-
+const AddConductorModal = ({ show, onClose, onAdd }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
-        telefono: "",
-        placas: "",
-        modelo: ""
+        ine: ""
     })
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
 
     useEffect(() => {
         if (!show) {
             setFormData({
                 nombre: "",
                 apellido: "",
-                telefono: "",
-                placas: "",
-                modelo: ""
+                ine: ""
             })
         }
     }, [show])
@@ -46,27 +39,13 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
         setFormData({ ...formData, [name]: value })
     }
 
-    const handlePhoneChange = (e) => {
-        const value = e.target.value.replace(/\D/g, "") // Elimina caracteres no numéricos
-        const formattedPhone = value
-            .slice(0, 10) // Limita a 10 dígitos
-            .replace(/(\d{3})(\d{3})(\d{0,4})/, "($1) $2-$3") // Formato (###) ###-####
-        setFormData({ ...formData, telefono: formattedPhone })
-    }
-
     const handleAcceptClick = () => {
         onAdd(formData)
         onClose()
     }
 
     const isFormValid = () => {
-        return (
-            formData.nombre &&
-            formData.apellido &&
-            formData.telefono &&
-            formData.placas &&
-            formData.modelo
-        )
+        return formData.nombre && formData.apellido && formData.ine
     }
 
     if (!show) {
@@ -78,7 +57,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del visitante
+                        Ingresa la información del conductor
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
@@ -105,64 +84,35 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <PersonIcon />
+                                        <People />
                                     </InputAdornment>
                                 )
                             }}
                             fullWidth
                         />
                         <TextField
-                            label="Apellidos"
+                            label="Apellido"
                             name="apellido"
                             value={formData.apellido}
                             onChange={handleInputChange}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <PersonIcon />
+                                        <People />
                                     </InputAdornment>
                                 )
                             }}
                             fullWidth
                         />
                         <TextField
-                            label="Teléfono"
-                            name="telefono"
-                            value={formData.telefono}
-                            onChange={handlePhoneChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <PhoneIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                            inputProps={{ maxLength: 14 }}
-                        />
-                        <TextField
-                            label="Placas"
-                            name="placas"
-                            value={formData.placas}
+                            label="Ine"
+                            name="ine"
+                            value={formData.ine}
                             onChange={handleInputChange}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <LicensePlateIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <TextField
-                            label="Modelo"
-                            name="modelo"
-                            value={formData.modelo}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <CarIcon />
+                                        <AddCard />
                                     </InputAdornment>
                                 )
                             }}
@@ -170,29 +120,28 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                         />
                     </Box>
                 </div>
-                <div className="add-modal-buttons" style={{ marginTop: 16 }}>
+                <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     <Button
                         onClick={handleAcceptClick}
                         variant="contained"
                         startIcon={<CheckIcon />}
-                        disabled={!isFormValid()} // Deshabilita el botón si el formulario no es válido
+                        disabled={!isFormValid()}
+                        style={{ marginLeft: 20 }}
+                        size={isMobile ? "small" : "large"}
                         sx={{
-                            backgroundColor: isFormValid() ? "#00a8cc" : "rgba(0, 0, 0, 0.12)", // Color principal o gris deshabilitado
-                            color: isFormValid() ? "#fff" : "rgba(0, 0, 0, 0.26)", // Color del texto según el estado
-                            "&:hover": {
-                                backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)" // Color en hover si está activo
-                            }
+                            backgroundColor: "#00a8cc",
+                            "&:hover": "#00a8ccCC"
                         }}
-                        style={{ marginLeft: 20, marginBottom: 20 }}
                     >
                         Aceptar
                     </Button>
                     <Button
                         onClick={onClose}
                         variant="outlined"
-                        color="error"
+                        ine="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20, marginBottom: 20 }}
+                        style={{ marginLeft: 20 }}
+                        size={isMobile ? "small" : "large"}
                     >
                         Cancelar
                     </Button>
@@ -202,4 +151,4 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
     )
 }
 
-export default AddVisitanteModal
+export default AddConductorModal

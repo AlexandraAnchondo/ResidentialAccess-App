@@ -1,4 +1,4 @@
-@import '../Colors.css';
+@import '../General/Colors.css';
 
 .auto-no-data {
     display: flex; 
@@ -74,7 +74,7 @@
         align-items: center; 
     }
 
-    .no-data {
+    .auto-no-data {
         margin: 0;
         font-size: 1.5rem;
     }

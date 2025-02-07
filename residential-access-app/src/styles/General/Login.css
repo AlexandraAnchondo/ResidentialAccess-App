@@ -1,5 +1,5 @@
 /* Importar variables globales */
-@import '../styles/Colors.css';
+@import '../General/Colors.css';
 
 /* Evitar scroll y configurar fondo */
 body {
@@ -14,7 +14,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('../assets/background-residential-access.jpg') no-repeat center center fixed;
+    background: url('../../assets/background-residential-access.jpg') no-repeat center center fixed;
     background-size: cover;
     filter: grayscale(50%);
 }
@@ -95,7 +95,6 @@ input::placeholder {
     height: auto; /* Mantiene su altura correcta */
 }
 
-
 .login-box button {
     background-color: var(--primary-color);
     color: white;
@@ -127,4 +126,56 @@ input::placeholder {
 
 .no-account a:hover {
     text-decoration: underline;
+}
+
+@media screen and (max-width: 768px) {
+    .login-box {
+        width: 200px;
+        padding: 10px 50px;
+    }
+    
+    .login-box h2 {
+        font-size: 2rem;
+    }
+
+    .input-container {
+        margin-bottom: 20px;
+    }
+
+    .input-container input {
+        font-size: .9rem;
+        width: 100%;
+        margin: 0;
+    }
+
+    input::placeholder {
+        font-size: 0.8rem;
+    }
+
+    .input-container .icon {
+        font-size: .8rem;
+    }
+
+    .login-options {
+        margin-bottom: 20px;
+        text-align: left;
+        font-size: .8rem;
+        margin-left: 0;
+    }
+
+    .login-options input[type="checkbox"] {
+        margin: 0; /* Elimina márgenes extra alrededor del checkbox */
+        width: auto; /* Asegura que el tamaño del checkbox sea el predeterminado */
+        height: auto; /* Mantiene su altura correcta */
+    }
+
+    .login-box button {
+        font-size: .8rem;
+        width: 100%;
+    }
+
+    .no-account {
+        margin-top: 15px;
+        font-size: .8rem;
+    }
 }

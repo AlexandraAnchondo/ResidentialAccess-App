@@ -7,8 +7,9 @@ import Visitantes from "./Visitantes"
 import Residentes from "./Residentes"
 import Autos from "./Autos"
 import HomePage from "./HomePage"
-import "../../styles/Usuarios/Navbar.css"
+import "../../styles/General/Navbar.css"
 import { Button } from "@mui/material"
+import { useNavigate } from "react-router-dom"
 
 const Navbar = () => {
     const [activeView, setActiveView] = useState("home")
@@ -16,6 +17,7 @@ const Navbar = () => {
     const [name, setName] = useState("Alexandra Anchondo Robles")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
+    const navigate = useNavigate() // Hook para redirigir a otras páginas
 
     useEffect(() => {
         if (isSidebarOpen || showLogoutModal) {
@@ -43,7 +45,7 @@ const Navbar = () => {
     /* Function for closing the logout modal and redirecting to log in page*/
     const handleLogoutConfirm = () => {
         setShowLogoutModal(false)
-        window.location.href = "http://localhost:3000/"
+        navigate("/login")
     }
 
     /* Function for closing the logout modal when cancel button is pressed */

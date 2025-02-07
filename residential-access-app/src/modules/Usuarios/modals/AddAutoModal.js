@@ -15,7 +15,7 @@ import {
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
-import "../../../styles/Usuarios/AddModal.css"
+import "../../../styles/General/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
@@ -150,7 +150,7 @@ const AddAutoModal = ({ show, onClose, onAdd, availableColors }) => {
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20 }}
+                        style={{ marginLeft: 20, marginBottom:10 }}
                         size={isMobile ? "small" : "large"}
                     >
                         Cancelar
