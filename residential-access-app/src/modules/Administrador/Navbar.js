@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faPaperclip, faReceipt, faBars } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faPaperclip, faReceipt, faBars, faHomeUser, faUserLock } from "@fortawesome/free-solid-svg-icons"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.css"
 import { Button } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import Registro from "./Registro"
-import VisitasActivas from "./VisitasActivas"
 
 const Navbar = () => {
-    const [activeView, setActiveView] = useState("Registro de visitas")
+    const [activeView, setActiveView] = useState("Registro de usuarios")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [name, setName] = useState("Alexandra Anchondo Robles")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
     const navigate = useNavigate() // Hook para redirigir a otras páginas
-    const [selectedOption, setSelectedOption] = useState("Registro de visitas")
+    const [selectedOption, setSelectedOption] = useState("Registro de usuarios")
 
     useEffect(() => {
         if (isSidebarOpen || showLogoutModal) {
@@ -92,13 +91,13 @@ const Navbar = () => {
                     />
                 }
                 {!isSidebarOpen && // Hide user name from header when sidebar is open
-                    <h1 className="user-name">Guardia.&nbsp;{name}</h1>
+                    <h1 className="user-name">Admin.&nbsp;{name}</h1>
                 }
                 {!isMobile && // Show nav pages when desktop screen
                     <nav className="nav-links">
                         <button
-                            className={`nav-button ${activeView === "Registro de visitas" ? "active" : ""}`}
-                            onClick={() => handleNavClick("Registro de visitas")}
+                            className={`nav-button ${activeView === "Registro de usuarios" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Registro de usuarios")}
                         >
                             <FontAwesomeIcon icon={faPaperclip} />&nbsp;Registro
                         </button>
@@ -107,6 +106,18 @@ const Navbar = () => {
                             onClick={() => handleNavClick("Visitas activas")}
                         >
                             <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas activas
+                        </button>
+                        <button
+                            className={`nav-button ${activeView === "Residentes" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Residentes")}
+                        >
+                            <FontAwesomeIcon icon={faHomeUser} />&nbsp;Residentes
+                        </button>
+                        <button
+                            className={`nav-button ${activeView === "Guardias" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Guardias")}
+                        >
+                            <FontAwesomeIcon icon={faUserLock} />&nbsp;Guardias
                         </button>
                         <button className="nav-button logout" onClick={handleLogoutClick}>
                             <FontAwesomeIcon icon={faDoorOpen} />
@@ -126,8 +137,8 @@ const Navbar = () => {
                     {isSidebarOpen &&
                         <nav className="nav-links-sidebar">
                             <button
-                                className={`nav-button ${activeView === "Registro de visitas" ? "active" : ""}`}
-                                onClick={() => handleNavClick("Registro de visitas")}
+                                className={`nav-button ${activeView === "Registro de usuarios" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Registro de usuarios")}
                             >
                                 <FontAwesomeIcon icon={faPaperclip} />&nbsp;&nbsp;Registro
                             </button>
@@ -135,7 +146,19 @@ const Navbar = () => {
                                 className={`nav-button ${activeView === "Visitas activas" ? "active" : ""}`}
                                 onClick={() => handleNavClick("Visitas activas")}
                             >
-                                <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas
+                                <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas activas
+                            </button>
+                            <button
+                                className={`nav-button ${activeView === "Residentes" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Residentes")}
+                            >
+                                <FontAwesomeIcon icon={faHomeUser} />&nbsp;Residentes
+                            </button>
+                            <button
+                                className={`nav-button ${activeView === "Guardias" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Guardias")}
+                            >
+                                <FontAwesomeIcon icon={faUserLock} />&nbsp;Guardias
                             </button>
                             <button className="nav-button logout" onClick={handleLogoutClick}>
                                 <FontAwesomeIcon icon={faDoorOpen} />&nbsp;&nbsp;Cerrar sesión
@@ -159,13 +182,13 @@ const Navbar = () => {
 
                 {/* Main container that contains the active view */}
                 <main className="nav-main">
-                    {activeView === "Registro de visitas" ? (
+                    {activeView === "Registro de usuarios" ? (
                         <Registro
                             selectedOption={selectedOption}
-                            setSelectedOption={setSelectedOption}
+                            setSelectedOption={setSelectedOption} 
                         />
                     ) : (
-                        <VisitasActivas />
+                        <></>
                     )}
                 </main>
             </div>

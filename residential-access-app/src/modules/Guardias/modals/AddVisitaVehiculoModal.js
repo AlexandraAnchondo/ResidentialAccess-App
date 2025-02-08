@@ -13,7 +13,8 @@ import {
     AddCard,
     House as HouseIcon,
     Numbers as NumbersIcon,
-    QrCode as QRCodeIcon
+    QrCode as QRCodeIcon,
+    QrCode
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -21,7 +22,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, setSelectedRow, setSelectedConductor }) => {
 
     const isMobile = useMediaQuery("(max-width: 768px)")
-    const [step, setStep] = useState(1) // Controla la vista (1 = cámara, 2 = check, 3 = formulario)
+    const [step, setStep] = useState(1) // Controla la vista (1 = cámara, 2 = check, 3 = formulario 4 = confirmación)
     const [formData, setFormData] = useState({
         numero_calle_tarjeton: "",
         calle: "",
@@ -65,7 +66,7 @@ const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, s
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        {step === 3 ? "Ingresa la información de la visita" : "Captura la información"}
+                        {step === 3 ? "Ingresa la información de la visita" : step === 4 ? "Información ingresada" :  "Captura la información"}
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
@@ -107,12 +108,12 @@ const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, s
                     </div>
                 )}
 
-                {/* Paso 2: Check gigante + Botón Siguiente */}
+                {/* Paso 2: QR gigante + Botón Siguiente */}
                 {step === 2 && (
-                    <div className="add-modal-content-camera-check" style={{ textAlign: "center", alignItems: "center" }}>
-                        <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                    <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                        <QrCode className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                         <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                            Captura exitosa
+                            Código verificado
                         </Typography>
                     </div>
                 )}
@@ -162,6 +163,16 @@ const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, s
                     </div>
                 )}
 
+                {/* Paso 4: Check gigante */}
+                {step === 4 && (
+                    <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                        <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                        <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
+                            Captura exitosa
+                        </Typography>
+                    </div>
+                )}
+
                 {/* Botones generales */}
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     {step === 2 && (
@@ -178,6 +189,20 @@ const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, s
                         </Button>
                     )}
                     {step === 3 && (
+                        <Button
+                            onClick={() => setStep(4)}
+                            variant="contained"
+                            startIcon={<CheckIcon />}
+                            disabled={!isFormValid()}
+                            sx={{
+                                backgroundColor: "#00a8cc",
+                                "&:hover": { backgroundColor: "#008ba3" }
+                            }}
+                        >
+                            Aceptar
+                        </Button>
+                    )}
+                    {step === 4 && (
                         <Button
                             onClick={handleAcceptClick}
                             variant="contained"
