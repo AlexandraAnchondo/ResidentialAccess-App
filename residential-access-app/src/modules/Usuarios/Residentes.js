@@ -5,7 +5,7 @@ import { faUserGroup, faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/fr
 import { AddCircle } from "@mui/icons-material"
 import AddResidenteModal from "./modals/AddResidenteModal"
 import { Button, Typography } from "@mui/material"
-import DeleteModal from "./modals/DeleteModal"
+import DeleteModal from "../../components/modals/DeleteModal"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const Residentes = () => {
@@ -14,7 +14,8 @@ const Residentes = () => {
             nombre: "Alexandra",
             apellido: "Anchondo Robles",
             telefono: "686-420-49-24",
-            correo: "correo1@gmail.com"
+            correo: "correo1@gmail.com",
+            principal: true
         },
         {
             nombre: "Hael Giovanni",
@@ -42,8 +43,9 @@ const Residentes = () => {
         setShowModal(true)
     }
 
-    const handleDeleteClick = () => {
+    const handleDeleteClick = (index) => {
         setShowDeleteModal(true)
+        setIndexToDelete(index)
     }
 
     const handleCloseModal = () => {
@@ -60,7 +62,7 @@ const Residentes = () => {
     }
 
     const handleBorrarResidente = (index) => {
-        const newResidentes = residentesData.filter((_, i) => i !== index)
+        const newResidentes = residentesData.filter((_, i) => i !== indexToDelete)
         setResidentesData(newResidentes)
         setShowDeleteModal(false)
     }
@@ -110,7 +112,7 @@ const Residentes = () => {
                         {residentesData.map((item, index) => (
                             <div className="resident-container" key={index}>
                                 <section className="resident-info">
-                                    <h3>Información del residente</h3>
+                                    <h3>Información del residente {item.principal ? "principal" : ""}</h3>
                                     <div className="resident-info-container">
                                         <div className="resident-info-item ">
                                             <label>Nombre:</label>
@@ -143,13 +145,12 @@ const Residentes = () => {
                                         Editar
                                     </Button>
                                 </section>
-                                <Button
-                                    onClick={() => {
-                                        handleDeleteClick()
-                                        setIndexToDelete(index)
-                                    }}
-                                ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: "20px" }} />
-                                </Button>
+                                {!item.principal &&
+                                    <Button
+                                        onClick={() => handleDeleteClick(index)}
+                                    ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: "20px" }} />
+                                    </Button>
+                                }
                             </div>
                         ))}
                         <Button
@@ -178,7 +179,7 @@ const Residentes = () => {
             <DeleteModal
                 showDeleteModal={showDeleteModal}
                 onCloseDeleteModal={handleCloseDeleteModal}
-                onDelete={() => handleBorrarResidente(indexToDelete)}
+                onDelete={handleBorrarResidente}
             />
         </div>
     )

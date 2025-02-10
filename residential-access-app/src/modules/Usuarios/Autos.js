@@ -5,7 +5,7 @@ import { faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-
 import AddAutoModal from "./modals/AddAutoModal"
 import { Button, Typography } from "@mui/material"
 import { AddCircle, DirectionsCar as CarIcon, Lock, LockOpen } from "@mui/icons-material"
-import DeleteModal from "./modals/DeleteModal"
+import DeleteModal from "../../components/modals/DeleteModal"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const Autos = () => {
@@ -53,16 +53,17 @@ const Autos = () => {
         setShowModal(false)
     }
 
-    const handleDeleteClick = () => {
+    const handleDeleteClick = (index) => {
         setShowDeleteModal(true)
+        setIndexToDelete(index)
     }
 
     const handleCloseDeleteModal = () => {
         setShowDeleteModal(false)
     }
 
-    const handleBorrarAuto = (index) => {
-        const newAutos = autosData.filter((_, i) => i !== index)
+    const handleBorrarAuto = () => {
+        const newAutos = autosData.filter((_, i) => i !== indexToDelete)
         setAutosData(newAutos)
         setShowDeleteModal(false)
     }
@@ -155,10 +156,7 @@ const Autos = () => {
                                     </Button>
                                     <Button
                                         variant="text"
-                                        onClick={() => {
-                                            handleDeleteClick()
-                                            setIndexToDelete(index)
-                                        }}
+                                        onClick={() => handleDeleteClick(index)}
                                         color="error"
                                         startIcon={<FontAwesomeIcon icon={faTrashAlt} />}
                                         size="small"
@@ -193,7 +191,7 @@ const Autos = () => {
             <DeleteModal
                 showDeleteModal={showDeleteModal}
                 onCloseDeleteModal={handleCloseDeleteModal}
-                onDelete={() => handleBorrarAuto(indexToDelete)}
+                onDelete={handleBorrarAuto}
             />
         </div>
     )

@@ -1,6 +1,6 @@
 import React from "react"
 import { Button } from "@mui/material"
-import "../../../styles/Usuarios/DeleteModal.css"
+import "../../styles/General/DeleteModal.css"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const DeleteModal =({ showDeleteModal, onCloseDeleteModal, onDelete }) => {

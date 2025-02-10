@@ -6,6 +6,9 @@ import "../../styles/General/Navbar.css"
 import { Button } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import Registro from "./Registro"
+import Visitas from "./Visitas"
+import Domicilios from "./Domicilios"
+import Guardias from "./Guardias"
 
 const Navbar = () => {
     const [activeView, setActiveView] = useState("Registro de usuarios")
@@ -102,16 +105,16 @@ const Navbar = () => {
                             <FontAwesomeIcon icon={faPaperclip} />&nbsp;Registro
                         </button>
                         <button
-                            className={`nav-button ${activeView === "Visitas activas" ? "active" : ""}`}
-                            onClick={() => handleNavClick("Visitas activas")}
+                            className={`nav-button ${activeView === "Visitas" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Visitas")}
                         >
-                            <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas activas
+                            <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas
                         </button>
                         <button
-                            className={`nav-button ${activeView === "Residentes" ? "active" : ""}`}
-                            onClick={() => handleNavClick("Residentes")}
+                            className={`nav-button ${activeView === "Domicilios" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Domicilios")}
                         >
-                            <FontAwesomeIcon icon={faHomeUser} />&nbsp;Residentes
+                            <FontAwesomeIcon icon={faHomeUser} />&nbsp;Domicilios
                         </button>
                         <button
                             className={`nav-button ${activeView === "Guardias" ? "active" : ""}`}
@@ -143,16 +146,16 @@ const Navbar = () => {
                                 <FontAwesomeIcon icon={faPaperclip} />&nbsp;&nbsp;Registro
                             </button>
                             <button
-                                className={`nav-button ${activeView === "Visitas activas" ? "active" : ""}`}
-                                onClick={() => handleNavClick("Visitas activas")}
+                                className={`nav-button ${activeView === "Visitas" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Visitas")}
                             >
-                                <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas activas
+                                <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas
                             </button>
                             <button
-                                className={`nav-button ${activeView === "Residentes" ? "active" : ""}`}
-                                onClick={() => handleNavClick("Residentes")}
+                                className={`nav-button ${activeView === "Domicilios" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Domicilios")}
                             >
-                                <FontAwesomeIcon icon={faHomeUser} />&nbsp;Residentes
+                                <FontAwesomeIcon icon={faHomeUser} />&nbsp;Domicilios
                             </button>
                             <button
                                 className={`nav-button ${activeView === "Guardias" ? "active" : ""}`}
@@ -185,11 +188,16 @@ const Navbar = () => {
                     {activeView === "Registro de usuarios" ? (
                         <Registro
                             selectedOption={selectedOption}
-                            setSelectedOption={setSelectedOption} 
+                            setSelectedOption={setSelectedOption}
                         />
+                    ) : activeView === "Visitas"? (
+                        <Visitas />
+                    ) : activeView === "Domicilios"? (
+                        <Domicilios />
                     ) : (
-                        <></>
-                    )}
+                        <Guardias />
+                    )
+                    }
                 </main>
             </div>
 

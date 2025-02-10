@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUserGroup, faTrashAlt, faPencil, faCircleInfo, faLock, faUnlock } from "@fortawesome/free-solid-svg-icons"
 import { AddCircle } from "@mui/icons-material"
 import AddVisitanteModal from "./modals/AddVisitanteModal"
-import DeleteModal from "./modals/DeleteModal"
+import DeleteModal from "../../components/modals/DeleteModal"
 import { Button, Typography } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
@@ -46,8 +46,9 @@ const Visitantes = () => {
         setShowModal(true)
     }
 
-    const handleDeleteClick = () => {
+    const handleDeleteClick = (index) => {
         setShowDeleteModal(true)
+        setIndexToDelete(index)
     }
 
     const handleCloseModal = () => {
@@ -67,7 +68,7 @@ const Visitantes = () => {
     }
 
     const handleBorrarVisitante = (index) => {
-        const newVisitantes = visitantesData.filter((_, i) => i !== index)
+        const newVisitantes = visitantesData.filter((_, i) => i !== indexToDelete)
         setVisitantesData(newVisitantes)
         setShowDeleteModal(false)
     }
@@ -180,10 +181,7 @@ const Visitantes = () => {
                                         {item.bloqueado ? "SIN ACCESO" : "CON ACCESO"}
                                     </Button>
                                 </section>
-                                <Button onClick={ () =>{
-                                    handleDeleteClick()
-                                    setIndexToDelete(index)
-                                }}
+                                <Button onClick={ () => handleDeleteClick(index)}
                                 ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: "20px" }} />
                                 </Button>
                             </div>
@@ -216,7 +214,7 @@ const Visitantes = () => {
             <DeleteModal
                 showDeleteModal={showDeleteModal}
                 onCloseDeleteModal={handleCloseDeleteModal}
-                onDelete={() => handleBorrarVisitante(indexToDelete)}
+                onDelete={handleBorrarVisitante}
             />
         </div>
     )

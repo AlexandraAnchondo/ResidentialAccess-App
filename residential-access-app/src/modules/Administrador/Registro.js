@@ -101,30 +101,110 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             ) : selectedOption === "Residente" || selectedOption === "Guardia" ? (
                 <div className={selectedOption.toLowerCase() + "-container"}>
                     <div className={selectedOption.toLowerCase() + "-header"}>
-                        <Typography variant="h5" component="h2" gutterBottom color="white" margin={0} fontFamily="'Lucida Sans', sans-serif" fontWeight="bold">
+                        <Typography
+                            variant="h5"
+                            component="h2"
+                            gutterBottom
+                            color="white"
+                            margin={0}
+                            fontFamily="'Lucida Sans', sans-serif"
+                            fontWeight="bold">
                             {isSaved ? "La información se ha registrado correctamente" : `Ingresa la información del ${selectedOption.toLowerCase()}`}
                         </Typography>
                     </div>
                     <div className={selectedOption.toLowerCase() + "-content"}>
                         {!isSaved && <>
                             <Box className={selectedOption.toLowerCase() + "-options"}>
-                                <TextField label="Nombre" name="nombre" value={selectedOption === "Residente" ? formResidenteData.nombre : formGuardiaData.nombre} onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)} fullWidth InputProps={{ startAdornment: (<InputAdornment position="start"> <People /> </InputAdornment>) }} />
-                                <TextField label="Apellido" name="apellido" value={selectedOption === "Residente" ? formResidenteData.apellido : formGuardiaData.apellido} onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)} fullWidth InputProps={{ startAdornment: (<InputAdornment position="start"> <People /> </InputAdornment>) }} />
-                                <TextField label="INE" name="ine" value={selectedOption === "Residente" ? formResidenteData.ine : formGuardiaData.ine} onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)} fullWidth InputProps={{ startAdornment: (<InputAdornment position="start"> <AddCard /> </InputAdornment>) }} />
-                                <TextField label="Teléfono" name="telefono" value={selectedOption === "Residente" ? formResidenteData.telefono : formGuardiaData.telefono} onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)} fullWidth InputProps={{ startAdornment: (<InputAdornment position="start"> <Phone /> </InputAdornment>) }} />
-                                <TextField label="Correo" name="correo" value={selectedOption === "Residente" ? formResidenteData.correo : formGuardiaData.correo} onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)} fullWidth InputProps={{ startAdornment: (<InputAdornment position="start"> <Email /> </InputAdornment>) }} />
+                                <TextField
+                                    label="Nombre"
+                                    name="nombre"
+                                    value={selectedOption === "Residente" ? formResidenteData.nombre : formGuardiaData.nombre}
+                                    onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
+                                    fullWidth
+                                    InputProps={{ startAdornment: (<InputAdornment position="start"> <People /> </InputAdornment>) }}
+                                />
+                                <TextField
+                                    label="Apellido"
+                                    name="apellido"
+                                    value={selectedOption === "Residente" ? formResidenteData.apellido : formGuardiaData.apellido}
+                                    onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
+                                    fullWidth
+                                    InputProps={{ startAdornment: (<InputAdornment position="start"> <People /> </InputAdornment>) }}
+                                />
+                                <TextField
+                                    label="INE"
+                                    name="ine"
+                                    value={selectedOption === "Residente" ? formResidenteData.ine : formGuardiaData.ine}
+                                    onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
+                                    fullWidth
+                                    InputProps={{ startAdornment: (<InputAdornment position="start"> <AddCard /> </InputAdornment>) }}
+                                />
+                                <TextField
+                                    label="Teléfono"
+                                    name="telefono"
+                                    value={selectedOption === "Residente" ? formResidenteData.telefono : formGuardiaData.telefono}
+                                    onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
+                                    fullWidth
+                                    InputProps={{ startAdornment: (<InputAdornment position="start"> <Phone /> </InputAdornment>) }}
+                                />
+                                <TextField
+                                    label="Correo"
+                                    name="correo"
+                                    value={selectedOption === "Residente" ? formResidenteData.correo : formGuardiaData.correo}
+                                    onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
+                                    fullWidth
+                                    InputProps={{ startAdornment: (<InputAdornment position="start"> <Email /> </InputAdornment>) }}
+                                />
                                 {selectedOption === "Residente" ? (
-                                    <Select name="direccion" value={formResidenteData.direccion} onChange={(e) => handleInputChange(e, setFormResidenteData)} displayEmpty fullWidth startAdornment={<InputAdornment position="start"> <House /> </InputAdornment>}>
-                                        <MenuItem value="" disabled>Selecciona la dirección</MenuItem>
+                                    <Select name="direccion"
+                                        value={formResidenteData.direccion}
+                                        onChange={(e) => handleInputChange(e, setFormResidenteData)}
+                                        displayEmpty
+                                        fullWidth
+                                        startAdornment={<InputAdornment position="start"> <House /> </InputAdornment>}>
+                                        <MenuItem
+                                            value=""
+                                            disabled>
+                                            Selecciona la dirección
+                                        </MenuItem>
                                         {direcciones.map(direccion => (<MenuItem key={direccion} value={direccion}>{direccion}</MenuItem>))}
                                     </Select>
                                 ) : (
-                                    <TextField label="RFC" name="rfc" value={formGuardiaData.rfc} onChange={(e) => handleInputChange(e, setFormGuardiaData)} fullWidth />
+                                    <TextField
+                                        label="RFC"
+                                        name="rfc"
+                                        value={formGuardiaData.rfc}
+                                        onChange={(e) => handleInputChange(e, setFormGuardiaData)}
+                                        fullWidth
+                                        InputProps={{ startAdornment: (<InputAdornment position="start"> <FaList /> </InputAdornment>) }}
+                                    />
                                 )}
                             </Box>
-                            <Button onClick={handleSaveClick} variant="contained" startIcon={<Save />} disabled={!isFormValid(selectedOption === "Residente" ? formResidenteData : formGuardiaData)} size={isMobile ? "small" : "large"} sx={{ minWidth: "100%", marginTop: "20px", backgroundColor: "#81c656", "&:hover": { backgroundColor: "#5f933f" } }}>Guardar</Button>
+                            <Button
+                                onClick={handleSaveClick}
+                                variant="contained"
+                                startIcon={<Save />}
+                                disabled={!isFormValid(selectedOption === "Residente" ? formResidenteData : formGuardiaData)}
+                                size={isMobile ? "small" : "large"}
+                                sx={{ minWidth: "100%", marginTop: "20px", backgroundColor: "#81c656", "&:hover": { backgroundColor: "#5f933f" } }}>
+                                Guardar
+                            </Button>
                         </>}
-                        <Button variant="contained" endIcon={isSaved ? <CheckCircle /> : <ArrowBack />} sx={{ minWidth: "100%", marginTop: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }} onClick={handleBackClick}>{isSaved ? "Aceptar" : "Atrás"}</Button>
+                        {isSaved &&
+                            <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                                <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                                <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
+                                    Captura exitosa
+                                </Typography>
+                            </div>
+                        }
+                        <Button
+                            variant="contained"
+                            endIcon={isSaved ? <CheckCircle /> : <ArrowBack />}
+                            sx={{ minWidth: "100%", marginTop: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                            onClick={handleBackClick}>
+                            {isSaved ? "Aceptar" : "Atrás"}
+                        </Button>
                     </div>
                 </div>
             ) : null}
