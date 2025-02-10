@@ -102,8 +102,8 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 <div className={selectedOption.toLowerCase() + "-container"}>
                     <div className={selectedOption.toLowerCase() + "-header"}>
                         <Typography
-                            variant="h5"
-                            component="h2"
+                            variant={!isMobile ? "h5" : "h6"}
+                            component={!isMobile ? "h2" : "h4"}
                             gutterBottom
                             color="white"
                             margin={0}

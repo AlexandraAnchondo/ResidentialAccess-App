@@ -91,6 +91,34 @@
         margin-top: 10px;
     }
 
+    .residente-header {
+        margin: 20px;
+    }
+
+    .residente-content {
+        width: 70%;
+    }
+
+    .residente-options {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .guardia-header {
+        margin: 20px;
+    }
+
+    .guardia-content {
+        width: 70%;
+    }
+
+    .guardia-options {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
 } 
 
 @media screen and (min-width: 769px) and (max-width: 1068px) {

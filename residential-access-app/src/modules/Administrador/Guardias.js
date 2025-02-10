@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react"
 import "../../styles/Administrador/Guardias.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faList, faCar, faHomeUser } from "@fortawesome/free-solid-svg-icons"
-import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon } from "@mui/icons-material"
+import { faList } from "@fortawesome/free-solid-svg-icons"
+import { Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon } from "@mui/icons-material"
 import DataTable from "../../components/DataGrid"
-import { Button, IconButton } from "@mui/material"
+import { IconButton } from "@mui/material"
 import DeleteModal from "../../components/modals/DeleteModal"
 
 const Guardias = () => {
