@@ -22,7 +22,8 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
-        color: ""
+        color: "",
+        bloqueado: false
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
@@ -34,7 +35,8 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
             setFormData({
                 placas: "",
                 modelo: "",
-                color: ""
+                color: "",
+                bloqueado: false
             })
         }
     }, [show])

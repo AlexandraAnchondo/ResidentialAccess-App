@@ -1,49 +1,53 @@
 import React, { useState, useEffect } from "react"
 import { FaList, FaHouseUser, FaUserLock } from "react-icons/fa"
 import { Button, Typography, Box, TextField, InputAdornment, Select, MenuItem } from "@mui/material"
-import { ArrowBack, AddCard, People, Save, House, Phone, Email, CheckCircle } from "@mui/icons-material"
+import { ArrowBack, AddCard, People, Save, House, Phone, Email, CheckCircle, CancelRounded } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/Administrador/Registro.css"
+
+import useDomicilios from "../../hooks/domicilio.hook"
+import useUsuario from "../../hooks/usuario.hook"
 
 const Registro = ({ selectedOption, setSelectedOption }) => {
     const isMobile = useMediaQuery("(max-width: 768px)")
 
     const [formResidenteData, setFormResidenteData] = useState({
         nombre: "",
-        apellido: "",
+        apellidos: "",
         ine: "",
-        telefono: "",
-        correo: "",
-        direccion: ""
+        num_telefono: "",
+        correo_electronico: "",
+        id_domicilio: ""
     })
-
     const [formGuardiaData, setFormGuardiaData] = useState({
         nombre: "",
-        apellido: "",
+        apellidos: "",
         ine: "",
-        telefono: "",
-        correo: "",
+        num_telefono: "",
+        correo_electronico: "",
         rfc: ""
     })
-
     const [isSaved, setIsSaved] = useState(false)
-    const direcciones = ["Av. Mallorca 1110", "Av. Espierba 9302", "Av. De la bruma 5643"]
+    const [isFailure, setIsFailure] = useState(false)
+
+    const { domicilios } = useDomicilios(["id", "calle", "numero_calle"])
+    const { saveUsuario, loading } = useUsuario()
 
     useEffect(() => {
         setFormResidenteData({
             nombre: "",
-            apellido: "",
+            apellidos: "",
             ine: "",
-            telefono: "",
-            correo: "",
-            direccion: ""
+            num_telefono: "",
+            correo_electronico: "",
+            id_domicilio: ""
         })
         setFormGuardiaData({
             nombre: "",
-            apellido: "",
+            apellidos: "",
             ine: "",
-            telefono: "",
-            correo: "",
+            num_telefono: "",
+            correo_electronico: "",
             rfc: ""
         })
     }, [])
@@ -61,30 +65,43 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         setSelectedOption("Registro de usuarios")
         setFormResidenteData({
             nombre: "",
-            apellido: "",
+            apellidos: "",
             ine: "",
-            telefono: "",
-            correo: "",
-            direccion: ""
+            num_telefono: "",
+            correo_electronico: "",
+            id_domicilio: ""
         })
         setFormGuardiaData({
             nombre: "",
-            apellido: "",
+            apellidos: "",
             ine: "",
-            telefono: "",
-            correo: "",
+            num_telefono: "",
+            correo_electronico: "",
             rfc: ""
         })
         setIsSaved(false)
+        setIsFailure(false)
     }
 
     const isFormValid = (formData) => {
         return Object.values(formData).every(value => value !== "")
     }
 
-    const handleSaveClick = () => {
-        setIsSaved(true)
-        console.log("Información guardada:", selectedOption === "Residente" ? formResidenteData : formGuardiaData)
+    const handleSaveClick = async () => {
+        const usuarioData = selectedOption === "Residente" ? formResidenteData : formGuardiaData
+        usuarioData.tipo_usuario = selectedOption === "Residente" ? 3 : 2
+        try {
+            const response = await saveUsuario(usuarioData)
+            if (response.id != null) {
+                setIsSaved(true)
+                return
+            }
+            setIsFailure(true)
+            console.error("Error al guardar usuario:", response.details)
+        } catch (err) {
+            setIsFailure(true)
+            console.error("Error al guardar usuario:", err)
+        }
     }
 
     return (
@@ -109,11 +126,11 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                             margin={0}
                             fontFamily="'Lucida Sans', sans-serif"
                             fontWeight="bold">
-                            {isSaved ? "La información se ha registrado correctamente" : `Ingresa la información del ${selectedOption.toLowerCase()}`}
+                            {isSaved ? "La información se ha registrado correctamente" : isFailure ? "La información no se pudo guardar" : `Ingresa la información del ${selectedOption.toLowerCase()}`}
                         </Typography>
                     </div>
                     <div className={selectedOption.toLowerCase() + "-content"}>
-                        {!isSaved && <>
+                        {!isSaved && !isFailure && <>
                             <Box className={selectedOption.toLowerCase() + "-options"}>
                                 <TextField
                                     label="Nombre"
@@ -124,9 +141,9 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                     InputProps={{ startAdornment: (<InputAdornment position="start"> <People /> </InputAdornment>) }}
                                 />
                                 <TextField
-                                    label="Apellido"
-                                    name="apellido"
-                                    value={selectedOption === "Residente" ? formResidenteData.apellido : formGuardiaData.apellido}
+                                    label="Apellidos"
+                                    name="apellidos"
+                                    value={selectedOption === "Residente" ? formResidenteData.apellidos : formGuardiaData.apellidos}
                                     onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
                                     fullWidth
                                     InputProps={{ startAdornment: (<InputAdornment position="start"> <People /> </InputAdornment>) }}
@@ -141,23 +158,23 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 />
                                 <TextField
                                     label="Teléfono"
-                                    name="telefono"
-                                    value={selectedOption === "Residente" ? formResidenteData.telefono : formGuardiaData.telefono}
+                                    name="num_telefono"
+                                    value={selectedOption === "Residente" ? formResidenteData.num_telefono : formGuardiaData.num_telefono}
                                     onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
                                     fullWidth
                                     InputProps={{ startAdornment: (<InputAdornment position="start"> <Phone /> </InputAdornment>) }}
                                 />
                                 <TextField
                                     label="Correo"
-                                    name="correo"
-                                    value={selectedOption === "Residente" ? formResidenteData.correo : formGuardiaData.correo}
+                                    name="correo_electronico"
+                                    value={selectedOption === "Residente" ? formResidenteData.correo_electronico : formGuardiaData.correo_electronico}
                                     onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
                                     fullWidth
                                     InputProps={{ startAdornment: (<InputAdornment position="start"> <Email /> </InputAdornment>) }}
                                 />
                                 {selectedOption === "Residente" ? (
-                                    <Select name="direccion"
-                                        value={formResidenteData.direccion}
+                                    <Select name="id_domicilio"
+                                        value={formResidenteData.id_domicilio}
                                         onChange={(e) => handleInputChange(e, setFormResidenteData)}
                                         displayEmpty
                                         fullWidth
@@ -167,7 +184,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                             disabled>
                                             Selecciona la dirección
                                         </MenuItem>
-                                        {direcciones.map(direccion => (<MenuItem key={direccion} value={direccion}>{direccion}</MenuItem>))}
+                                        {domicilios.map(domicilio => (<MenuItem key={domicilio.id} value={domicilio.id}>{`${domicilio.calle} ${domicilio.numero_calle}`}</MenuItem>))}
                                     </Select>
                                 ) : (
                                     <TextField
@@ -184,10 +201,10 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 onClick={handleSaveClick}
                                 variant="contained"
                                 startIcon={<Save />}
-                                disabled={!isFormValid(selectedOption === "Residente" ? formResidenteData : formGuardiaData)}
+                                disabled={!isFormValid(selectedOption === "Residente" ? formResidenteData : formGuardiaData) ||  loading}
                                 size={isMobile ? "small" : "large"}
                                 sx={{ minWidth: "100%", marginTop: "20px", backgroundColor: "#81c656", "&:hover": { backgroundColor: "#5f933f" } }}>
-                                Guardar
+                                {loading ? "Guardando..." : "Guardar"}
                             </Button>
                         </>}
                         {isSaved &&
@@ -195,6 +212,14 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                                 <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
                                     Captura exitosa
+                                </Typography>
+                            </div>
+                        }
+                        {isFailure &&
+                            <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                                <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
+                                <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
+                                    Contactar a soporte
                                 </Typography>
                             </div>
                         }

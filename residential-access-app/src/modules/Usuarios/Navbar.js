@@ -5,7 +5,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import Historial from "./Historial"
 import Visitantes from "./Visitantes"
 import Residentes from "./Residentes"
-import Autos from "./Autos"
+import Vehiculos from "./Vehiculos"
 import HomePage from "./HomePage"
 import "../../styles/General/Navbar.css"
 import { Button } from "@mui/material"
@@ -23,7 +23,7 @@ const Navbar = () => {
         if (isSidebarOpen || showLogoutModal) {
             document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = "auto"
+            document.body.style.overflow = "vehiculo"
         }
     })
 
@@ -122,10 +122,10 @@ const Navbar = () => {
                             <FontAwesomeIcon icon={faHouse} />&nbsp;Residentes
                         </button>
                         <button
-                            className={`nav-button ${activeView === "autos" ? "active" : ""}`}
-                            onClick={() => handleNavClick("autos")}
+                            className={`nav-button ${activeView === "vehiculos" ? "active" : ""}`}
+                            onClick={() => handleNavClick("vehiculos")}
                         >
-                            <FontAwesomeIcon icon={faCar} />&nbsp;Autos
+                            <FontAwesomeIcon icon={faCar} />&nbsp;Vehículos
                         </button>
                         <button className="nav-button logout" onClick={handleLogoutClick}>
                             <FontAwesomeIcon icon={faDoorOpen} />
@@ -169,10 +169,10 @@ const Navbar = () => {
                                 <FontAwesomeIcon icon={faHouse} />&nbsp;&nbsp;Residentes
                             </button>
                             <button
-                                className={`nav-button ${activeView === "autos" ? "active" : ""}`}
-                                onClick={() => handleNavClick("autos")}
+                                className={`nav-button ${activeView === "vehiculos" ? "active" : ""}`}
+                                onClick={() => handleNavClick("vehiculos")}
                             >
-                                <FontAwesomeIcon icon={faCar} />&nbsp;&nbsp;Autos
+                                <FontAwesomeIcon icon={faCar} />&nbsp;&nbsp;Vehículos
                             </button>
                             <button className="nav-button logout" onClick={handleLogoutClick}>
                                 <FontAwesomeIcon icon={faDoorOpen} />&nbsp;&nbsp;Cerrar sesión
@@ -209,7 +209,7 @@ const Navbar = () => {
                     </div>
                 ) : (
                     <div className="welcome-message">
-                        <p>Autos</p>
+                        <p>Vehiculos</p>
                     </div>
                 )}
 
@@ -221,8 +221,8 @@ const Navbar = () => {
                         <Visitantes />
                     ) : activeView === "residentes" ? (
                         <Residentes />
-                    ) : activeView === "autos" ? (
-                        <Autos />
+                    ) : activeView === "vehiculos" ? (
+                        <Vehiculos />
                     ) : (
                         <HomePage />
                     )}
