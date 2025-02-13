@@ -7,7 +7,7 @@ import {
     Close as CloseIcon,
     AddCircle
 } from "@mui/icons-material"
-import "../../../styles/General/AddModal.css"
+import "../../../styles/General/AddModal.scss"
 import DataTable from "../../../components/DataGrid"
 import AddConductorModal from "./AddConductorModal"
 import useMediaQuery from "@mui/material/useMediaQuery"

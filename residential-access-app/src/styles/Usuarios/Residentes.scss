@@ -1,6 +1,6 @@
-@import '../General/Colors.css';
+@import '../General/Colors.scss';
 
-.agregar-visitante-button {
+.agregar-residente-button {
     background-color: var(--secondary-color);
     color: white;
     border: none;
@@ -10,11 +10,11 @@
     margin-top: 15px;
 }
 
-.agregar-visitante-button:hover{
+.agregar-residente-button:hover{
     background-color: var(--secondary-hover-color);
 }
 
-.visitor-container {
+.resident-container {
     display: grid;
     grid-template-columns: 1fr 0.01fr; 
     gap: 15px; 
@@ -24,7 +24,7 @@
     width: 80%
 }
 
-.visitantes-list {
+.residentes-list {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -34,7 +34,7 @@
     align-items: center;
 }
 
-.visitor-info {
+.resident-info {
     background-color: white;
     padding: 20px;
     border-radius: 15px;
@@ -49,14 +49,14 @@ h3 {
     color: var(--primary-color);
 }
 
-.visitor-info-container {
+.resident-info-container {
     display: flex;
     gap: 10px;
     justify-content: space-between;
     margin-right: 30px;
 }
 
-.visitor-info-item {
+.resident-info-item {
     margin-bottom: 30px;
     color: var(--primary-color);
     font-size: 0.9rem;
@@ -64,7 +64,7 @@ h3 {
     margin-top: 30px;
 }
 
-.visitor-info-item span { 
+.resident-info-item span { 
     padding: 8px;
     padding-left: 30px;
     padding-right: 30px;
@@ -86,7 +86,7 @@ h3 {
     font-size: 1.2rem;
 }
 
-.visitor-no-data {
+.resident-no-data {
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -99,14 +99,14 @@ h3 {
     font-size: 2.5rem;
 }
 
-.visitor-no-data .icon-placeholder {
+.resident-no-data .icon-placeholder {
     font-size: 12rem; 
     color: var(--border-color);
     margin-top: 10px; 
 }
 
 @media screen and (max-width: 768px) {
-    .visitor-container {
+    .resident-container {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -114,7 +114,7 @@ h3 {
         width: 100%;
     }
 
-    .visitantes-main {
+    .residentes-main {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -122,11 +122,15 @@ h3 {
         gap: 20px;
     }
 
-    .visitor-info h3 {
+    .resident-info {
+        width: 70%;
+    }
+
+    .resident-info h3 {
         font-size: 1.1rem;
     }
 
-    .visitor-info-container {
+    .resident-info-container {
         display: flex;
         flex-direction: column;
         margin: 0;
@@ -134,7 +138,7 @@ h3 {
         align-items: center;
     }
 
-    .visitor-info-item {
+    .resident-info-item {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -145,7 +149,7 @@ h3 {
         gap: 10px;
     }
 
-    .visitor-info-item span { 
+    .resident-info-item span { 
         display: block; 
         width: 100%; 
         text-align: center; 
@@ -157,22 +161,21 @@ h3 {
         letter-spacing: 4px;
     }
 
-    .visitor-no-data {
-        font-size: 1.4rem;
+    .resident-no-data {
+        font-size: 1.4rem; 
     }
-    
-    .visitor-no-data .icon-placeholder {
+
+    .resident-no-data .icon-placeholder {
         font-size: 8rem; 
     }
 }
-
 @media screen and (min-width: 769px) and (max-width: 1068px) {
-    .visitor-container {
+    .resident-container {
         align-items: center;
         margin: 0;
     }
 
-    .visitantes-main {
+    .residentes-main {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -180,11 +183,11 @@ h3 {
         gap: 20px;
     }
 
-    .visitor-info h3 {
+    .resident-info h3 {
         font-size: 1.1rem;
     }
 
-    .visitor-info-container {
+    .resident-info-container {
         display: flex;
         flex-direction: column;
         margin: 0;
@@ -192,7 +195,7 @@ h3 {
         align-items: center;
     }
 
-    .visitor-info-item {
+    .resident-info-item {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -203,7 +206,7 @@ h3 {
         gap: 10px;
     }
 
-    .visitor-info-item span { 
+    .resident-info-item span { 
         display: block; 
         width: 100%; 
         text-align: center; 
@@ -213,5 +216,13 @@ h3 {
         margin: 0;
         color:rgb(61, 61, 61);
         letter-spacing: 4px;
+    }
+
+    .resident-no-data {
+        font-size: 1.8rem; 
+    }
+
+    .resident-no-data .icon-placeholder {
+        font-size: 10rem; 
     }
 }

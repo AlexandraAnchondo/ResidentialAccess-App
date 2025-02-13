@@ -16,7 +16,7 @@ import {
     QrCode as QRCodeIcon,
     QrCode
 } from "@mui/icons-material"
-import "../../../styles/General/AddModal.css"
+import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, setSelectedRow, setSelectedConductor }) => {

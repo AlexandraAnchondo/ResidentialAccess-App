@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
-import "../styles/General/Login.css"
+import "../styles/General/Login.scss"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {

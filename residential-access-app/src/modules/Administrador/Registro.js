@@ -3,7 +3,7 @@ import { FaList, FaHouseUser, FaUserLock } from "react-icons/fa"
 import { Button, Typography, Box, TextField, InputAdornment, Select, MenuItem } from "@mui/material"
 import { ArrowBack, AddCard, People, Save, House, Phone, Email, CheckCircle, CancelRounded } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import "../../styles/Administrador/Registro.css"
+import "../../styles/Administrador/Registro.scss"
 
 import useDomicilios from "../../hooks/domicilio.hook"
 import useUsuario from "../../hooks/usuario.hook"

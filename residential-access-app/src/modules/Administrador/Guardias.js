@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import "../../styles/Administrador/Guardias.css"
+import "../../styles/Administrador/Guardias.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faList } from "@fortawesome/free-solid-svg-icons"
 import { Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon } from "@mui/icons-material"

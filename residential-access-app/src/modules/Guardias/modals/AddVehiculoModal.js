@@ -15,7 +15,7 @@ import {
     Close as CloseIcon,
     Check as CheckIcon
 } from "@mui/icons-material"
-import "../../../styles/General/AddModal.css"
+import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {

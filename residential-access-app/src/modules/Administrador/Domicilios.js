@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import "../../styles/Administrador/Domicilios.css"
+import "../../styles/Administrador/Domicilios.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faList, faCar, faHomeUser, faUserClock } from "@fortawesome/free-solid-svg-icons"
 import DataTable from "../../components/DataGrid"
