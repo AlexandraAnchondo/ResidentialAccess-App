@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import "../../styles/Usuarios/Visitantes.css"
+import "../../styles/Usuarios/Visitantes.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUserGroup, faTrashAlt, faPencil, faCircleInfo, faLock, faUnlock } from "@fortawesome/free-solid-svg-icons"
 import { AddCircle } from "@mui/icons-material"

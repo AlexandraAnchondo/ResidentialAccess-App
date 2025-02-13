@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Button, Typography, IconButton } from "@mui/material"
 import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon } from "@mui/icons-material"
-import "../../../styles/General/AddModal.css"
+import "../../../styles/General/AddModal.scss"
 import DataTable from "../../../components/DataGrid"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import DeleteModal from "../../../components/modals/DeleteModal"

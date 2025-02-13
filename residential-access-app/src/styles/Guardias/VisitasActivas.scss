@@ -1,7 +1,7 @@
 /* Importar variables globales */
-@import '../General/Colors.css';
+@import '../General/Colors.scss';
 
-.historial-container {
+.visitas-activas-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,7 +9,7 @@
     height: 1000px;
 }
 
-.historial-no-data {
+.visitas-activas-no-data {
     display: flex; /* Activa Flexbox para centrar su contenido */
     flex-direction: column; /* Acomoda texto e ícono verticalmente */
     justify-content: center; /* Centrado vertical */
@@ -22,7 +22,7 @@
     font-size: 2rem;
 }
 
-.historial-no-data .icon-placeholder {
+.visitas-activas-no-data .icon-placeholder {
     font-size: 8rem; /* Tamaño del ícono */
     color: var(--border-color);
     margin-top: 60px; /* Espaciado entre el texto y el ícono */

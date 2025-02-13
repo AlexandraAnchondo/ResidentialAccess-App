@@ -17,7 +17,7 @@ import {
     CheckCircle,
     CancelRounded
 } from "@mui/icons-material"
-import "../../../styles/General/EditModal.css"
+import "../../../styles/General/EditModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, isSaved, setIsSaved, isFailure, setIsFailure, vehiculo }) => {

@@ -11,7 +11,7 @@ import {
     CheckCircle,
     AddCard
 } from "@mui/icons-material"
-import "../../../styles/General/AddModal.css"
+import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelectedOption, setSelectedRow, setSelectedVehiculo }) => {

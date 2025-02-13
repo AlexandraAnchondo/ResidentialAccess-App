@@ -1,5 +1,5 @@
 import React from "react"
-import "../../styles/Guardias/VisitasActivas.css"
+import "../../styles/Guardias/VisitasActivas.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faList } from "@fortawesome/free-solid-svg-icons"
 import DataTable from "../../components/DataGrid"

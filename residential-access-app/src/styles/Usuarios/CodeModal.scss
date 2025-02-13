@@ -1,4 +1,4 @@
-@import '../General/Colors.css';
+@import '../General/Colors.scss';
 
 .code-modal-overlay {
     position: fixed;
@@ -38,7 +38,7 @@
 
 /* 🔹 Estilo para la "X" (botón de cerrar) en la esquina derecha */
 .close-button {
-    color: white;
+    color: white;    
 }
 
 /* 🔹 Estilo del título */
@@ -83,6 +83,14 @@
     height: 20px;
 }
 
+.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+.scale-down {
+    animation: scaleDown 0.5s ease-out forwards;
+}
+
 /* 🔹 Animaciones */
 @keyframes fadeIn {
     0% {
@@ -91,6 +99,26 @@
 
     100% {
         background: rgba(0, 0, 0, .7);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        background: rgba(0, 0, 0, .7);
+    }
+    100% {
+        background: rgba(0, 0, 0, 0);
+    }
+}
+
+@keyframes scaleDown {
+    0% {
+        transform: scale(1) translateY(0px);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(.8) translateY(1000px);
+        opacity: 0;
     }
 }
 

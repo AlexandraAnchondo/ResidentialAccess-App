@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import "../../../styles/Usuarios/CodeModal.css"
+import "../../../styles/Usuarios/CodeModal.scss"
 import { Button } from "@mui/material"
 import { Check as CheckIcon, Cancel as CancelIcon, Close } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -7,11 +7,13 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 const CodeModal = ({ show, onClose, existingCodes }) => {
     const [selectedCodes, setSelectedCodes] = useState([])
     const [disabledOptions, setDisabledOptions] = useState([])
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
 
     const isMobile = useMediaQuery("(max-width: 768px)")
 
     useEffect(() => {
         if (show) {
+            setClosing(false) //Reinicia el estado al abrir el modal
             // Determinar los tipos de códigos ya vigentes para deshabilitar sus checkboxes
             const activeDurations = existingCodes.map((code) => code.duration)
             const disabled = []
@@ -47,20 +49,25 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
                         : "1 día",
             id: `${value}-${Date.now()}`
         }))
+        handleCancelClick()
         onClose(codesToGenerate)
     }
 
     const handleCancelClick = () => {
-        onClose()
+        setClosing(true)
+        setTimeout(() => {
+            onClose()
+            setClosing(false)
+        }, 500)
     }
 
-    if (!show) {
+    if (!show && !closing) {
         return null
     }
 
     return (
-        <div className="code-modal-overlay">
-            <div className="code-modal">
+        <div className={`code-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`code-modal ${closing ? "scale-down" : ""}`}>
                 <div className="code-modal-header">
                     <h2>¿Qué tipo de código desea crear?</h2>
                     <div className="close-button">
