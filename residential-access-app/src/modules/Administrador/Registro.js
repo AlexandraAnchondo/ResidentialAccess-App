@@ -15,7 +15,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         nombre: "",
         apellidos: "",
         ine: "",
-        num_telefono: "",
+        telefono: "",
         correo_electronico: "",
         id_domicilio: ""
     })
@@ -23,7 +23,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         nombre: "",
         apellidos: "",
         ine: "",
-        num_telefono: "",
+        telefono: "",
         correo_electronico: "",
         rfc: ""
     })
@@ -38,7 +38,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             nombre: "",
             apellidos: "",
             ine: "",
-            num_telefono: "",
+            telefono: "",
             correo_electronico: "",
             id_domicilio: ""
         })
@@ -46,7 +46,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             nombre: "",
             apellidos: "",
             ine: "",
-            num_telefono: "",
+            telefono: "",
             correo_electronico: "",
             rfc: ""
         })
@@ -67,7 +67,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             nombre: "",
             apellidos: "",
             ine: "",
-            num_telefono: "",
+            telefono: "",
             correo_electronico: "",
             id_domicilio: ""
         })
@@ -75,7 +75,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             nombre: "",
             apellidos: "",
             ine: "",
-            num_telefono: "",
+            telefono: "",
             correo_electronico: "",
             rfc: ""
         })
@@ -158,8 +158,8 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 />
                                 <TextField
                                     label="Teléfono"
-                                    name="num_telefono"
-                                    value={selectedOption === "Residente" ? formResidenteData.num_telefono : formGuardiaData.num_telefono}
+                                    name="telefono"
+                                    value={selectedOption === "Residente" ? formResidenteData.telefono : formGuardiaData.telefono}
                                     onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
                                     fullWidth
                                     InputProps={{ startAdornment: (<InputAdornment position="start"> <Phone /> </InputAdornment>) }}

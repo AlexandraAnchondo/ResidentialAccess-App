@@ -107,7 +107,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         if (showAddVehiculoModal || showViewVehiculosVisitanteModal || showAddVisitaFrecuenteModal || showAddVisitaVehiculoModal) {
             document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = "vehiculo"
+            document.body.style.overflow = "auto"
         }
     })
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDoorOpen, faQrcode, faHouse, faReceipt, faCar, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons"
+import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import Historial from "./Historial"
 import Visitantes from "./Visitantes"
@@ -23,7 +24,7 @@ const Navbar = () => {
         if (isSidebarOpen || showLogoutModal) {
             document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = "vehiculo"
+            document.body.style.overflow = "auto"
         }
     })
 
@@ -258,6 +259,7 @@ const Navbar = () => {
                             <Button
                                 variant="contained"
                                 onClick={handleLogoutConfirm}
+                                startIcon={<CheckIcon />}
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" }
@@ -269,6 +271,7 @@ const Navbar = () => {
                                 variant="outlined"
                                 color="error"
                                 onClick={handleLogoutCancel}
+                                startIcon={<CloseIcon />}
                             >
                                 Cancelar
                             </Button>

@@ -2,6 +2,7 @@ import React from "react"
 import { Button } from "@mui/material"
 import "../../styles/General/DeleteModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import { Close as CloseIcon, Delete } from "@mui/icons-material"
 
 const DeleteModal =({ showDeleteModal, onCloseDeleteModal, onDelete }) => {
 
@@ -23,7 +24,9 @@ const DeleteModal =({ showDeleteModal, onCloseDeleteModal, onDelete }) => {
                             variant="contained"
                             size={isMobile ? "small" : "large"}
                             color="error"
-                            onClick={onDelete}>
+                            onClick={onDelete}
+                            startIcon={<Delete />}
+                        >
                             Borrar
                         </Button>
                         <Button
@@ -40,10 +43,9 @@ const DeleteModal =({ showDeleteModal, onCloseDeleteModal, onDelete }) => {
                                             }
                                 }
                             }
-                            onClick=
-                                {
-                                    onCloseDeleteModal
-                                }>
+                            onClick={onCloseDeleteModal}
+                            startIcon={<CloseIcon />}
+                        >
                             Cancelar
                         </Button>
                     </div>
