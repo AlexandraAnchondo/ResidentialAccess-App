@@ -76,6 +76,7 @@ h3 {
     font-size: 1.1rem;
     background-color: var(--input-background);
     border-color: var(--primary-color);
+    word-wrap: break-word;
 }
 
 .delete-button {
@@ -232,5 +233,25 @@ h3 {
 
     .resident-no-data .icon-placeholder {
         font-size: 10rem; 
+    }
+}
+
+@media screen and (min-width: 1069px) and (max-width: 1920px) {
+    .resident-info-container {
+        margin: 0;
+        padding: 25px;
+    }
+
+    .resident-info-item {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        gap: 5px;
+        align-items: center;
+    }
+
+    .resident-info-container span{
+        font-size: 1rem;
+        margin: 0;
     }
 }
