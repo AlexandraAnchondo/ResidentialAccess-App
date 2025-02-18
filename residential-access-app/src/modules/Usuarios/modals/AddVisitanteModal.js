@@ -4,11 +4,14 @@ import {
     InputAdornment,
     Button,
     Box,
-    Typography
+    Typography,
+    Select,
+    MenuItem
 } from "@mui/material"
 import {
     Person as PersonIcon,
     Phone as PhoneIcon,
+    ColorLens as ColorIcon,
     DirectionsCar as CarIcon,
     FormatListNumbered as LicensePlateIcon,
     Close as CloseIcon,
@@ -21,22 +24,28 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
 
     const isMobile = useMediaQuery("(max-width: 768px)")
 
+    const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
+
     const [formData, setFormData] = useState({
         nombre: "",
-        apellido: "",
+        apellidos: "",
         telefono: "",
         placas: "",
-        modelo: ""
+        modelo: "",
+        color: "",
+        principal: true
     })
 
     useEffect(() => {
         if (!show) {
             setFormData({
                 nombre: "",
-                apellido: "",
+                apellidos: "",
                 telefono: "",
                 placas: "",
-                modelo: ""
+                modelo: "",
+                color: "",
+                principal: true
             })
         }
     }, [show])
@@ -62,10 +71,11 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
     const isFormValid = () => {
         return (
             formData.nombre &&
-            formData.apellido &&
+            formData.apellidos &&
             formData.telefono &&
             formData.placas &&
-            formData.modelo
+            formData.modelo &&
+            formData.color
         )
     }
 
@@ -113,8 +123,8 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                         />
                         <TextField
                             label="Apellidos"
-                            name="apellido"
-                            value={formData.apellido}
+                            name="apellidos"
+                            value={formData.apellidos}
                             onChange={handleInputChange}
                             InputProps={{
                                 startAdornment: (
@@ -168,6 +178,27 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                             }}
                             fullWidth
                         />
+                        <Select
+                            name="color"
+                            value={formData.color}
+                            onChange={handleInputChange}
+                            displayEmpty
+                            fullWidth
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <ColorIcon />
+                                </InputAdornment>
+                            }
+                        >
+                            <MenuItem value="" disabled>
+                                Selecciona un color
+                            </MenuItem>
+                            {availableColors.map((color) => (
+                                <MenuItem key={color} value={color}>
+                                    {color}
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </Box>
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16 }}>

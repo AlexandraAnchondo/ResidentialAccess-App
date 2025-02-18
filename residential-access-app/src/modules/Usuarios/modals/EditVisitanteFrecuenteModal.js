@@ -4,7 +4,9 @@ import {
     InputAdornment,
     Button,
     Box,
-    Typography
+    Typography,
+    Select,
+    MenuItem
 } from "@mui/material"
 import {
     Person as PersonIcon,
@@ -15,19 +17,19 @@ import {
     CheckCircle,
     CancelRounded
 } from "@mui/icons-material"
-import "../../../styles/General/AddModal.scss"
+import "../../../styles/General/EditModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailure, setIsFailure, message  }) => {
-
-    const isMobile = useMediaQuery("(max-width: 768px)")
-
+const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSaved, isFailure, setIsFailure, visitante_frecuente }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellidos: "",
         telefono: "",
-        correo_electronico: ""
+        correo_electronico: "",
+        is_principal: false
     })
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
 
     useEffect(() => {
         if (!show) {
@@ -35,10 +37,21 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                 nombre: "",
                 apellidos: "",
                 telefono: "",
-                correo_electronico: ""
+                correo_electronico: "",
+                is_principal: false
             })
         }
-    }, [show])
+        if (visitante_frecuente != null) {
+            setFormData({
+                id: visitante_frecuente.id,
+                nombre: visitante_frecuente.nombre,
+                apellidos: visitante_frecuente.apellidos,
+                telefono: visitante_frecuente.telefono,
+                correo_electronico: visitante_frecuente.correo_electronico,
+                is_principal: visitante_frecuente.is_principal
+            })
+        }
+    }, [show, visitante_frecuente])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -54,7 +67,7 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
     }
 
     const handleAcceptClick = () => {
-        onAdd(formData)
+        onEdit(formData)
     }
 
     const handleCloseClick = () => {
@@ -77,13 +90,13 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
     }
 
     return (
-        <div className="add-modal-overlay">
-            <div className="add-modal">
-                <div className="add-modal-header">
+        <div className="edit-modal-overlay">
+            <div className="edit-modal">
+                <div className="edit-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        {isSaved ? "Información guardada" : isFailure ?  "Error al capturar la información" : "Ingresa la información del residente" }
+                        {isSaved ? "Información editada" : isFailure ?  "Error al editar la información" : "Edita la información del visitante_frecuente" }
                     </Typography>
-                    <div className="add-modal-close-button">
+                    <div className="edit-modal-close-button">
                         <Button
                             onClick={onClose}
                             startIcon={<CloseIcon />}
@@ -92,13 +105,13 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                             sx={{
                                 marginBottom: isMobile ? 0 : 4,
                                 marginLeft: isMobile ? 2 : 5,
-                                margin: "auto",
-                                padding:"auto"
+                                margin: "visitante_frecuente",
+                                pediting:"visitante_frecuente"
                             }}
                         />
                     </div>
                 </div>
-                <div className="add-modal-content">
+                <div className="edit-modal-content">
                     {!isSaved && !isFailure &&
                         <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
                             <TextField
@@ -161,23 +174,23 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                         </Box>
                     }
                     {isFailure &&
-                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                        <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
                             <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
-                                {message}
+                                Contactar a soporte
                             </Typography>
                         </div>
                     }
                     {isSaved &&
-                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                        <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
                             <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                                {message}
+                                Edición exitosa
                             </Typography>
                         </div>
                     }
                 </div>
-                <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
+                <div className="edit-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     {!isSaved && !isFailure &&
                         <Button
                             onClick={handleAcceptClick}
@@ -210,4 +223,4 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
     )
 }
 
-export default AddResidenteModal
+export default EditVisitanteFrecuenteModal

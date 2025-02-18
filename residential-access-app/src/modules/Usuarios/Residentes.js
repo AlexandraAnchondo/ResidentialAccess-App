@@ -4,9 +4,11 @@ import "../../styles/Usuarios/Residentes.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUserGroup, faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { AddCircle } from "@mui/icons-material"
-import CircularProgress from "@mui/material/CircularProgress"
 import { Button, Typography } from "@mui/material"
 import useMediaQuery from "@mui/material/useMediaQuery"
+
+// Components
+import Loader from "../../components/Loader"
 
 // Modals
 import AddResidenteModal from "./modals/AddResidenteModal"
@@ -35,9 +37,9 @@ const Residentes = ({ id_domicilio = 1 }) => {
     const [showEditModal, setShowEditModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [residenteSelected, setResidenteSelected] = useState(null)
-    const [indexToDelete, setIndexToDelete] = useState(null)
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
 
     const isMobile = useMediaQuery("(max-width: 1068px)")
 
@@ -53,7 +55,9 @@ const Residentes = ({ id_domicilio = 1 }) => {
         setShowAddModal(false)
         setShowDeleteModal(false)
         setShowEditModal(false)
+        setResidenteSelected(null)
         setResidente(null)
+        setMessage(null)
     }
 
     const handleAgregarResidenteClick = () => {
@@ -66,11 +70,13 @@ const Residentes = ({ id_domicilio = 1 }) => {
             if (response.id != null) {
                 setResidentes([...residentes, { ...nuevoResidente, id: response.id, id_domicilio: 1 }])
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
+            setMessage("Operación fallida")
             console.error("Error al guardar residente:", err)
         }
     }
@@ -88,23 +94,26 @@ const Residentes = ({ id_domicilio = 1 }) => {
                     residente.id === residenteEditado.id ? { ...residenteEditado, id_domicilio: 1 } : residente
                 )
                 setResidentes(updatedResidentes)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 setIsSaved(true)
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
+            setMessage("Operación fallida")
             console.error("Error al editar residente:", err)
         }
     }
 
-    const handleDeleteClick = (index) => {
+    const handleDeleteClick = (residente) => {
         setShowDeleteModal(true)
-        setIndexToDelete(index)
+        setResidenteSelected(residente.id)
     }
 
-    const handleBorrarResidente = (index) => {
-        const newResidentes = residentes.filter((_, i) => i !== indexToDelete)
+    const handleBorrarResidente = async () => {
+        await removeResidente(residenteSelected)
+        const newResidentes = residentes.filter((value) => value.id !== residenteSelected)
         setResidentes(newResidentes)
         setShowDeleteModal(false)
     }
@@ -150,23 +159,8 @@ const Residentes = ({ id_domicilio = 1 }) => {
                         </Button>
                     </div>
                 ) : loading ? (
-                    <div className="loading-spinner">
-                        <React.Fragment>
-                            <svg width={0} height={0}>
-                                <defs>
-                                    <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stopColor="#0e1725" />
-                                        <stop offset="100%" stopColor="#1CB5E0" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <CircularProgress
-                                size={80}
-                                thickness={3}
-                                sx={{ "svg circle": { stroke: "url(#my_gradient)" } }}
-                            />
-                            <p className="loading-captions">&nbsp;&nbsp;Cargando...</p>
-                        </React.Fragment>
+                    <div className="loading-container">
+                        <Loader/>
                     </div>
                 ) : (
                     <div className="residentes-list">
@@ -209,7 +203,7 @@ const Residentes = ({ id_domicilio = 1 }) => {
                                 </section>
                                 {!item.is_principal &&
                                     <Button
-                                        onClick={() => handleDeleteClick(index)}
+                                        onClick={() => handleDeleteClick(item)}
                                     ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: "20px" }} />
                                     </Button>
                                 }
@@ -240,6 +234,7 @@ const Residentes = ({ id_domicilio = 1 }) => {
                 setIsSaved={setIsSaved}
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
+                message={message}
             />
 
             <EditResidenteModal
@@ -251,6 +246,7 @@ const Residentes = ({ id_domicilio = 1 }) => {
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
                 residente={residente}
+                message={message}
             />
 
             <DeleteModal

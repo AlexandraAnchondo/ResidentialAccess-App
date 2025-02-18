@@ -4,9 +4,11 @@ import "../../styles/Usuarios/Vehiculos.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { Button, Typography } from "@mui/material"
-import CircularProgress from "@mui/material/CircularProgress"
 import { AddCircle, DirectionsCar as CarIcon, Lock, LockOpen } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
+
+// Components
+import Loader from "../../components/Loader"
 
 // Modals
 import DeleteModal from "../../components/modals/DeleteModal"
@@ -178,23 +180,8 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                         </Button>
                     </div>
                 ) : loading ? (
-                    <div className="loading-spinner">
-                        <React.Fragment>
-                            <svg width={0} height={0}>
-                                <defs>
-                                    <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stopColor="#0e1725" />
-                                        <stop offset="100%" stopColor="#1CB5E0" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <CircularProgress
-                                size={80}
-                                thickness={3}
-                                sx={{ "svg circle": { stroke: "url(#my_gradient)" } }}
-                            />
-                            <p className="loading-captions">&nbsp;&nbsp;Cargando...</p>
-                        </React.Fragment>
+                    <div className="loading-container">
+                        <Loader/>
                     </div>
                 ) : (
                     <div className="vehiculos-cards">

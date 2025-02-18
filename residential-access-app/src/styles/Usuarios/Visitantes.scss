@@ -105,6 +105,14 @@ h3 {
     margin-top: 10px; 
 }
 
+.visitantes-main .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+}
+
 @media screen and (max-width: 768px) {
     .visitor-container {
         display: flex;

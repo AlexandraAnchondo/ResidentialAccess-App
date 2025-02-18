@@ -4,9 +4,7 @@ import {
     InputAdornment,
     Button,
     Box,
-    Typography,
-    Select,
-    MenuItem
+    Typography
 } from "@mui/material"
 import {
     Person as PersonIcon,
@@ -20,13 +18,13 @@ import {
 import "../../../styles/General/EditModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const EditResidenteModal = ({ show, onClose, onEdit, isSaved, setIsSaved, isFailure, setIsFailure, residente }) => {
+const EditResidenteModal = ({ show, onClose, onEdit, isSaved, setIsSaved, isFailure, setIsFailure, residente, message }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellidos: "",
         telefono: "",
         correo_electronico: "",
-        is_principal: false,
+        is_principal: false
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
@@ -177,7 +175,7 @@ const EditResidenteModal = ({ show, onClose, onEdit, isSaved, setIsSaved, isFail
                         <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
                             <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
-                                Contactar a soporte
+                                {message}
                             </Typography>
                         </div>
                     }
@@ -185,7 +183,7 @@ const EditResidenteModal = ({ show, onClose, onEdit, isSaved, setIsSaved, isFail
                         <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
                             <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                                Edición exitosa
+                                {message}
                             </Typography>
                         </div>
                     }
