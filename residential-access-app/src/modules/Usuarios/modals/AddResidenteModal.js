@@ -69,7 +69,7 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
             setClosing(false)
         }, 500)
     }
-    
+
     const isFormValid = () => {
         return (
             formData.nombre &&
