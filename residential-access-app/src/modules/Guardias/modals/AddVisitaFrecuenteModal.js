@@ -17,6 +17,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelectedOption, setSelectedRow, setSelectedVehiculo }) => {
 
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
 
     const [step, setStep] = useState(1) // Controla la vista (1 = formulario 2 = confirmación)
     const [formData, setFormData] = useState({
@@ -25,6 +26,7 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
 
     useEffect(() => {
         if (!show) {
+            setClosing(false)
             setStep(1) // Reinicia el paso al cerrar el modal
             setFormData({
                 numero_tarjeton: ""
@@ -47,27 +49,35 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
         setSelectedOption("Registro de visitas")
         setSelectedRow(null)
         setSelectedVehiculo(null)
-        onClose()
+        handleCancelClick()
+    }
+
+    const handleCancelClick = () => {
+        setClosing(true)
+        setTimeout(() => {
+            onClose()
+            setClosing(false)
+        }, 500)
     }
 
     const isFormValid = () => {
         return formData.numero_tarjeton
     }
 
-    if (!show) {
+    if (!show && !closing) {
         return null
     }
 
     return (
-        <div className="add-modal-overlay">
-            <div className="add-modal">
+        <div className={`add-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
                         {step === 1 ? "Ingresa el número del tarjetón" : "Información ingresada" }
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
-                            onClick={onClose}
+                            onClick={handleCancelClick}
                             startIcon={<CloseIcon />}
                             color="white"
                             size={isMobile ? "small" : "large"}
@@ -142,7 +152,7 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
                         </Button>
                     )}
                     <Button
-                        onClick={onClose}
+                        onClick={handleCancelClick}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}

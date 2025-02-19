@@ -7,19 +7,16 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import DeleteModal from "../../../components/modals/DeleteModal"
 
 const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
-    if (!show) {
-        return null
-    }
+
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
+    const isMobile = useMediaQuery("(max-width: 768px)")
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [indexToDelete, setIndexToDelete] = useState(null)
 
     useEffect(() => {
-        if (showDeleteModal) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = "auto"
-        }
-    })
-
-    const isMobile = useMediaQuery("(max-width: 768px)")
+        setClosing(false)
+        document.body.style.overflow = showDeleteModal ? "hidden" : "auto"
+    }, [showDeleteModal]) // Se ejecuta solo cuando showDeleteModal cambia
 
     const [frecuentes, setFrecuentes] = useState([
         { id: 1, nombre: "Juan", apellido: "Perez", telefono: "555-555-5555", placas: "FVSFB43VGS", modelo: "1234567890", bloqueado: false },
@@ -27,9 +24,6 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
         { id: 3, nombre: "Pedro", apellido: "Lopez", telefono: "777-777-7777", placas: "RHRH455GTR", modelo: "0987654321", bloqueado: false },
         { id: 4, nombre: "Sofia", apellido: "Martinez", telefono: "888-888-8888", placas: "MJMGH665", modelo: "1234567890", bloqueado: true }
     ])
-
-    const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [indexToDelete, setIndexToDelete] = useState(null)
 
     const handleToggleBlock = (id) => {
         setFrecuentes((prev) => prev.map((res) => res.id === id ? { ...res, bloqueado: !res.bloqueado } : res))
@@ -47,6 +41,14 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
 
     const handleCloseDeleteModal = () => {
         setShowDeleteModal(false)
+    }
+
+    const handleCancelClick = () => {
+        setClosing(true)
+        setTimeout(() => {
+            onClose()
+            setClosing(false)
+        }, 500)
     }
 
     const columns = [
@@ -76,22 +78,26 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
         }
     ]
 
+    if (!show && !closing) {
+        return null
+    }
+
     return (
-        <div className="add-modal-overlay">
-            <div className="add-modal">
+        <div className={`add-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
                         Visitantes Frecuentes Registrados
                     </Typography>
                     <div className="add-modal-close-button">
-                        <Button onClick={onClose} startIcon={<CloseIcon />} color="white" size={isMobile ? "small" : "large"} />
+                        <Button onClick={handleCancelClick} startIcon={<CloseIcon />} color="white" size={isMobile ? "small" : "large"} />
                     </div>
                 </div>
                 <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
                     <DataTable rows={frecuentes} columns={columns} />
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
-                    <Button onClick={onClose} variant="outlined" color="error" startIcon={<CloseIcon />}>
+                    <Button onClick={handleCancelClick} variant="outlined" color="error" startIcon={<CloseIcon />}>
                         Cerrar
                     </Button>
                 </div>
