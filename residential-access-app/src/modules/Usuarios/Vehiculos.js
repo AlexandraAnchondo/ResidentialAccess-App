@@ -1,15 +1,21 @@
+// Resources
 import React, { useState, useEffect } from "react"
 import "../../styles/Usuarios/Vehiculos.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrashAlt, faPencil, faCircleInfo } from "@fortawesome/free-solid-svg-icons"
 import { Button, Typography } from "@mui/material"
-import CircularProgress from "@mui/material/CircularProgress"
 import { AddCircle, DirectionsCar as CarIcon, Lock, LockOpen } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
+// Components
+import Loader from "../../components/Loader"
+
+// Modals
 import DeleteModal from "../../components/modals/DeleteModal"
 import AddVehiculoModal from "./modals/AddVehiculoModal"
 import EditVehiculoModal from "./modals/EditVehiculoModal"
+
+// Hooks
 import {
     useGetVehiculosByDomicilio,
     useCreateVehiculo,
@@ -19,27 +25,31 @@ import {
 } from "../../hooks/vehiculo.hook"
 
 const Vehiculos = ({ id_domicilio = 1 }) => {
+    // API calls
     const { vehiculos, setVehiculos, loading } = useGetVehiculosByDomicilio(id_domicilio)
     const { saveVehiculo } = useCreateVehiculo()
     const { fetchVehiculo, vehiculo, setVehiculo } = useGetVehiculoById()
     const { editVehiculo } = useUpdateVehiculo()
     const { removeVehiculo } = useDeleteVehiculo()
+
+    // State variables
     const [showAddModal, setShowAddModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [vehiculoSelected, setVehiculoSelected] = useState(null)
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
 
     const isMobile = useMediaQuery("(max-width: 1068px)")
 
     const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
 
     useEffect(() => {
-        if (showAddModal || showDeleteModal) {
+        if (showAddModal || showDeleteModal || showEditModal) {
             document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = "vehiculo"
+            document.body.style.overflow = "auto"
         }
     })
 
@@ -64,6 +74,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
         setShowAddModal(false)
         setVehiculoSelected(null)
         setVehiculo(null)
+        setMessage(null)
     }
 
     const handleAgregarVehiculoClick = () => setShowAddModal(true)
@@ -72,14 +83,15 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
         try {
             const response = await saveVehiculo({ ...nuevoVehiculo, id_domicilio: id_domicilio })
             if (response.id != null) {
-                setVehiculos([...vehiculos, { ...nuevoVehiculo, id_domicilio: 1 }])
+                setVehiculos([...vehiculos, { ...nuevoVehiculo, id: response.id, id_domicilio: 1 }])
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
-            console.error("Error al guardar vehiculo:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -91,18 +103,19 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
     const handleEditarVehiculo = async (vehiculoEditado) => {
         try {
             const response = await editVehiculo({ ...vehiculoEditado, id_domicilio: id_domicilio })
-            if (response.id!= null) {
+            if (response.id != null) {
                 const updatedVehiculos = vehiculos.map((vehiculo) =>
                     vehiculo.id === vehiculoEditado.id ? { ...vehiculoEditado, id_domicilio: 1 } : vehiculo
                 )
                 setVehiculos(updatedVehiculos)
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
-            console.error("Error al editar vehiculo:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -119,7 +132,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
     }
 
     const toggleBloqueo = async (index) => {
-        const updatedVehiculos = await vehiculos.map( (vehiculo, i) => {
+        const updatedVehiculos = await vehiculos.map((vehiculo, i) => {
             if (i === index) {
                 editVehiculo({ ...vehiculo, bloqueado: !vehiculo.bloqueado })
                 return { ...vehiculo, bloqueado: !vehiculo.bloqueado }
@@ -154,7 +167,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                 >
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre los vehículos de su propiedad. Utilice el candado para bloquear / desbloquear el acceso.
                 </Typography>
-                {vehiculos.length === 0 ? (
+                {vehiculos.length === 0 && !loading ? (
                     <div className="vehiculo-no-data">
                         <CarIcon className="icon-placeholder" />
                         <p>No existe ningún vehículo registrado</p>
@@ -171,23 +184,8 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                         </Button>
                     </div>
                 ) : loading ? (
-                    <div className="loading-spinner">
-                        <React.Fragment>
-                            <svg width={0} height={0}>
-                                <defs>
-                                    <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stopColor="#0e1725" />
-                                        <stop offset="100%" stopColor="#1CB5E0" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                            <CircularProgress
-                                size={80}
-                                thickness={3}
-                                sx={{ "svg circle": { stroke: "url(#my_gradient)" } }}
-                            />
-                            <p className="loading-captions">&nbsp;&nbsp;Cargando...</p>
-                        </React.Fragment>
+                    <div className="loading-container">
+                        <Loader/>
                     </div>
                 ) : (
                     <div className="vehiculos-cards">
@@ -264,6 +262,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                 setIsSaved={setIsSaved}
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
+                message={message}
             />
 
             <EditVehiculoModal
@@ -276,6 +275,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
                 vehiculo={vehiculo}
+                message={message}
             />
 
             <DeleteModal

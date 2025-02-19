@@ -1,10 +1,15 @@
+// Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDoorOpen, faPaperclip, faReceipt, faBars } from "@fortawesome/free-solid-svg-icons"
+import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
 import { Button } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { AnimatePresence, motion } from "framer-motion"
+
+// Components
 import Registro from "./Registro"
 import VisitasActivas from "./VisitasActivas"
 
@@ -16,6 +21,13 @@ const Navbar = () => {
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
     const navigate = useNavigate() // Hook para redirigir a otras páginas
     const [selectedOption, setSelectedOption] = useState("Registro de visitas")
+
+    // Definir la animación de entrada y salida
+    const pageVariants = {
+        initial: { opacity: 0, x: -20 }, // Comienza invisible y desplazado
+        animate: { opacity: 1, x: 0, transition: { duration: 0.2 } }, // Se anima al entrar
+        exit: { opacity: 0, x: 20, transition: { duration: 0.2 } } // Se anima al salir
+    }
 
     useEffect(() => {
         if (isSidebarOpen || showLogoutModal) {
@@ -153,21 +165,30 @@ const Navbar = () => {
                     onClick={toggleSidebar}
                 />
 
-                <div className="welcome-message">
+                <div key={selectedOption} className="welcome-message">
                     <p>{selectedOption}</p>
                 </div>
 
                 {/* Main container that contains the active view */}
-                <main className="nav-main">
-                    {activeView === "Registro de visitas" ? (
-                        <Registro
-                            selectedOption={selectedOption}
-                            setSelectedOption={setSelectedOption}
-                        />
-                    ) : (
-                        <VisitasActivas />
-                    )}
-                </main>
+                <AnimatePresence mode="wait">
+                    <motion.main
+                        key={activeView}
+                        initial={isSidebarOpen ? {} : "initial"} // No hay animación si isSidebarOpen es true
+                        animate={isSidebarOpen ? {} : "animate"}
+                        exit={isSidebarOpen ? {} : "exit"}
+                        variants={isSidebarOpen ? {} : pageVariants} // Usa variants solo si el sidebar está cerrado
+                        className="nav-main"
+                    >
+                        {activeView === "Registro de visitas" ? (
+                            <Registro
+                                selectedOption={selectedOption}
+                                setSelectedOption={setSelectedOption}
+                            />
+                        ) : (
+                            <VisitasActivas />
+                        )}
+                    </motion.main>
+                </AnimatePresence>
             </div>
 
             {/* Logout modal that appears when user clicks on logout button */}
@@ -199,6 +220,7 @@ const Navbar = () => {
                             <Button
                                 variant="contained"
                                 onClick={handleLogoutConfirm}
+                                startIcon={<CheckIcon />}
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" }
@@ -210,6 +232,7 @@ const Navbar = () => {
                                 variant="outlined"
                                 color="error"
                                 onClick={handleLogoutCancel}
+                                startIcon={<CloseIcon />}
                             >
                                 Cancelar
                             </Button>

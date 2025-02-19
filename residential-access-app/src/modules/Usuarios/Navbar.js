@@ -1,15 +1,20 @@
+// Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDoorOpen, faQrcode, faHouse, faReceipt, faCar, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons"
+import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import "../../styles/General/Navbar.scss"
+import { Button } from "@mui/material"
+import { useNavigate } from "react-router-dom"
+import { AnimatePresence, motion } from "framer-motion"
+
+// Components
 import Historial from "./Historial"
 import Visitantes from "./Visitantes"
 import Residentes from "./Residentes"
 import Vehiculos from "./Vehiculos"
 import HomePage from "./HomePage"
-import "../../styles/General/Navbar.scss"
-import { Button } from "@mui/material"
-import { useNavigate } from "react-router-dom"
 
 const Navbar = () => {
     const [activeView, setActiveView] = useState("home")
@@ -19,11 +24,18 @@ const Navbar = () => {
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
     const navigate = useNavigate() // Hook para redirigir a otras páginas
 
+    // Definir la animación de entrada y salida
+    const pageVariants = {
+        initial: { opacity: 0, x: -20 }, // Comienza invisible y desplazado
+        animate: { opacity: 1, x: 0, transition: { duration: 0.2 } }, // Se anima al entrar
+        exit: { opacity: 0, x: 20, transition: { duration: 0.2 } } // Se anima al salir
+    }
+
     useEffect(() => {
         if (isSidebarOpen || showLogoutModal) {
             document.body.style.overflow = "hidden"
         } else {
-            document.body.style.overflow = "vehiculo"
+            document.body.style.overflow = "auto"
         }
     })
 
@@ -191,42 +203,40 @@ const Navbar = () => {
                 />
 
                 {/* Welcome message for corresponding view */}
-                {activeView === "home" ? (
-                    <div className="welcome-message">
-                        <p>Bienvenido&nbsp;(a)</p>
-                    </div>
-                ) : activeView === "historial" ? (
-                    <div className="welcome-message">
-                        <p>Historial de visitas</p>
-                    </div>
-                ) : activeView === "visitantes" ? (
-                    <div className="welcome-message">
-                        <p>Visitantes frecuentes</p>
-                    </div>
-                ) : activeView === "residentes" ? (
-                    <div className="welcome-message">
-                        <p>Residentes</p>
-                    </div>
-                ) : (
-                    <div className="welcome-message">
-                        <p>Vehiculos</p>
-                    </div>
-                )}
+                <div key={activeView} className="welcome-message">
+                    <p>
+                        {activeView === "home" ? "Bienvenido (a)" :
+                            activeView === "historial" ? "Historial de visitas" :
+                                activeView === "visitantes" ? "Visitantes frecuentes" :
+                                    activeView === "residentes" ? "Residentes" :
+                                        "Vehículos"}
+                    </p>
+                </div>
 
                 {/* Main container that contains the active view */}
-                <main className="nav-main">
-                    {activeView === "historial" ? (
-                        <Historial />
-                    ) : activeView === "visitantes" ? (
-                        <Visitantes />
-                    ) : activeView === "residentes" ? (
-                        <Residentes />
-                    ) : activeView === "vehiculos" ? (
-                        <Vehiculos />
-                    ) : (
-                        <HomePage />
-                    )}
-                </main>
+                <AnimatePresence mode="wait">
+                    <motion.main
+                        key={activeView}
+                        initial={isSidebarOpen ? {} : "initial"} // No hay animación si isSidebarOpen es true
+                        animate={isSidebarOpen ? {} : "animate"}
+                        exit={isSidebarOpen ? {} : "exit"}
+                        variants={isSidebarOpen ? {} : pageVariants} // Usa variants solo si el sidebar está cerrado
+                        className="nav-main"
+                    >
+                        {activeView === "historial" ? (
+                            <Historial />
+                        ) : activeView === "visitantes" ? (
+                            <Visitantes />
+                        ) : activeView === "residentes" ? (
+                            <Residentes />
+                        ) : activeView === "vehiculos" ? (
+                            <Vehiculos />
+                        ) : (
+                            <HomePage />
+                        )}
+                    </motion.main>
+                </AnimatePresence>
+
             </div>
 
             {/* Logout modal that appears when user clicks on logout button */}
@@ -258,6 +268,7 @@ const Navbar = () => {
                             <Button
                                 variant="contained"
                                 onClick={handleLogoutConfirm}
+                                startIcon={<CheckIcon />}
                                 sx={{
                                     backgroundColor: "#00a8cc",
                                     "&:hover": { backgroundColor: "#00a8ccCC" }
@@ -269,6 +280,7 @@ const Navbar = () => {
                                 variant="outlined"
                                 color="error"
                                 onClick={handleLogoutCancel}
+                                startIcon={<CloseIcon />}
                             >
                                 Cancelar
                             </Button>

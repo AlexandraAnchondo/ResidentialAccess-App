@@ -20,7 +20,7 @@ import {
 import "../../../styles/General/EditModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, isSaved, setIsSaved, isFailure, setIsFailure, vehiculo }) => {
+const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
@@ -65,7 +65,11 @@ const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, isSaved, se
     }
 
     const isFormValid = () => {
-        return formData.placas && formData.modelo && formData.color
+        return (
+            formData.placas &&
+            formData.modelo &&
+            formData.color
+        )
     }
 
     if (!show && !closing) {

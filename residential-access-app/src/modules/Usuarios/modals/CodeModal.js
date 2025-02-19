@@ -133,7 +133,7 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
                         sx={{
                             color: "#fff",
                             marginBottom: isMobile ? 0 : 4,
-                            marginLeft: isMobile ? 2 : 5,
+                            marginLeft: isMobile ? 0 : 5,
                             backgroundColor: selectedCodes.length > 0 ? "#00a8cc" : "#cccccc",
                             "&:hover": {
                                 backgroundColor: selectedCodes.length > 0

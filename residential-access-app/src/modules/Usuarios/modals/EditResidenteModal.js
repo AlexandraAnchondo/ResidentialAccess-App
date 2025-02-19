@@ -12,35 +12,44 @@ import {
     Email as EmailIcon,
     Close as CloseIcon,
     Save as SaveIcon,
-    CheckCircle as CheckCircleIcon,
-    CancelRounded as CancelRoundedIcon
+    CheckCircle,
+    CancelRounded
 } from "@mui/icons-material"
-import "../../../styles/General/AddModal.scss"
+import "../../../styles/General/EditModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailure, setIsFailure, message  }) => {
-
-    const isMobile = useMediaQuery("(max-width: 768px)")
-    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
-
+const EditResidenteModal = ({ show, onClose, onEdit, residente, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellidos: "",
         telefono: "",
-        correo_electronico: ""
+        correo_electronico: "",
+        is_principal: false
     })
+
+    const isMobile = useMediaQuery("(max-width: 768px)")
 
     useEffect(() => {
         if (!show) {
-            setClosing(false)
             setFormData({
                 nombre: "",
                 apellidos: "",
                 telefono: "",
-                correo_electronico: ""
+                correo_electronico: "",
+                is_principal: false
             })
         }
-    }, [show])
+        if (residente != null) {
+            setFormData({
+                id: residente.id,
+                nombre: residente.nombre,
+                apellidos: residente.apellidos,
+                telefono: residente.telefono,
+                correo_electronico: residente.correo_electronico,
+                is_principal: residente.is_principal
+            })
+        }
+    }, [show, residente])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -56,20 +65,15 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
     }
 
     const handleAcceptClick = () => {
-        onAdd(formData)
-        handleCancelClick()
+        onEdit(formData)
     }
 
-    const handleCancelClick = () => {
-        setClosing(true)
+    const handleCloseClick = () => {
+        onClose()
         setIsSaved(false)
         setIsFailure(false)
-        setTimeout(() => {
-            onClose()
-            setClosing(false)
-        }, 500)
     }
-    
+
     const isFormValid = () => {
         return (
             formData.nombre &&
@@ -79,33 +83,33 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
         )
     }
 
-    if (!show && !closing) {
+    if (!show) {
         return null
     }
 
     return (
-        <div className={`add-modal-overlay ${closing ? "fade-out" : ""}`}>
-            <div className={`add-modal ${closing ? "scale-down" : ""}`}>
-                <div className="add-modal-header">
+        <div className="edit-modal-overlay">
+            <div className="edit-modal">
+                <div className="edit-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        {isSaved ? "Información guardada" : isFailure ?  "Error al capturar la información" : "Ingresa la información del residente" }
+                        {isSaved ? "Información editada" : isFailure ?  "Error al editar la información" : "Edita la información del residente" }
                     </Typography>
-                    <div className="add-modal-close-button">
+                    <div className="edit-modal-close-button">
                         <Button
-                            onClick={handleCancelClick}
+                            onClick={onClose}
                             startIcon={<CloseIcon />}
                             color="white"
                             size={isMobile ? "small" : "large"}
                             sx={{
                                 marginBottom: isMobile ? 0 : 4,
                                 marginLeft: isMobile ? 2 : 5,
-                                margin: "auto",
-                                padding:"auto"
+                                margin: "residente",
+                                pediting:"residente"
                             }}
                         />
                     </div>
                 </div>
-                <div className="add-modal-content">
+                <div className="edit-modal-content">
                     {!isSaved && !isFailure &&
                         <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
                             <TextField
@@ -168,23 +172,23 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                         </Box>
                     }
                     {isFailure &&
-                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                            <CancelRoundedIcon className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
+                        <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
                                 {message}
                             </Typography>
                         </div>
                     }
                     {isSaved &&
-                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                            <CheckCircleIcon className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                        <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
                                 {message}
                             </Typography>
                         </div>
                     }
                 </div>
-                <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
+                <div className="edit-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     {!isSaved && !isFailure &&
                         <Button
                             onClick={handleAcceptClick}
@@ -202,7 +206,7 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                         </Button>
                     }
                     <Button
-                        onClick={handleCancelClick}
+                        onClick={handleCloseClick}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
@@ -217,4 +221,4 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
     )
 }
 
-export default AddResidenteModal
+export default EditResidenteModal

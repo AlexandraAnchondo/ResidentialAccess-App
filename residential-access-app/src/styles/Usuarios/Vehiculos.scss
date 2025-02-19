@@ -22,7 +22,7 @@
 .vehiculos-cards {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 40px;
     justify-content: center;
     padding: 20px;
 }
@@ -36,7 +36,6 @@
     display: flex;
     flex-direction: column;
     align-items: center; 
-    margin-left: 40px;
 }
 
 .vehiculo-card-header {
@@ -67,19 +66,12 @@
     align-self: flex-end;
 }
 
-.vehiculos-main .loading-spinner {
+.vehiculos-main .loading-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 150px;
-}
-
-.vehiculos-main .loading-spinner .loading-captions {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: rgb(117, 117, 117);
-    letter-spacing: 1px;
-    margin-top: 30px;
 }
 
 @media screen and (max-width: 768px) {
