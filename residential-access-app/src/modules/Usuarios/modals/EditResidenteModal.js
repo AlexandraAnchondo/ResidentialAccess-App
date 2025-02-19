@@ -18,7 +18,7 @@ import {
 import "../../../styles/General/EditModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const EditResidenteModal = ({ show, onClose, onEdit, isSaved, setIsSaved, isFailure, setIsFailure, residente, message }) => {
+const EditResidenteModal = ({ show, onClose, onEdit, residente, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellidos: "",

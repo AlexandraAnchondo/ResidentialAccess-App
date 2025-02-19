@@ -25,14 +25,14 @@ import {
 } from "../../hooks/residente.hook"
 
 const Residentes = ({ id_domicilio = 1 }) => {
-    // Llamadas al api
+    // API calls
     const { residentes, setResidentes, loading } = useGetResidentesByDomicilio(id_domicilio)
     const { saveResidente } = useCreateResidente()
     const { fetchResidente, residente, setResidente } = useGetResidenteById()
     const { editResidente } = useUpdateResidente()
     const { removeResidente } = useDeleteResidente()
 
-    // Variables de estado
+    // State variables
     const [showAddModal, setShowAddModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -60,9 +60,7 @@ const Residentes = ({ id_domicilio = 1 }) => {
         setMessage(null)
     }
 
-    const handleAgregarResidenteClick = () => {
-        setShowAddModal(true)
-    }
+    const handleAgregarResidenteClick = () => setShowAddModal(true)
 
     const handleAgregarResidente = async (nuevoResidente) => {
         try {
@@ -76,8 +74,7 @@ const Residentes = ({ id_domicilio = 1 }) => {
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
-            setMessage("Operación fallida")
-            console.error("Error al guardar residente:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -94,15 +91,14 @@ const Residentes = ({ id_domicilio = 1 }) => {
                     residente.id === residenteEditado.id ? { ...residenteEditado, id_domicilio: 1 } : residente
                 )
                 setResidentes(updatedResidentes)
-                setMessage(response.message ? response.message : "Operación exitosa")
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
-            setMessage("Operación fallida")
-            console.error("Error al editar residente:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 

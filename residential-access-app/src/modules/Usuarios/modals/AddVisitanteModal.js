@@ -15,12 +15,14 @@ import {
     DirectionsCar as CarIcon,
     FormatListNumbered as LicensePlateIcon,
     Close as CloseIcon,
-    Check as CheckIcon
+    Save as SaveIcon,
+    CheckCircle as CheckCircleIcon,
+    CancelRounded as CancelRoundedIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddVisitanteModal = ({ show, onClose, onAdd }) => {
+const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
 
     const isMobile = useMediaQuery("(max-width: 768px)")
 
@@ -65,7 +67,12 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
 
     const handleAcceptClick = () => {
         onAdd(formData)
+    }
+
+    const handleCloseClick = () => {
         onClose()
+        setIsSaved(false)
+        setIsFailure(false)
     }
 
     const isFormValid = () => {
@@ -88,7 +95,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
             <div className="add-modal">
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del visitante
+                        {isSaved ? "Información guardada" : isFailure ?  "Error al capturar la información" : "Ingresa la información del visitante" }
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
@@ -106,126 +113,144 @@ const AddVisitanteModal = ({ show, onClose, onAdd }) => {
                     </div>
                 </div>
                 <div className="add-modal-content">
-                    <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
-                        <TextField
-                            label="Nombre"
-                            name="nombre"
-                            value={formData.nombre}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
+                    {!isSaved && !isFailure &&
+                        <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
+                            <TextField
+                                label="Nombre"
+                                name="nombre"
+                                value={formData.nombre}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <PersonIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <TextField
+                                label="Apellidos"
+                                name="apellidos"
+                                value={formData.apellidos}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <PersonIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <TextField
+                                label="Teléfono"
+                                name="telefono"
+                                value={formData.telefono}
+                                onChange={handlePhoneChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <PhoneIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                                inputProps={{ maxLength: 14 }}
+                            />
+                            <TextField
+                                label="Placas"
+                                name="placas"
+                                value={formData.placas}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <LicensePlateIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <TextField
+                                label="Modelo"
+                                name="modelo"
+                                value={formData.modelo}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <CarIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <Select
+                                name="color"
+                                value={formData.color}
+                                onChange={handleInputChange}
+                                displayEmpty
+                                fullWidth
+                                startAdornment={
                                     <InputAdornment position="start">
-                                        <PersonIcon />
+                                        <ColorIcon />
                                     </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <TextField
-                            label="Apellidos"
-                            name="apellidos"
-                            value={formData.apellidos}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <PersonIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <TextField
-                            label="Teléfono"
-                            name="telefono"
-                            value={formData.telefono}
-                            onChange={handlePhoneChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <PhoneIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                            inputProps={{ maxLength: 14 }}
-                        />
-                        <TextField
-                            label="Placas"
-                            name="placas"
-                            value={formData.placas}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <LicensePlateIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <TextField
-                            label="Modelo"
-                            name="modelo"
-                            value={formData.modelo}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <CarIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <Select
-                            name="color"
-                            value={formData.color}
-                            onChange={handleInputChange}
-                            displayEmpty
-                            fullWidth
-                            startAdornment={
-                                <InputAdornment position="start">
-                                    <ColorIcon />
-                                </InputAdornment>
-                            }
-                        >
-                            <MenuItem value="" disabled>
-                                Selecciona un color
-                            </MenuItem>
-                            {availableColors.map((color) => (
-                                <MenuItem key={color} value={color}>
-                                    {color}
+                                }
+                            >
+                                <MenuItem value="" disabled>
+                                    Selecciona un color
                                 </MenuItem>
-                            ))}
-                        </Select>
-                    </Box>
+                                {availableColors.map((color) => (
+                                    <MenuItem key={color} value={color}>
+                                        {color}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </Box>
+                    }
+                    {isFailure &&
+                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CancelRoundedIcon className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
+                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
+                                {message}
+                            </Typography>
+                        </div>
+                    }
+                    {isSaved &&
+                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CheckCircleIcon className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
+                                {message}
+                            </Typography>
+                        </div>
+                    }
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16 }}>
+                    {!isSaved && !isFailure &&
+                        <Button
+                            onClick={handleAcceptClick}
+                            variant="contained"
+                            startIcon={<SaveIcon />}
+                            disabled={!isFormValid() || isFailure}
+                            sx={{
+                                backgroundColor: "#00a8cc",
+                                "&:hover": "#00a8ccCC"
+                            }}
+                            style={{ marginLeft: 20, marginBottom: 20 }}
+                        >
+                            Guardar
+                        </Button>
+                    }
                     <Button
-                        onClick={handleAcceptClick}
-                        variant="contained"
-                        startIcon={<CheckIcon />}
-                        disabled={!isFormValid()} // Deshabilita el botón si el formulario no es válido
-                        sx={{
-                            backgroundColor: isFormValid() ? "#00a8cc" : "rgba(0, 0, 0, 0.12)", // Color principal o gris deshabilitado
-                            color: isFormValid() ? "#fff" : "rgba(0, 0, 0, 0.26)", // Color del texto según el estado
-                            "&:hover": {
-                                backgroundColor: isFormValid() ? "#007a99" : "rgba(0, 0, 0, 0.12)" // Color en hover si está activo
-                            }
-                        }}
-                        style={{ marginLeft: 20, marginBottom: 20 }}
-                    >
-                        Aceptar
-                    </Button>
-                    <Button
-                        onClick={onClose}
+                        onClick={handleCloseClick}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20, marginBottom: 20 }}
+                        style={{ marginLeft: 20, marginBottom:10 }}
+                        size={isMobile ? "small" : "large"}
                     >
-                        Cancelar
+                        {isSaved || isFailure ? "Cerrar" : "Cancelar"}
                     </Button>
                 </div>
             </div>

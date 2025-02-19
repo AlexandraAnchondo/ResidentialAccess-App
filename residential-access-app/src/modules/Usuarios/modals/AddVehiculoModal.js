@@ -55,7 +55,11 @@ const AddVehiculoModal = ({ show, onClose, onAdd, availableColors, isSaved, setI
     }
 
     const isFormValid = () => {
-        return formData.placas && formData.modelo && formData.color
+        return (
+            formData.placas &&
+            formData.modelo &&
+            formData.color
+        )
     }
 
     if (!show) {

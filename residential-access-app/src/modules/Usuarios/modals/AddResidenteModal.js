@@ -12,8 +12,8 @@ import {
     Email as EmailIcon,
     Close as CloseIcon,
     Save as SaveIcon,
-    CheckCircle,
-    CancelRounded
+    CheckCircle as CheckCircleIcon,
+    CancelRounded as CancelRoundedIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -162,7 +162,7 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                     }
                     {isFailure &&
                         <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                            <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
+                            <CancelRoundedIcon className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
                                 {message}
                             </Typography>
@@ -170,7 +170,7 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                     }
                     {isSaved &&
                         <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                            <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                            <CheckCircleIcon className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
                                 {message}
                             </Typography>

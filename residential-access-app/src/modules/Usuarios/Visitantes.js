@@ -25,20 +25,21 @@ import {
 } from "../../hooks/visitante_frecuente.hook"
 
 const Visitantes = ({ id_domicilio = 1 }) => {
-    // Llamadas al api
+    // API calls
     const { visitante_frecuentes, setVisitanteFrecuentes, loading } = useGetVisitanteFrecuentesByDomicilio(id_domicilio)
     const { saveVisitanteFrecuente } = useCreateVisitanteFrecuente()
     const { fetchVisitanteFrecuente, visitante_frecuente, setVisitanteFrecuente } = useGetVisitanteFrecuenteById()
     const { editVisitanteFrecuente } = useUpdateVisitanteFrecuente()
     const { removeVisitanteFrecuente } = useDeleteVisitanteFrecuente()
 
-    // Variables de estado
+    // State variables
     const [showAddModal, setShowAddModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [visitanteFrecuenteSelected, setVisitanteFrecuenteSelected] = useState(null)
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
 
     const isMobile = useMediaQuery("(max-width: 1068px)")
 
@@ -56,11 +57,10 @@ const Visitantes = ({ id_domicilio = 1 }) => {
         setShowEditModal(false)
         setVisitanteFrecuenteSelected(null)
         setVisitanteFrecuente(null)
+        setMessage(null)
     }
 
-    const handleAgregarVisitanteClick = () => {
-        setShowAddModal(true)
-    }
+    const handleAgregarVisitanteClick = () => setShowAddModal(true)
 
     const handleAgregarVisitante = async (nuevoVisitanteFrecuente) => {
         try {
@@ -68,12 +68,13 @@ const Visitantes = ({ id_domicilio = 1 }) => {
             if (response.id_visitante != null) {
                 setVisitanteFrecuentes([...visitante_frecuentes, { ...nuevoVisitanteFrecuente, id: response.id }])
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
-            console.error("Error al guardar visitante frecuente:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -91,12 +92,13 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                 )
                 setVisitanteFrecuentes(updatedVisitanteFrecuentes)
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
-            console.error("Error al editar visitante frecuente:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -194,6 +196,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                                     <Button
                                         variant="outlined"
                                         className="edit-button"
+                                        onClick={() => handleEditVisitanteFrecuenteClick(item)}
                                         startIcon={<FontAwesomeIcon icon={faPencil} />}
                                         sx={{
                                             color: "#00a8cc",
@@ -252,6 +255,11 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                 show={showAddModal}
                 onClose={handleCloseModal}
                 onAdd={handleAgregarVisitante}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
             />
 
             <EditVisitanteModal
@@ -263,6 +271,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
                 visitante_frecuente={visitante_frecuente}
+                message={message}
             />
 
             <DeleteModal

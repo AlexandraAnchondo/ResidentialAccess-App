@@ -25,20 +25,21 @@ import {
 } from "../../hooks/vehiculo.hook"
 
 const Vehiculos = ({ id_domicilio = 1 }) => {
-    // Llamadas al api
+    // API calls
     const { vehiculos, setVehiculos, loading } = useGetVehiculosByDomicilio(id_domicilio)
     const { saveVehiculo } = useCreateVehiculo()
     const { fetchVehiculo, vehiculo, setVehiculo } = useGetVehiculoById()
     const { editVehiculo } = useUpdateVehiculo()
     const { removeVehiculo } = useDeleteVehiculo()
 
-    // Variables de estado
+    // State variables
     const [showAddModal, setShowAddModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [vehiculoSelected, setVehiculoSelected] = useState(null)
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
 
     const isMobile = useMediaQuery("(max-width: 1068px)")
 
@@ -73,6 +74,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
         setShowAddModal(false)
         setVehiculoSelected(null)
         setVehiculo(null)
+        setMessage(null)
     }
 
     const handleAgregarVehiculoClick = () => setShowAddModal(true)
@@ -83,12 +85,13 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
             if (response.id != null) {
                 setVehiculos([...vehiculos, { ...nuevoVehiculo, id: response.id, id_domicilio: 1 }])
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
-            console.error("Error al guardar vehiculo:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -106,12 +109,13 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                 )
                 setVehiculos(updatedVehiculos)
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
         } catch (err) {
             setIsFailure(true)
-            console.error("Error al editar vehiculo:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -258,6 +262,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                 setIsSaved={setIsSaved}
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
+                message={message}
             />
 
             <EditVehiculoModal
@@ -270,6 +275,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
                 vehiculo={vehiculo}
+                message={message}
             />
 
             <DeleteModal
