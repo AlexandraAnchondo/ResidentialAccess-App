@@ -13,12 +13,19 @@ import AddVehiculoModal from "./AddVehiculoModal"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedVehiculo, selectedVehiculo, isRowSelected }) => {
-    if (!show) {
-        return null
-    }
 
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
+    const [showAddVehiculoModal, setShowAddVehiculoModal] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)")
 
+    const handleCancelClick = () => {
+        setClosing(true) // Activa la animación de cierre
+        setTimeout(() => {
+            onClose()
+            setClosing(false) // Resetea el estado para futuras aperturas
+        }, 500) // Tiempo de la animación en ms
+    }
+    
     const columns_vehiculos_visitantes = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "placas", headerAlign: "center", headerName: "Placas", flex: 1, minWidth: 250 },
@@ -39,7 +46,7 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
                             <Button
                                 onClick={() => {
                                     setSelectedVehiculo(params?.row)
-                                    onClose()
+                                    handleCancelClick()
                                 }}
                                 size="small"
                                 disabled={isSelected}
@@ -63,18 +70,20 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
             : []) // Si no hay fila seleccionada, no agregar la columna
     ]
 
-    const [showAddVehiculoModal, setShowAddVehiculoModal] = useState(false)
+    if (!show && !closing) {
+        return null
+    }
 
     return (
-        <div className="add-modal-overlay">
-            <div className="add-modal">
+        <div className={`add-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
                         Vehículos Registrados
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
-                            onClick={onClose}
+                            onClick={handleCancelClick}
                             startIcon={<CloseIcon />}
                             color="white"
                             size={isMobile ? "small" : "large"}
@@ -98,7 +107,7 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
                         sx={{ marginBottom: isMobile ? 2 : 0, marginTop: isMobile ? -5 : 0, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
                     >Agregar vehículo</Button>
                     <Button
-                        onClick={onClose}
+                        onClick={handleCancelClick}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}

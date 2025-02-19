@@ -23,9 +23,11 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
 
     useEffect(() => {
         if (!show) {
+            setClosing(false)
             setFormData({
                 nombre: "",
                 apellido: "",
@@ -41,27 +43,35 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
 
     const handleAcceptClick = () => {
         onAdd(formData)
-        onClose()
+        handleCancelClick()
+    }
+
+    const handleCancelClick = () => {
+        setClosing(true)
+        setTimeout(() => {
+            onClose()
+            setClosing(false)
+        }, 500)
     }
 
     const isFormValid = () => {
         return formData.nombre && formData.apellido && formData.ine
     }
 
-    if (!show) {
+    if (!show && !closing) {
         return null
     }
 
     return (
-        <div className="add-modal-overlay">
-            <div className="add-modal">
+        <div className={`add-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
                         Ingresa la información del conductor
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
-                            onClick={onClose}
+                            onClick={handleCancelClick}
                             startIcon={<CloseIcon />}
                             color="white"
                             size={isMobile ? "small" : "large"}
@@ -136,7 +146,7 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
                         Aceptar
                     </Button>
                     <Button
-                        onClick={onClose}
+                        onClick={handleCancelClick}
                         variant="outlined"
                         ine="error"
                         startIcon={<CloseIcon />}

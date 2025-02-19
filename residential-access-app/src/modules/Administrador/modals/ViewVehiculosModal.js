@@ -7,28 +7,22 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import DeleteModal from "../../../components/modals/DeleteModal"
 
 const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
-    if (!show) {
-        return null
-    }
-
-    useEffect(() => {
-        if (showDeleteModal) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = "auto"
-        }
-    })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [indexToDelete, setIndexToDelete] = useState(null)
+
+    useEffect(() => {
+        setClosing(false)
+        document.body.style.overflow = showDeleteModal ? "hidden" : "auto"
+    }, [showDeleteModal]) // Se ejecuta solo cuando showDeleteModal cambia
 
     const [vehiculos, setVehiculos] = useState([
         { id: 1, placas: "ABC123", modelo: "Toyota", color: "Rojo", bloqueado: false },
         { id: 2, placas: "DEF456", modelo: "Ford", color: "Azul", bloqueado: false },
-        { id: 3, placas: "GHI789", modelo: "Chevrolet", color: "Negro", bloqueado: false },
+        { id: 3, placas: "GHI789", modelo: "Chevrolet", color: "Negro", bloqueado: false }
     ])
-
-    const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [indexToDelete, setIndexToDelete] = useState(null)
 
     const handleToggleBlock = (id) => {
         setVehiculos((prev) => prev.map((res) => res.id === id ? { ...res, bloqueado: !res.bloqueado } : res))
@@ -46,6 +40,14 @@ const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
 
     const handleCloseDeleteModal = () => {
         setShowDeleteModal(false)
+    }
+
+    const handleCancelClick = () => {
+        setClosing(true)
+        setTimeout(() => {
+            onClose()
+            setClosing(false)
+        }, 500)
     }
 
     const columns = [
@@ -73,22 +75,26 @@ const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
         }
     ]
 
+    if (!show && !closing) {
+        return null
+    }
+
     return (
-        <div className="add-modal-overlay">
-            <div className="add-modal">
+        <div className={`add-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
                         Vehículos Registrados
                     </Typography>
                     <div className="add-modal-close-button">
-                        <Button onClick={onClose} startIcon={<CloseIcon />} color="white" size={isMobile ? "small" : "large"} />
+                        <Button onClick={handleCancelClick} startIcon={<CloseIcon />} color="white" size={isMobile ? "small" : "large"} />
                     </div>
                 </div>
                 <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
                     <DataTable rows={vehiculos} columns={columns} />
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
-                    <Button onClick={onClose} variant="outlined" color="error" startIcon={<CloseIcon />}>
+                    <Button onClick={handleCancelClick} variant="outlined" color="error" startIcon={<CloseIcon />}>
                         Cerrar
                     </Button>
                 </div>

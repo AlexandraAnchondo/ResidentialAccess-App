@@ -25,6 +25,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
 
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
 
     const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
 
@@ -40,6 +41,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
 
     useEffect(() => {
         if (!show) {
+            setClosing(false)
             setFormData({
                 nombre: "",
                 apellidos: "",
@@ -67,12 +69,17 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
 
     const handleAcceptClick = () => {
         onAdd(formData)
+        handleCancelClick()
     }
 
-    const handleCloseClick = () => {
-        onClose()
+    const handleCancelClick = () => {
+        setClosing(true)
         setIsSaved(false)
         setIsFailure(false)
+        setTimeout(() => {
+            onClose()
+            setClosing(false)
+        }, 500)
     }
 
     const isFormValid = () => {
@@ -86,20 +93,20 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
         )
     }
 
-    if (!show) {
+    if (!show && !closing) {
         return null
     }
 
     return (
-        <div className="add-modal-overlay">
-            <div className="add-modal">
+        <div className={`add-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
                         {isSaved ? "Información guardada" : isFailure ?  "Error al capturar la información" : "Ingresa la información del visitante" }
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
-                            onClick={onClose}
+                            onClick={handleCancelClick}
                             startIcon={<CloseIcon />}
                             color="white"
                             size={isMobile ? "small" : "large"}
@@ -243,7 +250,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                         </Button>
                     }
                     <Button
-                        onClick={handleCloseClick}
+                        onClick={handleCancelClick}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
