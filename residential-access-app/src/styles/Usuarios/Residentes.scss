@@ -174,12 +174,14 @@ h3 {
         letter-spacing: 4px;
     }
 
-    .resident-no-data {
-        font-size: 1.4rem; 
+    .resident-no-data p {
+        font-size: 1rem;
+        margin-bottom: 40px;
+        white-space: pre-line;
     }
 
     .resident-no-data .icon-placeholder {
-        font-size: 8rem; 
+        font-size: 6rem; 
     }
 }
 @media screen and (min-width: 769px) and (max-width: 1068px) {

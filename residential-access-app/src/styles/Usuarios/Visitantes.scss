@@ -171,12 +171,14 @@ h3 {
         letter-spacing: 4px;
     }
 
-    .visitor-no-data {
-        font-size: 1.4rem;
+    .visitor-no-data p {
+        font-size: 1rem;
+        margin-bottom: 40px;
+        white-space: pre-line;
     }
     
     .visitor-no-data .icon-placeholder {
-        font-size: 8rem; 
+        font-size: 6rem; 
     }
 }
 

@@ -1,6 +1,6 @@
 @import '../General/Colors.scss';
 
-.vehiculo-no-data {
+.vehiculos-no-data {
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -13,7 +13,7 @@
     font-size: 2.5rem;
 }
 
-.vehiculo-no-data .icon-placeholder {
+.vehiculos-no-data .icon-placeholder {
     font-size: 10rem; 
     color: var(--border-color);
     margin-top: 10px; 
@@ -81,11 +81,6 @@
         align-items: center; 
     }
 
-    .vehiculo-no-data {
-        margin: 0;
-        font-size: 1.5rem;
-    }
-
     .vehiculos-cards {
         display: flex;
         gap: 30px;
@@ -101,12 +96,15 @@
         align-self: center;
     }
 
-    .vehiculo-no-data {
-        font-size: 1.5rem;
+    .vehiculos-no-data p {
+        font-size: 1rem;
+        margin-bottom: 40px;
     }
     
-    .vehiculo-no-data .icon-placeholder {
-        font-size: 8rem; 
+    .vehiculos-no-data .icon-placeholder {
+        font-size: 8rem;
+        margin-top: 10px;
+        margin-bottom: 0;
     }
 }
 
@@ -117,8 +115,9 @@
         align-items: center; 
     }
 
-    .vehiculo-no-data {
-        font-size: 1.8rem;
+    .visitor-no-data p {
+        font-size: 1rem;
+        margin-bottom: 40px;
     }
     
     .vehiculo-no-data .icon-placeholder {
