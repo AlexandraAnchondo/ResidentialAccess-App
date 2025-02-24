@@ -28,9 +28,11 @@ const EditResidenteModal = ({ show, onClose, onEdit, residente, isSaved, setIsSa
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
 
     useEffect(() => {
         if (!show) {
+            setClosing(false)
             setFormData({
                 nombre: "",
                 apellidos: "",
@@ -66,12 +68,20 @@ const EditResidenteModal = ({ show, onClose, onEdit, residente, isSaved, setIsSa
 
     const handleAcceptClick = () => {
         onEdit(formData)
+        setClosing(true)
+        setTimeout(() => {
+            onClose()
+        }, 500)
     }
 
-    const handleCloseClick = () => {
-        onClose()
-        setIsSaved(false)
-        setIsFailure(false)
+    const handleCancelClick = () => {
+        setClosing(true)
+        setTimeout(() => {
+            onClose()
+            setIsSaved(false)
+            setIsFailure(false)
+            setClosing(false)
+        }, 500)
     }
 
     const isFormValid = () => {
@@ -83,20 +93,20 @@ const EditResidenteModal = ({ show, onClose, onEdit, residente, isSaved, setIsSa
         )
     }
 
-    if (!show) {
+    if (!show && !closing) {
         return null
     }
 
     return (
-        <div className="edit-modal-overlay">
-            <div className="edit-modal">
+        <div className={`edit-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`edit-modal ${closing ? "scale-down" : ""}`}>
                 <div className="edit-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
                         {isSaved ? "Información editada" : isFailure ?  "Error al editar la información" : "Edita la información del residente" }
                     </Typography>
                     <div className="edit-modal-close-button">
                         <Button
-                            onClick={onClose}
+                            onClick={handleCancelClick}
                             startIcon={<CloseIcon />}
                             color="white"
                             size={isMobile ? "small" : "large"}
@@ -206,7 +216,7 @@ const EditResidenteModal = ({ show, onClose, onEdit, residente, isSaved, setIsSa
                         </Button>
                     }
                     <Button
-                        onClick={handleCloseClick}
+                        onClick={handleCancelClick}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
