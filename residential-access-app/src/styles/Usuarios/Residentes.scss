@@ -57,6 +57,10 @@ h3 {
 }
 
 .resident-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
     margin-bottom: 30px;
     color: var(--primary-color);
     font-size: 0.9rem;

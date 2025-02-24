@@ -34,8 +34,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
         telefono: "",
         placas: "",
         modelo: "",
-        color: "",
-        principal: true
+        color: ""
     })
 
     useEffect(() => {
@@ -46,8 +45,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                 telefono: "",
                 placas: "",
                 modelo: "",
-                color: "",
-                principal: true
+                color: ""
             })
         }
     }, [show])

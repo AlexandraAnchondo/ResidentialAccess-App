@@ -19,7 +19,7 @@ import HomePage from "./HomePage"
 const Navbar = () => {
     const [activeView, setActiveView] = useState("home")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
-    const [name, setName] = useState("Alexandra Anchondo Robles")
+    const [address, setAddress] = useState("Av. Ficticia 1234")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
     const navigate = useNavigate() // Hook para redirigir a otras páginas
@@ -104,8 +104,8 @@ const Navbar = () => {
                         onClick={toggleSidebar}
                     />
                 }
-                {!isSidebarOpen && // Hide user name from header when sidebar is open
-                    <h1 className="user-name">{name}</h1>
+                {!isSidebarOpen && // Hide user address from header when sidebar is open
+                    <h1 className="user-name">{address}</h1>
                 }
                 {!isMobile && // Show nav pages when desktop screen
                     <nav className="nav-links">
@@ -146,12 +146,12 @@ const Navbar = () => {
                 }
             </header>
 
-            {/* Sidebar that contains the user name and navigation links when tablet or cellphone */}
+            {/* Sidebar that contains the user address and navigation links when tablet or cellphone */}
             {isMobile &&
             <div className="sidebar-container">
                 <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
                     <div className="sidebar-header">
-                        <h1 className="sidebar-user-name">{name}</h1>
+                        <h1 className="sidebar-user-name">{address}</h1>
                         <h2 className="sidebar-perfil-title">Perfil</h2>
                     </div>
                     {isSidebarOpen &&

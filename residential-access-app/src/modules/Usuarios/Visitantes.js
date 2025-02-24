@@ -64,7 +64,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
 
     const handleAgregarVisitante = async (nuevoVisitanteFrecuente) => {
         try {
-            const response = await saveVisitanteFrecuente({ ...nuevoVisitanteFrecuente })
+            const response = await saveVisitanteFrecuente({ ...nuevoVisitanteFrecuente, id_domicilio: id_domicilio })
             if (response.id_visitante != null) {
                 setVisitanteFrecuentes([...visitante_frecuentes, { ...nuevoVisitanteFrecuente, id: response.id }])
                 setIsSaved(true)
@@ -86,7 +86,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
     const handleEditarVisitanteFrecuente = async (visitante_frecuenteEditado) => {
         try {
             const response = await editVisitanteFrecuente({ ...visitante_frecuenteEditado, id_domicilio: id_domicilio })
-            if (response.id != null) {
+            if (response.id_visitante != null) {
                 const updatedVisitanteFrecuentes = visitante_frecuentes.map((visitante_frecuente) =>
                     visitante_frecuente.id === visitante_frecuenteEditado.id ? { ...visitante_frecuenteEditado, id_domicilio: 1 } : visitante_frecuente
                 )
@@ -114,9 +114,14 @@ const Visitantes = ({ id_domicilio = 1 }) => {
         setShowDeleteModal(false)
     }
 
-    const toggleBloqueo = (index) => {
-        const updatedVisitantes = visitante_frecuente.map((visitante, i) =>
-            i === index ? { ...visitante, bloqueado: !visitante.bloqueado } : visitante
+    const toggleBloqueo = async (index) => {
+        const updatedVisitantes = await visitante_frecuentes.map((visitante, i) => {
+            if (i === index) {
+                editVisitanteFrecuente({ ...visitante, bloqueado: !visitante.bloqueado })
+                return { ...visitante, bloqueado: !visitante.bloqueado }
+            }
+            return visitante
+        }
         )
         setVisitanteFrecuentes(updatedVisitantes)
     }
@@ -192,6 +197,10 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                                             <label>Modelo:</label>
                                             <span>{item.modelo}</span>
                                         </div>
+                                        <div className="visitor-info-item">
+                                            <label>Color:</label>
+                                            <span>{item.color}</span>
+                                        </div>
                                     </div>
                                     <Button
                                         variant="outlined"
@@ -227,7 +236,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                                         {item.bloqueado ? "SIN ACCESO" : "CON ACCESO"}
                                     </Button>
                                 </section>
-                                <Button onClick={ () => handleDeleteClick(index)}
+                                <Button onClick={ () => handleDeleteClick(item)}
                                 ><FontAwesomeIcon icon={faTrashAlt} style={{ fontSize: "20px" }} />
                                 </Button>
                             </div>

@@ -11,25 +11,31 @@ import {
 import {
     Person as PersonIcon,
     Phone as PhoneIcon,
-    Email as EmailIcon,
+    ColorLens as ColorIcon,
+    DirectionsCar as CarIcon,
+    FormatListNumbered as LicensePlateIcon,
     Close as CloseIcon,
     Save as SaveIcon,
-    CheckCircle,
-    CancelRounded
+    CheckCircle as CheckCircleIcon,
+    CancelRounded as CancelRoundedIcon
 } from "@mui/icons-material"
 import "../../../styles/General/EditModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSaved, isFailure, setIsFailure, visitante_frecuente }) => {
+const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSaved, isFailure, setIsFailure, visitante_frecuente, message }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellidos: "",
         telefono: "",
-        correo_electronico: "",
-        is_principal: false
+        placas: "",
+        modelo: "",
+        color: "",
+        bloqueado: false
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
+
+    const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
 
     useEffect(() => {
         if (!show) {
@@ -37,8 +43,10 @@ const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSave
                 nombre: "",
                 apellidos: "",
                 telefono: "",
-                correo_electronico: "",
-                is_principal: false
+                placas: "",
+                modelo: "",
+                color: "",
+                bloqueado: false
             })
         }
         if (visitante_frecuente != null) {
@@ -47,8 +55,10 @@ const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSave
                 nombre: visitante_frecuente.nombre,
                 apellidos: visitante_frecuente.apellidos,
                 telefono: visitante_frecuente.telefono,
-                correo_electronico: visitante_frecuente.correo_electronico,
-                is_principal: visitante_frecuente.is_principal
+                placas: visitante_frecuente.placas,
+                modelo: visitante_frecuente.modelo,
+                color: visitante_frecuente.color,
+                bloqueado: visitante_frecuente.bloqueado
             })
         }
     }, [show, visitante_frecuente])
@@ -81,7 +91,9 @@ const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSave
             formData.nombre &&
             formData.apellidos &&
             formData.telefono &&
-            formData.correo_electronico
+            formData.placas &&
+            formData.modelo &&
+            formData.color
         )
     }
 
@@ -158,34 +170,69 @@ const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSave
                                 inputProps={{ maxLength: 14 }}
                             />
                             <TextField
-                                label="Correo"
-                                name="correo_electronico"
-                                value={formData.correo_electronico}
+                                label="Placas"
+                                name="placas"
+                                value={formData.placas}
                                 onChange={handleInputChange}
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">
-                                            <EmailIcon />
+                                            <LicensePlateIcon />
                                         </InputAdornment>
                                     )
                                 }}
                                 fullWidth
                             />
+                            <TextField
+                                label="Modelo"
+                                name="modelo"
+                                value={formData.modelo}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <CarIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <Select
+                                name="color"
+                                value={formData.color}
+                                onChange={handleInputChange}
+                                displayEmpty
+                                fullWidth
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <ColorIcon />
+                                    </InputAdornment>
+                                }
+                            >
+                                <MenuItem value="" disabled>
+                                                                Selecciona un color
+                                </MenuItem>
+                                {availableColors.map((color) => (
+                                    <MenuItem key={color} value={color}>
+                                        {color}
+                                    </MenuItem>
+                                ))}
+                            </Select>
                         </Box>
                     }
                     {isFailure &&
                         <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                            <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
+                            <CancelRoundedIcon className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
-                                Contactar a soporte
+                                {message}
                             </Typography>
                         </div>
                     }
                     {isSaved &&
                         <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                            <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                            <CheckCircleIcon className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                                Edición exitosa
+                                {message}
                             </Typography>
                         </div>
                     }

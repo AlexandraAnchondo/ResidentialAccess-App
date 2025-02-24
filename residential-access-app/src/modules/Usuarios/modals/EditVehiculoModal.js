@@ -24,7 +24,8 @@ const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, vehiculo, i
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
-        color: ""
+        color: "",
+        bloqueado: false
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
@@ -34,11 +35,18 @@ const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, vehiculo, i
             setFormData({
                 placas: "",
                 modelo: "",
-                color: ""
+                color: "",
+                bloqueado: false
             })
         }
         if (vehiculo != null) {
-            setFormData({ id: vehiculo.id, placas: vehiculo.placas, modelo: vehiculo.modelo, color: vehiculo.color })
+            setFormData({
+                id: vehiculo.id,
+                placas: vehiculo.placas,
+                modelo: vehiculo.modelo,
+                color: vehiculo.color,
+                bloqueado: vehiculo.bloqueado
+            })
         }
     }, [show, vehiculo])
 
@@ -149,7 +157,7 @@ const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, vehiculo, i
                         <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
                             <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
-                                Contactar a soporte
+                                {message}
                             </Typography>
                         </div>
                     }
@@ -157,7 +165,7 @@ const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, vehiculo, i
                         <div className="edit-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
                             <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                                Edición exitosa
+                                {message}
                             </Typography>
                         </div>
                     }
