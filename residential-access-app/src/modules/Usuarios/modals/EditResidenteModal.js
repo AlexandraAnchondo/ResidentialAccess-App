@@ -68,10 +68,6 @@ const EditResidenteModal = ({ show, onClose, onEdit, residente, isSaved, setIsSa
 
     const handleAcceptClick = () => {
         onEdit(formData)
-        setClosing(true)
-        setTimeout(() => {
-            onClose()
-        }, 500)
     }
 
     const handleCancelClick = () => {

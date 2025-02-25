@@ -51,7 +51,6 @@ const EditVehiculoModal = ({ show, onClose, onEdit, availableColors, vehiculo, i
 
     const handleAcceptClick = () => {
         onEdit(formData)
-        handleCancelClick()
     }
 
     const handleCancelClick = () => {

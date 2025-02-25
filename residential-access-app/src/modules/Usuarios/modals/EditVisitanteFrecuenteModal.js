@@ -70,10 +70,6 @@ const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSave
 
     const handleAcceptClick = () => {
         onEdit(formData)
-        setClosing(true)
-        setTimeout(() => {
-            onClose()
-        }, 500)
     }
 
     const handleCancelClick = () => {

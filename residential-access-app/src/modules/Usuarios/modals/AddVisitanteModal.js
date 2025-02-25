@@ -69,7 +69,6 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
 
     const handleAcceptClick = () => {
         onAdd(formData)
-        handleCancelClick()
     }
 
     const handleCancelClick = () => {

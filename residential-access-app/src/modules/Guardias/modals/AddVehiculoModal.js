@@ -54,7 +54,6 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
                 vehiculo: { ...formData }
             }
             onAdd(visitante)
-            handleCancelClick()
             return
         }
         onAdd(formData)

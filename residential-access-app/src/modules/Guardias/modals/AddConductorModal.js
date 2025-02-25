@@ -43,7 +43,6 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
 
     const handleAcceptClick = () => {
         onAdd(formData)
-        handleCancelClick()
     }
 
     const handleCancelClick = () => {
