@@ -168,7 +168,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre los vehículos de su propiedad. Utilice el candado para bloquear / desbloquear el acceso.
                 </Typography>
                 {vehiculos.length === 0 && !loading ? (
-                    <div className="vehiculo-no-data">
+                    <div className="vehiculos-no-data">
                         <CarIcon className="icon-placeholder" />
                         <p>No existe ningún vehículo registrado</p>
                         <Button
