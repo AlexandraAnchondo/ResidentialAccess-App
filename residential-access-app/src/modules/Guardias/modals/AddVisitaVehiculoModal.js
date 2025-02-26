@@ -52,7 +52,6 @@ const AddVisitaVehiculoModal = ({ show, onClose, conductor, setSelectedOption, s
         setSelectedOption("Registro de visitas")
         setSelectedRow(null)
         setSelectedConductor(null)
-        handleCancelClick()
     }
 
     const handleCancelClick = () => {

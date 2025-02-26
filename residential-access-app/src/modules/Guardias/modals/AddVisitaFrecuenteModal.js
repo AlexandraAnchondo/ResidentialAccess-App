@@ -49,7 +49,6 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
         setSelectedOption("Registro de visitas")
         setSelectedRow(null)
         setSelectedVehiculo(null)
-        handleCancelClick()
     }
 
     const handleCancelClick = () => {
