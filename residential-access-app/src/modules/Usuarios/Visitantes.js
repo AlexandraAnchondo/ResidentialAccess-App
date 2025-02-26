@@ -17,7 +17,7 @@ import EditVisitanteModal from "./modals/EditVisitanteFrecuenteModal"
 
 // Hooks
 import {
-    useGetVisitanteFrecuentesByDomicilio,
+    useGetVisitantesFrecuentesByDomicilio,
     useGetVisitanteFrecuenteById,
     useCreateVisitanteFrecuente,
     useUpdateVisitanteFrecuente,
@@ -26,7 +26,7 @@ import {
 
 const Visitantes = ({ id_domicilio = 1 }) => {
     // API calls
-    const { visitante_frecuentes, setVisitanteFrecuentes, loading } = useGetVisitanteFrecuentesByDomicilio(id_domicilio)
+    const { visitantes_frecuentes, setVisitanteFrecuentes, loading } = useGetVisitantesFrecuentesByDomicilio(id_domicilio)
     const { saveVisitanteFrecuente } = useCreateVisitanteFrecuente()
     const { fetchVisitanteFrecuente, visitante_frecuente, setVisitanteFrecuente } = useGetVisitanteFrecuenteById()
     const { editVisitanteFrecuente } = useUpdateVisitanteFrecuente()
@@ -44,7 +44,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
     const isMobile = useMediaQuery("(max-width: 1068px)")
 
     useEffect(() => {
-        if (showAddModal || showDeleteModal || showEditModal) {
+        if (showAddModal || showDeleteModal || showEditModal || visitantes_frecuentes.length === 0) {
             document.body.style.overflow = "hidden"
         } else {
             document.body.style.overflow = "auto"
@@ -66,7 +66,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
         try {
             const response = await saveVisitanteFrecuente({ ...nuevoVisitanteFrecuente, id_domicilio: id_domicilio })
             if (response.id_visitante != null) {
-                setVisitanteFrecuentes([...visitante_frecuentes, { ...nuevoVisitanteFrecuente, id: response.id }])
+                setVisitanteFrecuentes([...visitantes_frecuentes, { ...nuevoVisitanteFrecuente, id: response.id }])
                 setIsSaved(true)
                 setMessage(response.message ? response.message : "Operación exitosa")
                 return
@@ -79,7 +79,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
     }
 
     const handleEditVisitanteFrecuenteClick = async (visitante_frecuente) => {
-        await fetchVisitanteFrecuente(visitante_frecuente.id)
+        await fetchVisitanteFrecuente(visitante_frecuente.id, visitante_frecuente.id_vehiculo)
         setShowEditModal(true)
     }
 
@@ -87,7 +87,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
         try {
             const response = await editVisitanteFrecuente({ ...visitante_frecuenteEditado, id_domicilio: id_domicilio })
             if (response.id_visitante != null) {
-                const updatedVisitanteFrecuentes = visitante_frecuentes.map((visitante_frecuente) =>
+                const updatedVisitanteFrecuentes = visitantes_frecuentes.map((visitante_frecuente) =>
                     visitante_frecuente.id === visitante_frecuenteEditado.id ? { ...visitante_frecuenteEditado, id_domicilio: 1 } : visitante_frecuente
                 )
                 setVisitanteFrecuentes(updatedVisitanteFrecuentes)
@@ -109,13 +109,13 @@ const Visitantes = ({ id_domicilio = 1 }) => {
 
     const handleBorrarVisitanteFrecuente = async () => {
         await removeVisitanteFrecuente(visitanteFrecuenteSelected)
-        const newVisitanteFrecuentes = visitante_frecuentes.filter((value) => value.id !== visitanteFrecuenteSelected)
+        const newVisitanteFrecuentes = visitantes_frecuentes.filter((value) => value.id !== visitanteFrecuenteSelected)
         setVisitanteFrecuentes(newVisitanteFrecuentes)
         setShowDeleteModal(false)
     }
 
     const toggleBloqueo = async (index) => {
-        const updatedVisitantes = await visitante_frecuentes.map((visitante, i) => {
+        const updatedVisitantes = await visitantes_frecuentes.map((visitante, i) => {
             if (i === index) {
                 editVisitanteFrecuente({ ...visitante, bloqueado: !visitante.bloqueado })
                 return { ...visitante, bloqueado: !visitante.bloqueado }
@@ -150,7 +150,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                 >
                     <FontAwesomeIcon icon={faCircleInfo} /> Administre las visitas frecuentes autorizadas. Siempre y cuando estén activas podrán acceder al residencial sin código.
                 </Typography>
-                {visitante_frecuentes.length === 0 && !loading ? (
+                {visitantes_frecuentes.length === 0 && !loading ? (
                     <div className="visitor-no-data">
                         <FontAwesomeIcon icon={faUserGroup} className="icon-placeholder" />
                         <p>No existe ningún visitante frecuente registrado</p>
@@ -172,7 +172,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                     </div>
                 ) :(
                     <div className="visitantes-list">
-                        {visitante_frecuentes.map((item, index) => (
+                        {visitantes_frecuentes.map((item, index) => (
                             <div className="visitor-container" key={index}>
                                 <section className="visitor-info">
                                     <h3>Información del visitante</h3>
@@ -241,7 +241,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                                 </Button>
                             </div>
                         ))}
-                        {visitante_frecuentes.length < 3 && (
+                        {visitantes_frecuentes.length < 3 && (
                             <Button
                                 variant="contained"
                                 onClick={handleAgregarVisitanteClick}

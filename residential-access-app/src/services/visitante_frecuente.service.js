@@ -16,10 +16,17 @@ export const getAllVisitanteFrecuentesByDomicilio = async id_domicilio => {
     }
 }
 
-export const getVisitanteFrecuenteById = async id_visitante_frecuente => {
+export const getVisitanteFrecuenteById = async (id_visitante_frecuente, id_vehiculo) => {
     try {
         const url = `${API_URL}/get/${id_visitante_frecuente}`
-        const response = await fetch(url)
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id_vehiculo })
+        })
 
         if (!response.ok) {
             throw new Error(`Error al obtener visitante frecuente: ${response.statusText}`)
@@ -88,6 +95,22 @@ export const deleteVisitanteFrecuente = async id_visitante_frecuente => {
         return await response.json()
     } catch (error) {
         console.error("Error en deleteVisitanteFrecuente:", error)
+        throw error
+    }
+}
+
+export const getVisitantesFrecuentesWithDomicilio = async () => {
+    try {
+        const url = `${API_URL}/get_all_with_domicilio`
+        const response = await fetch(url)
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener visitante frecuentes: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en getAllVisitanteFrecuentes:", error)
         throw error
     }
 }

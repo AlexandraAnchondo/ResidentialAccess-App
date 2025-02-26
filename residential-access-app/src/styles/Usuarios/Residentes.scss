@@ -1,19 +1,5 @@
 @import '../General/Colors.scss';
 
-.agregar-residente-button {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-top: 15px;
-}
-
-.agregar-residente-button:hover{
-    background-color: var(--secondary-hover-color);
-}
-
 .resident-container {
     display: grid;
     grid-template-columns: 1fr 0.01fr; 
@@ -116,6 +102,20 @@ h3 {
     align-items: center;
     justify-content: center;
     margin-top: 150px;
+}
+
+.agregar-residente-button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.agregar-residente-button:hover{
+    background-color: var(--secondary-hover-color);
 }
 
 @media screen and (max-width: 768px) {

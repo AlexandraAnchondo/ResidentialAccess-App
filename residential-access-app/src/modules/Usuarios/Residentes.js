@@ -44,7 +44,7 @@ const Residentes = ({ id_domicilio = 1 }) => {
     const isMobile = useMediaQuery("(max-width: 1068px)")
 
     useEffect(() => {
-        if (showAddModal || showDeleteModal || showEditModal) {
+        if (showAddModal || showDeleteModal || showEditModal || residentes.length === 0) {
             document.body.style.overflow = "hidden"
         } else {
             document.body.style.overflow = "auto"

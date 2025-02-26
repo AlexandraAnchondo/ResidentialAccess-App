@@ -1,17 +1,30 @@
+// Resources
 import React, { useState, useEffect } from "react"
 import { FaIdCard, FaUserFriends, FaList, FaUserPlus } from "react-icons/fa"
 import { Button } from "@mui/material"
 import { ArrowBack, AddCircle, DirectionsCar, CarCrash } from "@mui/icons-material"
-import DataTable from "../../components/DataGrid"
 import "../../styles/Guardias/Registro.scss"
-import AddVehiculoModal from "./modals/AddVehiculoModal"
-import ViewVehiculoVisitanteModal from "./modals/ViewVehiculosVisitanteModal"
-import ViewConductoresVehiculoModal from "./modals/ViewConductoresVehiculoModal"
-import AddVisitaFrecuenteModal from "./modals/AddVisitaFrecuenteModal"
-import AddVisitaVehiculoModal from "./modals/AddVisitaVehiculoModal"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
+// Components
+import DataTable from "../../components/DataGrid"
+
+// Modals
+import ViewVehiculoVisitanteModal from "./modals/ViewVehiculosVisitanteModal"
+import ViewConductoresVehiculoModal from "./modals/ViewConductoresVehiculoModal"
+import AddVehiculoModal from "./modals/AddVehiculoModal"
+import AddVisitaFrecuenteModal from "./modals/AddVisitaFrecuenteModal"
+import AddVisitaVehiculoModal from "./modals/AddVisitaVehiculoModal"
+
+// Hooks
+import {
+    useGetVisitantesFrecuentesWithDomicilio
+} from "../../hooks/visitante_frecuente.hook"
+
 const Registro = ({ selectedOption, setSelectedOption }) => {
+    // API calls
+    const { visitantes_frecuentes, setVisitanteFrecuentes, loading } = useGetVisitantesFrecuentesWithDomicilio()
+
     const columns_visitante = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 100 },
         { field: "calle", headerAlign: "center", headerName: "Calle", flex: 1, minWidth: 250 },
@@ -43,12 +56,6 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 </Button>
             )
         }
-    ]
-
-    const rows_visitante = [
-        { id: 1, calle: "Av. Libertador", numero: 123, nombre: "Alexandra", apellido: "Anchondo", telefono: "686-420-49-24", vehiculos: [{ id: "1", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "2", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] },
-        { id: 2, calle: "Av. Libertador", numero: 456, nombre: "Benito", apellido: "Juarez", telefono: "686-453-4376", vehiculos: [{ id: "3", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo" }, { id: "4", placas: "ORALE456T", modelo: "Honda Civic", color: "Rojo" }] },
-        { id: 3, calle: "Av. Libertador", numero: 789, nombre: "Carlos", apellido: "Perez", telefono: "686-543-2178" }
     ]
 
     const columns_vehiculo = [
@@ -114,7 +121,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const handleCardSelection = (card) => {
         setSelectedOption(card)
         if (card === "Visitante frecuente") {
-            setRows(rows_visitante)
+            setRows(visitantes_frecuentes)
             setColumns(columns_visitante)
         } else {
             setRows(rows_vehiculo)

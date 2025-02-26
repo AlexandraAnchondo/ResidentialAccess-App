@@ -46,7 +46,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
     const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
 
     useEffect(() => {
-        if (showAddModal || showDeleteModal || showEditModal) {
+        if (showAddModal || showDeleteModal || showEditModal || vehiculos.length === 0) {
             document.body.style.overflow = "hidden"
         } else {
             document.body.style.overflow = "auto"

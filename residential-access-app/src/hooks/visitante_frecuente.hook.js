@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react"
-import { getAllVisitanteFrecuentesByDomicilio, getVisitanteFrecuenteById, createVisitanteFrecuente, updateVisitanteFrecuente, deleteVisitanteFrecuente } from "../services/visitante_frecuente.service"
+import {
+    getAllVisitanteFrecuentesByDomicilio,
+    getVisitanteFrecuenteById,
+    createVisitanteFrecuente,
+    updateVisitanteFrecuente,
+    deleteVisitanteFrecuente,
+    getVisitantesFrecuentesWithDomicilio
+} from "../services/visitante_frecuente.service"
 
-export const useGetVisitanteFrecuentesByDomicilio = (id_domicilio) => {
-    const [visitante_frecuentes, setVisitanteFrecuentes] = useState([])
+export const useGetVisitantesFrecuentesByDomicilio = (id_domicilio) => {
+    const [visitantes_frecuentes, setVisitanteFrecuentes] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        const fetchVisitanteFrecuentes = async () => {
+        const fetchVisitantesFrecuentes = async () => {
             try {
                 const data = await getAllVisitanteFrecuentesByDomicilio(id_domicilio)
                 setVisitanteFrecuentes(data)
@@ -18,10 +25,10 @@ export const useGetVisitanteFrecuentesByDomicilio = (id_domicilio) => {
             }
         }
 
-        fetchVisitanteFrecuentes()
+        fetchVisitantesFrecuentes()
     }, [])
 
-    return { visitante_frecuentes, setVisitanteFrecuentes, loading, error }
+    return { visitantes_frecuentes, setVisitanteFrecuentes, loading, error }
 }
 
 export const useGetVisitanteFrecuenteById = () => {
@@ -29,11 +36,11 @@ export const useGetVisitanteFrecuenteById = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    const fetchVisitanteFrecuente = async (id_visitante_frecuente) => {
+    const fetchVisitanteFrecuente = async (id_visitante_frecuente, id_vehiculo) => {
         setLoading(true)
         setError(null)
         try {
-            const response = await getVisitanteFrecuenteById(id_visitante_frecuente)
+            const response = await getVisitanteFrecuenteById(id_visitante_frecuente, id_vehiculo)
             setVisitanteFrecuente(response)
             return response
         } catch (err) {
@@ -103,4 +110,27 @@ export const useDeleteVisitanteFrecuente = () => {
     }
 
     return { removeVisitanteFrecuente, loading, error }
+}
+
+export const useGetVisitantesFrecuentesWithDomicilio = () => {
+    const [visitantes_frecuentes, setVisitanteFrecuentes] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const fetchVisitantesFrecuentesWithDomicilio = async () => {
+            try {
+                const data = await getVisitantesFrecuentesWithDomicilio()
+                setVisitanteFrecuentes(data)
+            } catch (err) {
+                setError(err.message)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchVisitantesFrecuentesWithDomicilio()
+    }, [])
+
+    return { visitantes_frecuentes, setVisitanteFrecuentes, loading, error }
 }
