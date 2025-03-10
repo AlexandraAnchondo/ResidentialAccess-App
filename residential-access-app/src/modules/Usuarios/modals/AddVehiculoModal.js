@@ -20,7 +20,7 @@ import {
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddVehiculoModal = ({ show, onClose, onAdd, availableColors, isSaved, setIsSaved, isFailure, setIsFailure }) => {
+const AddVehiculoModal = ({ show, onClose, onAdd, availableColors, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
@@ -151,7 +151,7 @@ const AddVehiculoModal = ({ show, onClose, onAdd, availableColors, isSaved, setI
                         <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
                             <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
-                                Contactar a soporte
+                                {message}
                             </Typography>
                         </div>
                     }
@@ -159,7 +159,7 @@ const AddVehiculoModal = ({ show, onClose, onAdd, availableColors, isSaved, setI
                         <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
                             <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                                Captura exitosa
+                                {message}
                             </Typography>
                         </div>
                     }

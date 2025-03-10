@@ -66,7 +66,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
         try {
             const response = await saveVisitanteFrecuente({ ...nuevoVisitanteFrecuente, id_domicilio: id_domicilio })
             if (response.id_visitante != null) {
-                setVisitanteFrecuentes([...visitantes_frecuentes, { ...nuevoVisitanteFrecuente, id: response.id }])
+                setVisitanteFrecuentes([...visitantes_frecuentes, { ...nuevoVisitanteFrecuente, id: response.id_visitante }])
                 setIsSaved(true)
                 setMessage(response.message ? response.message : "Operación exitosa")
                 return
@@ -170,7 +170,7 @@ const Visitantes = ({ id_domicilio = 1 }) => {
                     <div className="loading-container">
                         <Loader/>
                     </div>
-                ) :(
+                ) : (
                     <div className="visitantes-list">
                         {visitantes_frecuentes.map((item, index) => (
                             <div className="visitor-container" key={index}>

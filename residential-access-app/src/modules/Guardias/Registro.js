@@ -8,6 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 
 // Components
 import DataTable from "../../components/DataGrid"
+import Loader from "../../components/Loader"
 
 // Modals
 import ViewVehiculoVisitanteModal from "./modals/ViewVehiculosVisitanteModal"
@@ -18,19 +19,32 @@ import AddVisitaVehiculoModal from "./modals/AddVisitaVehiculoModal"
 
 // Hooks
 import {
-    useGetVisitantesFrecuentesWithDomicilio
+    useGetVisitantesFrecuentesWithDomicilio,
+    useAssignVehicleToVisitante
 } from "../../hooks/visitante_frecuente.hook"
+
+import {
+    useCreateVisitaVisitante
+} from "../../hooks/visita.hook"
+
+import {
+    useGetVehiculos
+} from "../../hooks/vehiculo.hook"
 
 const Registro = ({ selectedOption, setSelectedOption }) => {
     // API calls
-    const { visitantes_frecuentes, setVisitanteFrecuentes, loading } = useGetVisitantesFrecuentesWithDomicilio()
+    const { visitantes_frecuentes, setVisitanteFrecuentes, loading: loadingVisitantesFrecuentes } = useGetVisitantesFrecuentesWithDomicilio()
+    const { saveVisitaVisitante } = useCreateVisitaVisitante()
+    const { assignVehicle } = useAssignVehicleToVisitante()
+    const { vehiculos, setVehiculos, loading: loadingVehiculos } = useGetVehiculos()
 
+    // Columns
     const columns_visitante = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 100 },
         { field: "calle", headerAlign: "center", headerName: "Calle", flex: 1, minWidth: 250 },
         { field: "numero", headerAlign: "center", headerName: "Número", flex: 1, minWidth: 150 },
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 150 },
-        { field: "apellido", headerAlign: "center", headerName: "Apellido", flex: 1, minWidth: 250 },
+        { field: "apellidos", headerAlign: "center", headerName: "Apellidos", flex: 1, minWidth: 250 },
         { field: "telefono", headerAlign: "center", headerName: "Teléfono", flex: 1, minWidth: 150 },
         {
             field: "action",
@@ -42,9 +56,8 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             renderCell: (params) => (
                 <Button
                     onClick={() => handleViewVehiculoVisitanteClick(params?.row)}
-                    disabled={params.row.vehiculos == null}
                     sx={{
-                        backgroundColor: params.row.vehiculos != null ? "#008db8" : "#ffff",
+                        backgroundColor:"#008db8",
                         "&:hover": { backgroundColor: "#0a395f" },
                         color: "white",
                         border: "none",
@@ -52,7 +65,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                         borderRadius: "5px"
                     }}
                 >
-                    {params.row.vehiculos != null ? <DirectionsCar /> : <CarCrash />}
+                    <DirectionsCar />
                 </Button>
             )
         }
@@ -89,24 +102,26 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         }
     ]
 
-    const rows_vehiculo = [
-        { id: 1, placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo", conductores: [{ id: "1", nombre: "Alexandra", apellido: "Anchondo", identificacion: "1234567890" }, { id: "2", nombre: "Alexandra", apellido: "Anchondo", identificacion: "1234567890" }] },
-        { id: 2, placas: "FJF9FS09", modelo: "Volkswagen Jetta", color: "Azul",  conductores: [{ id: "3", nombre: "Benito", apellido: "Juarez", identificacion: "0987654321" }] },
-        { id: 3, placas: "ORALE456H", modelo: "Honda Civic", color: "Negro" }
-    ]
-
+    // State variables
     const [rows, setRows] = useState([])
     const [columns, setColumns] = useState([])
+
+    // Modal handlers
     const [showAddVehiculoModal, setShowAddVehiculoModal] = useState(false)
     const [showViewVehiculosVisitanteModal, setShowViewVehiculosVisitanteModal] = useState(false) // Open the modal for viewing the visitor's cars
     const [showViewConductoresVehiculoModal, setShowViewConductoresVehiculoModal] = useState(false) // Open the modal for viewing the car's conductors
     const [showAddVisitaFrecuenteModal, setShowAddVisitaFrecuenteModal] = useState(false) // Open the modal for add a new visit for a frecuent visitor
     const [showAddVisitaVehiculoModal, setShowAddVisitaVehiculoModal] = useState(false) // Open the modal for add a new visit for a vehicle
+
+    // Event handlers
     const [selectedVisitante, setSelectedVisitante] = useState(null) // Means the selected visitor when open vehiculos-visitor modal without clicking the row
     const [selectedVehiculoFromVisitante, setSelectedVehiculoFromVisitante] = useState(null) // Means the current selected vehiculo for the visit from the vehiculos-visitor modal
-    const [selectedVehiculoFromConductor, setSelectedVehiculoFromConductor] = useState(null) // Means the current selected vehiculo for the visit from the conductors-vehiculo modal
+    const [selectedVehiculoFromConductor, setSelectedVehiculoFromConductor] = useState(null) // Means the selected vehicle when open vehiculos-visitor modal without clicking the row
     const [selectedConductor, setSelectedConductor] = useState(null) // Means the current selected conductor for the visit from the conductors-vehiculo modal
     const [selectedRow, setSelectedRow] = useState(null) // Means the visitor row selected in frecuent-visitor table
+    const [isSaved, setIsSaved] = useState(false)
+    const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
 
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
 
@@ -124,7 +139,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             setRows(visitantes_frecuentes)
             setColumns(columns_visitante)
         } else {
-            setRows(rows_vehiculo)
+            setRows(vehiculos)
             setColumns(columns_vehiculo)
         }
     }
@@ -138,33 +153,83 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         setSelectedConductor(null)
     }
 
-    const handleAddVehiculoClick = (nuevoVehiculo) => {
-        if(nuevoVehiculo.visitante_id != null) {
-            console.log("Voy a registrar un vehiculo al nombre de un visitante")
-            return
+    const handleAddVehiculo = async (nuevoVehiculo) => {
+        if (nuevoVehiculo.id_visitante != null) {
+            try {
+                const response = await assignVehicle({ ...nuevoVehiculo })
+                if (response.id_visitante != null) {
+                    const nuevo_vehiculo_registrado = { ...nuevoVehiculo.vehiculo, id: response.id_vehiculo }
+
+                    // Actualiza el visitante seleccionado
+                    setSelectedVisitante(prevState => ({
+                        ...prevState,
+                        vehiculos: [...(prevState.vehiculos || []), nuevo_vehiculo_registrado]
+                    }))
+
+                    // También actualiza visitantes_frecuentes
+                    setVisitanteFrecuentes(prevState => prevState.map(v => {
+                        if (v.id == response.id_visitante) {
+                            return { ...v, vehiculos: [...(v.vehiculos || []), nuevo_vehiculo_registrado] }
+                        } else {
+                            return v
+                        }
+                    }))
+
+                    setIsSaved(true)
+                    setMessage(response.message ? response.message : "Operación exitosa")
+                    return
+                }
+                setIsFailure(true)
+            } catch (err) {
+                setIsFailure(true)
+                setMessage(err.message || "Operación fallida")
+            }
         } else {
             console.log("Voy a registrar un vehiculo de un conductor cualquiera")
             return
         }
     }
 
-    const handleAddConductorClick = (nuevoConductor) => {
-        console.log("Voy a registrar un conductor de un vehículo")
-        console.log(nuevoConductor)
+    const handleAddConductor = async (nuevoConductor) => {
+        try {
+            const response = await assignVehicle({ ...nuevoConductor })
+            if (response.id_vehiculo != null) {
+                const nuevo_conductor_registrado = { ...nuevoConductor.conductor, id: response.id_conductor }
+
+                // Actualiza el vehiculo seleccionado
+                selectedVehiculoFromConductor(prevState => ({
+                    ...prevState,
+                    conductores: [...(prevState.conductores || []), nuevo_conductor_registrado]
+                }))
+
+                // También actualiza los vehiculos
+                setVehiculos(prevState => prevState.map(v => {
+                    if (v.id == response.id_vehiculo) {
+                        return { ...v, conductores: [...(v.conductores || []), nuevo_conductor_registrado] }
+                    } else {
+                        return v
+                    }
+                }))
+
+                setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
+                return
+            }
+            setIsFailure(true)
+        } catch (err) {
+            setIsFailure(true)
+            setMessage(err.message || "Operación fallida")
+        }
     }
 
     const handleViewVehiculoVisitanteClick = (rowData) => {
         setShowViewVehiculosVisitanteModal(true)
-        if (rowData.vehiculos !== null && rowData.vehiculos.length > 0) {
-            setSelectedVisitante(rowData)
-        }
+        setSelectedVisitante(rowData)
     }
 
     const handleViewConductoresVehiculoClick = (rowData) => {
         setShowViewConductoresVehiculoModal(true)
-        if (rowData.conductores !== null && rowData.conductores.length > 0) {
-            setSelectedVehiculoFromConductor(rowData)
-        }
+        setSelectedVehiculoFromConductor(rowData)
     }
 
     const handleRowSelection = (selectionModel) => {
@@ -175,6 +240,28 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             setSelectedRow(null)
             setSelectedVehiculoFromVisitante(null)
             setSelectedConductor(null)
+        }
+    }
+
+    const handleAddVisitaFrecuente = async (nuevaVisita) => {
+        try {
+            const response = await saveVisitaVisitante({ ...nuevaVisita })
+            if (response.id_visita != null) {
+                setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
+                setSelectedOption("Registro de visitas")
+                setSelectedRow(null)
+                setSelectedVehiculoFromVisitante(null)
+                return
+            }
+            setSelectedRow(null)
+            setSelectedVehiculoFromVisitante(null)
+            setIsFailure(true)
+        } catch (err) {
+            setIsFailure(true)
+            setSelectedRow(null)
+            setSelectedVehiculoFromVisitante(null)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -194,16 +281,20 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             ) :
                 selectedOption === "Visitante frecuente" ? (
                     <div className="visitante-frecuente-container">
-                        {rows.length === 0 ? (
+                        {rows.length === 0 && !loadingVisitantesFrecuentes ? (
                             <div className="visitante-frecuente-no-data">
                                 <FaList className="icon-placeholder" />
                                 <p>No se encontraron visitantes frecuentes</p>
                                 <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
-                                    sx={{ flex: 1, minWidth: "100%", marginTop: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                                    sx={{ marginLeft: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
+                            </div>
+                        ): loadingVisitantesFrecuentes ? (
+                            <div className="loading-container">
+                                <Loader/>
                             </div>
                         ) : (
                             <div className="visitante-frecuente-table-section">
@@ -244,12 +335,12 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                     variant="contained"
                                     onClick={() => setShowAddVehiculoModal(true)}
                                     endIcon={<AddCircle />}
-                                    sx={{ flex: 1, minWidth: "100%", marginTop: "20px", backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
+                                    sx={{ marginTop: "20px", backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
                                 >Agregar vehículo</Button>
                                 <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
-                                    sx={{ flex: 1, minWidth: "100%", marginTop: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                                    sx={{ marginTop: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
                             </div>
@@ -293,37 +384,50 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             <AddVehiculoModal
                 show={showAddVehiculoModal}
                 onClose={() => setShowAddVehiculoModal(false)}
-                onAdd={handleAddVehiculoClick}
+                onAdd={handleAddVehiculo}
             />
 
             <ViewVehiculoVisitanteModal
                 show={showViewVehiculosVisitanteModal}
                 onClose={() => setShowViewVehiculosVisitanteModal(false)}
                 visitante={selectedVisitante}
-                onAdd={handleAddVehiculoClick}
+                onAdd={handleAddVehiculo}
                 setSelectedVehiculo={setSelectedVehiculoFromVisitante}
                 selectedVehiculo={selectedVehiculoFromVisitante}
                 isRowSelected={selectedRow != null}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
             />
 
             <ViewConductoresVehiculoModal
                 show={showViewConductoresVehiculoModal}
                 onClose={() => setShowViewConductoresVehiculoModal(false)}
                 vehiculo={selectedVehiculoFromConductor}
-                onAdd={handleAddConductorClick}
+                onAdd={handleAddConductor}
                 setSelectedConductor={setSelectedConductor}
                 selectedConductor={selectedConductor}
                 isRowSelected={selectedRow != null}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
             />
 
             <AddVisitaFrecuenteModal
                 show={showAddVisitaFrecuenteModal}
                 onClose={() => setShowAddVisitaFrecuenteModal(false)}
+                onAdd={handleAddVisitaFrecuente}
                 visitante={selectedRow}
                 vehiculo={selectedVehiculoFromVisitante}
-                setSelectedOption={setSelectedOption}
-                setSelectedRow={setSelectedRow}
-                setSelectedVehiculo={setSelectedVehiculoFromVisitante}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
             />
 
             <AddVisitaVehiculoModal

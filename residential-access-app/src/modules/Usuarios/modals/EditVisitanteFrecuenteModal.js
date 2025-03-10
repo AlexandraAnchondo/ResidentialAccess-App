@@ -115,7 +115,7 @@ const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSave
             <div className={`edit-modal ${closing ? "scale-down" : ""}`}>
                 <div className="edit-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        {isSaved ? "Información editada" : isFailure ?  "Error al editar la información" : "Edita la información del visitante_frecuente" }
+                        {isSaved ? "Información editada" : isFailure ?  "Error al editar la información" : "Edita la información del visitante frecuente" }
                     </Typography>
                     <div className="edit-modal-close-button">
                         <Button
@@ -183,6 +183,7 @@ const EditVisitanteFrecuenteModal = ({ show, onClose, onEdit, isSaved, setIsSave
                                 name="placas"
                                 value={formData.placas}
                                 onChange={handleInputChange}
+                                disabled
                                 InputProps={{
                                     startAdornment: (
                                         <InputAdornment position="start">

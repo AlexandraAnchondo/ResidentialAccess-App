@@ -5,14 +5,16 @@ import {
 } from "@mui/material"
 import {
     Close as CloseIcon,
-    AddCircle
+    AddCircle, 
+    User as UserIcon
 } from "@mui/icons-material"
+import { FaUserFriends } from "react-icons/fa"
 import "../../../styles/General/AddModal.scss"
 import DataTable from "../../../components/DataGrid"
 import AddConductorModal from "./AddConductorModal"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelectedConductor, selectedConductor, isRowSelected }) => {
+const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelectedConductor, selectedConductor, isRowSelected, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
 
     const [closing, setClosing] = useState(false)
     const [showAddConductorModal, setShowAddConductorModal] = useState(false)
@@ -30,7 +32,7 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
         }, 500) // Tiempo de la animación en ms
     }
 
-    const columns_vehiculos_visitantes = [
+    const columns_conductores_vehiculos = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 300 },
         { field: "apellido", headerAlign: "center", headerName: "Apellido", flex: 1, minWidth: 150 },
@@ -97,15 +99,24 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
                     </div>
                 </div>
                 <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
-                    <DataTable rows={vehiculo.conductores} columns={columns_vehiculos_visitantes} />
+                    {vehiculo?.conductores == null || vehiculo?.conductores.length === 0 ? (
+                        <div className="vehiculo-no-data" style={{ margin: 0, fontSize: "1.5rem" }}>
+                            <FaUserFriends className="icon-placeholder" style={{ marginTop: "20px", fontSize: "8rem" }}/>
+                            <p>No se encontraron conductores relacionados</p>
+                        </div>
+                    ) : (
+                        <DataTable rows={vehiculo.conductores} columns={columns_conductores_vehiculos} />
+                    )}
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
-                    <Button
-                        variant="contained"
-                        onClick={() => setShowAddConductorModal(true)}
-                        endIcon={<AddCircle />}
-                        sx={{ marginBottom: isMobile ? 2 : 0, marginTop: isMobile ? -5 : 0, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
-                    >Agregar conductor</Button>
+                    {isRowSelected &&
+                        <Button
+                            variant="contained"
+                            onClick={() => setShowAddConductorModal(true)}
+                            endIcon={<AddCircle />}
+                            sx={{ marginBottom: isMobile ? 2 : 0, marginTop: isMobile ? -5 : 0, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
+                        >Agregar conductor</Button>
+                    }
                     <Button
                         onClick={handleCancelClick}
                         variant="outlined"
@@ -113,7 +124,7 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
                         startIcon={<CloseIcon />}
                         style={{ marginLeft: 20 }}
                     >
-                        Cancelar
+                        {isRowSelected ? "Cancelar" : "Cerrar"}
                     </Button>
                 </div>
 
@@ -121,6 +132,12 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
                     show={showAddConductorModal}
                     onClose={() => setShowAddConductorModal(false)}
                     onAdd={onAdd}
+                    vehiculoId={vehiculo.id}
+                    isSaved={isSaved}
+                    setIsSaved={setIsSaved}
+                    isFailure={isFailure}
+                    setIsFailure={setIsFailure}
+                    message={message}
                 />
             </div>
         </div>

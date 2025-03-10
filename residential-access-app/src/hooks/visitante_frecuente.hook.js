@@ -5,7 +5,8 @@ import {
     createVisitanteFrecuente,
     updateVisitanteFrecuente,
     deleteVisitanteFrecuente,
-    getVisitantesFrecuentesWithDomicilio
+    getVisitantesFrecuentesWithDomicilio,
+    assignVehicleToVisitante
 } from "../services/visitante_frecuente.service"
 
 export const useGetVisitantesFrecuentesByDomicilio = (id_domicilio) => {
@@ -57,11 +58,11 @@ export const useCreateVisitanteFrecuente = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    const saveVisitanteFrecuente = async (visitante_frecuenteData) => {
+    const saveVisitanteFrecuente = async (visitanteFrecuenteData) => {
         setLoading(true)
         setError(null)
         try {
-            const response = await createVisitanteFrecuente(visitante_frecuenteData)
+            const response = await createVisitanteFrecuente(visitanteFrecuenteData)
             return response
         } catch (err) {
             setError(err.message)
@@ -77,11 +78,11 @@ export const useUpdateVisitanteFrecuente = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
-    const editVisitanteFrecuente = async (visitante_frecuenteData) => {
+    const editVisitanteFrecuente = async (visitanteFrecuenteData) => {
         setLoading(true)
         setError(null)
         try {
-            const response = await updateVisitanteFrecuente(visitante_frecuenteData)
+            const response = await updateVisitanteFrecuente(visitanteFrecuenteData)
             return response
         } catch (err) {
             setError(err.message)
@@ -133,4 +134,23 @@ export const useGetVisitantesFrecuentesWithDomicilio = () => {
     }, [])
 
     return { visitantes_frecuentes, setVisitanteFrecuentes, loading, error }
+}
+
+export const useAssignVehicleToVisitante = () => {
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const assignVehicle = async (visitanteFrecuenteData) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const response = await assignVehicleToVisitante(visitanteFrecuenteData)
+            return response
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+    return { assignVehicle, loading, error }
 }

@@ -40,14 +40,14 @@ export const getVisitanteFrecuenteById = async (id_visitante_frecuente, id_vehic
     }
 }
 
-export const createVisitanteFrecuente = async (visitante_frecuenteData) => {
+export const createVisitanteFrecuente = async (visitanteFrecuenteData) => {
     try {
         const response = await fetch(`${API_URL}/create`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(visitante_frecuenteData)
+            body: JSON.stringify(visitanteFrecuenteData)
         })
 
         if (!response.ok) {
@@ -61,14 +61,14 @@ export const createVisitanteFrecuente = async (visitante_frecuenteData) => {
     }
 }
 
-export const updateVisitanteFrecuente = async (visitante_frecuenteData) => {
+export const updateVisitanteFrecuente = async (visitanteFrecuenteData) => {
     try {
-        const response = await fetch(`${API_URL}/update/${visitante_frecuenteData.id}`, {
+        const response = await fetch(`${API_URL}/update/${visitanteFrecuenteData.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(visitante_frecuenteData)
+            body: JSON.stringify(visitanteFrecuenteData)
         })
 
         if (!response.ok) {
@@ -111,6 +111,28 @@ export const getVisitantesFrecuentesWithDomicilio = async () => {
         return await response.json()
     } catch (error) {
         console.error("Error en getAllVisitanteFrecuentes:", error)
+        throw error
+    }
+}
+
+export const assignVehicleToVisitante = async (visitanteFrecuenteData) => {
+    try {
+        const url = `${API_URL}/assign_vehicle/${visitanteFrecuenteData.id_visitante}`
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(visitanteFrecuenteData.vehiculo)
+        })
+
+        if (!response.ok) {
+            throw new Error(`Error al asignar vehículo: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en assignVehicleToVisitante:", error)
         throw error
     }
 }

@@ -7,19 +7,19 @@ import {
 } from "@mui/material"
 import {
     Close as CloseIcon,
-    Check as CheckIcon,
-    CheckCircle,
-    AddCard
+    CheckCircle as CheckCircleIcon,
+    CancelRounded as CancelRoundedIcon,
+    Save as SaveIcon,
+    AddCard as AddCardIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelectedOption, setSelectedRow, setSelectedVehiculo }) => {
+const AddVisitaFrecuenteModal = ({ show, onClose, onAdd, visitante, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
 
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
 
-    const [step, setStep] = useState(1) // Controla la vista (1 = formulario 2 = confirmación)
     const [formData, setFormData] = useState({
         numero_tarjeton: ""
     })
@@ -27,7 +27,6 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
     useEffect(() => {
         if (!show) {
             setClosing(false)
-            setStep(1) // Reinicia el paso al cerrar el modal
             setFormData({
                 numero_tarjeton: ""
             })
@@ -35,8 +34,8 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
     }, [show])
 
     const visitanteWithVehiculo = {
-        visitante_id: visitante?.id,
-        vehiculo_id: vehiculo?.id
+        id_visitante: visitante?.id,
+        id_vehiculo: vehiculo?.id
     }
 
     const handleInputChange = (e) => {
@@ -45,14 +44,13 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
     }
 
     const handleAcceptClick = () => {
-        console.log(formData)
-        setSelectedOption("Registro de visitas")
-        setSelectedRow(null)
-        setSelectedVehiculo(null)
+        onAdd(formData)
     }
 
     const handleCancelClick = () => {
         setClosing(true)
+        setIsSaved(false)
+        setIsFailure(false)
         setTimeout(() => {
             onClose()
             setClosing(false)
@@ -72,7 +70,7 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
             <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        {step === 1 ? "Ingresa el número del tarjetón" : "Información ingresada" }
+                        {isSaved ? "Información guardada" : isFailure ?  "Error al capturar la información" : "Ingresa el número del tarjetón" }
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
@@ -89,9 +87,8 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
                         />
                     </div>
                 </div>
-                {/* Paso 1: Formulario */}
-                {step === 1 && (
-                    <div className="add-modal-content" style={{ animation: "none" }}>
+                <div className="add-modal-content" style={{ animation: "none" }}>
+                    {!isSaved && !isFailure &&
                         <TextField
                             label="Tarjetón"
                             name="numero_tarjeton"
@@ -100,64 +97,54 @@ const AddVisitaFrecuenteModal = ({ show, onClose, visitante, vehiculo, setSelect
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <AddCard />
+                                        <AddCardIcon />
                                     </InputAdornment>
                                 )
                             }}
                         />
-                    </div>
-                )}
-
-                {/* Paso 4: Check gigante */}
-                {step === 2 && (
-                    <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                        <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
-                        <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                            Captura exitosa
-                        </Typography>
-                    </div>
-                )}
-
-                {/* Botones generales */}
+                    }
+                    {isFailure &&
+                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CancelRoundedIcon className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
+                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
+                                {message}
+                            </Typography>
+                        </div>
+                    }
+                    {isSaved &&
+                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CheckCircleIcon className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
+                                {message}
+                            </Typography>
+                        </div>
+                    }
+                </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
-                    {step === 1 && (
-                        <Button
-                            onClick={() => setStep(2)}
-                            variant="contained"
-                            startIcon={<CheckIcon />}
-                            disabled={!isFormValid()}
-                            style={{ marginLeft: 20 }}
-                            sx={{
-                                backgroundColor: "#00a8cc",
-                                "&:hover": "#00a8ccCC"
-                            }}
-                        >
-                        Aceptar
-                        </Button>
-                    )}
-                    {step === 2 && (
+                    {!isSaved && !isFailure &&
                         <Button
                             onClick={handleAcceptClick}
                             variant="contained"
-                            startIcon={<CheckIcon />}
-                            disabled={!isFormValid()}
-                            style={{ marginLeft: 20 }}
+                            startIcon={<SaveIcon />}
+                            disabled={!isFormValid() || isFailure}
                             sx={{
                                 backgroundColor: "#00a8cc",
                                 "&:hover": "#00a8ccCC"
                             }}
+                            style={{ marginLeft: 20, marginBottom: 20 }}
                         >
-                        Aceptar
+                            Guardar
                         </Button>
-                    )}
+                    }
                     <Button
                         onClick={handleCancelClick}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20 }}
+                        style={{ marginLeft: 20, marginBottom:10 }}
+                        size={isMobile ? "small" : "large"}
                     >
-                        Cancelar
+                        {isSaved || isFailure ? "Cerrar" : "Cancelar"}
                     </Button>
                 </div>
             </div>

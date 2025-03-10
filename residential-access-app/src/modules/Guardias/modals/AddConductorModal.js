@@ -10,16 +10,19 @@ import {
     People,
     AddCard,
     Close as CloseIcon,
-    Check as CheckIcon
+    Save as SaveIcon,
+    CheckCircle,
+    CancelRounded
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddConductorModal = ({ show, onClose, onAdd }) => {
+const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
         nombre: "",
         apellido: "",
-        ine: ""
+        ine: "",
+        id_vehiculo: vehiculoId
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
@@ -31,7 +34,8 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
             setFormData({
                 nombre: "",
                 apellido: "",
-                ine: ""
+                ine: "",
+                id_vehiculo: vehiculoId
             })
         }
     }, [show])
@@ -45,11 +49,13 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
         onAdd(formData)
     }
 
-    const handleCancelClick = () => {
+    const handleCloseClick = () => {
         setClosing(true)
         setTimeout(() => {
             onClose()
             setClosing(false)
+            setIsSaved(false)
+            setIsFailure(false)
         }, 500)
     }
 
@@ -66,11 +72,11 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
             <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del conductor
+                        {isSaved ? "Información guardada" : isFailure ?  "Error al capturar la información" : "Ingresa la información del conductor" }
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
-                            onClick={handleCancelClick}
+                            onClick={handleCloseClick}
                             startIcon={<CloseIcon />}
                             color="white"
                             size={isMobile ? "small" : "large"}
@@ -84,75 +90,95 @@ const AddConductorModal = ({ show, onClose, onAdd }) => {
                     </div>
                 </div>
                 <div className="add-modal-content">
-                    <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
-                        <TextField
-                            label="Nombre"
-                            name="nombre"
-                            value={formData.nombre}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <People />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <TextField
-                            label="Apellido"
-                            name="apellido"
-                            value={formData.apellido}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <People />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <TextField
-                            label="Ine"
-                            name="ine"
-                            value={formData.ine}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <AddCard />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                    </Box>
+                    {!isSaved && !isFailure &&
+                        <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
+                            <TextField
+                                label="Nombre"
+                                name="nombre"
+                                value={formData.nombre}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <People />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <TextField
+                                label="Apellido"
+                                name="apellido"
+                                value={formData.apellido}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <People />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <TextField
+                                label="Ine"
+                                name="ine"
+                                value={formData.ine}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <AddCard />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                        </Box>
+                    }
+                    {isFailure &&
+                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
+                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
+                                {message}
+                            </Typography>
+                        </div>
+                    }
+                    {isSaved &&
+                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
+                                {message}
+                            </Typography>
+                        </div>
+                    }
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
+                    {!isSaved && !isFailure &&
+                        <Button
+                            onClick={handleAcceptClick}
+                            variant="contained"
+                            startIcon={<SaveIcon />}
+                            disabled={!isFormValid() || isFailure}
+                            style={{ marginLeft: 20, marginBottom:10 }}
+                            size={isMobile ? "small" : "large"}
+                            sx={{
+                                backgroundColor: "#00a8cc",
+                                "&:hover": "#00a8ccCC"
+                            }}
+                        >
+                        Guardar
+                        </Button>
+                    }
                     <Button
-                        onClick={handleAcceptClick}
-                        variant="contained"
-                        startIcon={<CheckIcon />}
-                        disabled={!isFormValid()}
-                        style={{ marginLeft: 20 }}
-                        size={isMobile ? "small" : "large"}
-                        sx={{
-                            backgroundColor: "#00a8cc",
-                            "&:hover": "#00a8ccCC"
-                        }}
-                    >
-                        Aceptar
-                    </Button>
-                    <Button
-                        onClick={handleCancelClick}
+                        onClick={handleCloseClick}
                         variant="outlined"
-                        ine="error"
+                        color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20 }}
+                        style={{ marginLeft: 20, marginBottom:10 }}
                         size={isMobile ? "small" : "large"}
                     >
-                        Cancelar
+                        {isSaved || isFailure ? "Cerrar" : "Cancelar"}
                     </Button>
                 </div>
             </div>

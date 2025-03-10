@@ -13,17 +13,18 @@ import {
     ColorLens as ColorIcon,
     FormatListNumbered as LicensePlateIcon,
     Close as CloseIcon,
-    Check as CheckIcon
+    Save as SaveIcon,
+    CheckCircle,
+    CancelRounded
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
+const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
-        color: "",
-        bloqueado: false
+        color: ""
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
@@ -36,8 +37,7 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
             setFormData({
                 placas: "",
                 modelo: "",
-                color: "",
-                bloqueado: false
+                color: ""
             })
         }
     }, [show])
@@ -50,26 +50,28 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
     const handleAcceptClick = () => {
         if(visitanteId != null) {
             const visitante = {
-                visitante_id: visitanteId,
+                id_visitante: visitanteId,
                 vehiculo: { ...formData }
             }
             onAdd(visitante)
             return
         }
         onAdd(formData)
-        handleCancelClick()
+        handleCloseClick()
     }
 
-    const handleCancelClick = () => {
+    const handleCloseClick = () => {
         setClosing(true)
         setTimeout(() => {
             onClose()
             setClosing(false)
+            setIsSaved(false)
+            setIsFailure(false)
         }, 500)
     }
 
     const isFormValid = () => {
-        return formData.placas && formData.modelo && formData.color
+        return formData.placas &&formData.modelo && formData.color
     }
 
     if (!show && !closing) {
@@ -81,11 +83,11 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
             <div className={`add-modal ${closing ? "scale-down" : ""}`}>
                 <div className="add-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Ingresa la información del vehículo
+                        {isSaved ? "Información guardada" : isFailure ?  "Error al capturar la información" : "Ingresa la información del vehículo" }
                     </Typography>
                     <div className="add-modal-close-button">
                         <Button
-                            onClick={handleCancelClick}
+                            onClick={handleCloseClick}
                             startIcon={<CloseIcon />}
                             color="white"
                             size={isMobile ? "small" : "large"}
@@ -99,82 +101,102 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null }) => {
                     </div>
                 </div>
                 <div className="add-modal-content">
-                    <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
-                        <TextField
-                            label="Placas"
-                            name="placas"
-                            value={formData.placas}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
+                    {!isSaved && !isFailure &&
+                        <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
+                            <TextField
+                                label="Placas"
+                                name="placas"
+                                value={formData.placas}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <CarIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <TextField
+                                label="Modelo"
+                                name="modelo"
+                                value={formData.modelo}
+                                onChange={handleInputChange}
+                                InputProps={{
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <LicensePlateIcon />
+                                        </InputAdornment>
+                                    )
+                                }}
+                                fullWidth
+                            />
+                            <Select
+                                name="color"
+                                value={formData.color}
+                                onChange={handleInputChange}
+                                displayEmpty
+                                fullWidth
+                                startAdornment={
                                     <InputAdornment position="start">
-                                        <CarIcon />
+                                        <ColorIcon />
                                     </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <TextField
-                            label="Modelo"
-                            name="modelo"
-                            value={formData.modelo}
-                            onChange={handleInputChange}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <LicensePlateIcon />
-                                    </InputAdornment>
-                                )
-                            }}
-                            fullWidth
-                        />
-                        <Select
-                            name="color"
-                            value={formData.color}
-                            onChange={handleInputChange}
-                            displayEmpty
-                            fullWidth
-                            startAdornment={
-                                <InputAdornment position="start">
-                                    <ColorIcon />
-                                </InputAdornment>
-                            }
-                        >
-                            <MenuItem value="" disabled>
-                                Selecciona un color
-                            </MenuItem>
-                            {availableColors.map((color) => (
-                                <MenuItem key={color} value={color}>
-                                    {color}
+                                }
+                            >
+                                <MenuItem value="" disabled>
+                                    Selecciona un color
                                 </MenuItem>
-                            ))}
-                        </Select>
-                    </Box>
+                                {availableColors.map((color) => (
+                                    <MenuItem key={color} value={color}>
+                                        {color}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </Box>
+                    }
+                    {isFailure &&
+                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
+                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
+                                {message}
+                            </Typography>
+                        </div>
+                    }
+                    {isSaved &&
+                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
+                            <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
+                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
+                                {message}
+                            </Typography>
+                        </div>
+                    }
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
+                    {!isSaved && !isFailure &&
+                        <Button
+                            onClick={handleAcceptClick}
+                            variant="contained"
+                            startIcon={<SaveIcon />}
+                            disabled={!isFormValid() || isFailure}
+                            style={{ marginLeft: 20, marginBottom:10 }}
+                            size={isMobile ? "small" : "large"}
+                            sx={{
+                                backgroundColor: "#00a8cc",
+                                "&:hover": "#00a8ccCC"
+                            }}
+                        >
+                        Guardar
+                        </Button>
+                    }
                     <Button
-                        onClick={handleAcceptClick}
-                        variant="contained"
-                        startIcon={<CheckIcon />}
-                        disabled={!isFormValid()}
-                        style={{ marginLeft: 20 }}
-                        size={isMobile ? "small" : "large"}
-                        sx={{
-                            backgroundColor: "#00a8cc",
-                            "&:hover": "#00a8ccCC"
-                        }}
-                    >
-                        Aceptar
-                    </Button>
-                    <Button
-                        onClick={handleCancelClick}
+                        onClick={handleCloseClick}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20 }}
+                        style={{ marginLeft: 20, marginBottom:10 }}
                         size={isMobile ? "small" : "large"}
                     >
-                        Cancelar
+                        {isSaved || isFailure ? "Cerrar" : "Cancelar"}
                     </Button>
                 </div>
             </div>

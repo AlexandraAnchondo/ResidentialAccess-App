@@ -5,18 +5,23 @@ import {
 } from "@mui/material"
 import {
     Close as CloseIcon,
-    AddCircle
+    AddCircle,
+    DirectionsCar as DirectionsCarIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import DataTable from "../../../components/DataGrid"
 import AddVehiculoModal from "./AddVehiculoModal"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedVehiculo, selectedVehiculo, isRowSelected }) => {
+const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelectedVehiculo, selectedVehiculo, isRowSelected, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
 
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
     const [showAddVehiculoModal, setShowAddVehiculoModal] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)")
+
+    if (!show && !closing) {
+        return null
+    }
 
     const handleCancelClick = () => {
         setClosing(true) // Activa la animación de cierre
@@ -25,7 +30,7 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
             setClosing(false) // Resetea el estado para futuras aperturas
         }, 500) // Tiempo de la animación en ms
     }
-    
+
     const columns_vehiculos_visitantes = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "placas", headerAlign: "center", headerName: "Placas", flex: 1, minWidth: 250 },
@@ -70,10 +75,6 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
             : []) // Si no hay fila seleccionada, no agregar la columna
     ]
 
-    if (!show && !closing) {
-        return null
-    }
-
     return (
         <div className={`add-modal-overlay ${closing ? "fade-out" : ""}`}>
             <div className={`add-modal ${closing ? "scale-down" : ""}`}>
@@ -97,15 +98,24 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
                     </div>
                 </div>
                 <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
-                    <DataTable rows={visitante.vehiculos} columns={columns_vehiculos_visitantes} />
+                    {visitante?.vehiculos == null || visitante?.vehiculos.length === 0 ? (
+                        <div className="visitante-frecuente-no-data" style={{ margin: 0, fontSize: "1.5rem" }}>
+                            <DirectionsCarIcon className="icon-placeholder" style={{ marginTop: "20px", fontSize: "8rem" }}/>
+                            <p>No se encontraron vehículos relacionados</p>
+                        </div>
+                    ) : (
+                        <DataTable rows={visitante.vehiculos} columns={columns_vehiculos_visitantes} />
+                    )}
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
-                    <Button
-                        variant="contained"
-                        onClick={() => setShowAddVehiculoModal(true)}
-                        endIcon={<AddCircle />}
-                        sx={{ marginBottom: isMobile ? 2 : 0, marginTop: isMobile ? -5 : 0, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
-                    >Agregar vehículo</Button>
+                    {isRowSelected &&
+                        <Button
+                            variant="contained"
+                            onClick={() => setShowAddVehiculoModal(true)}
+                            endIcon={<AddCircle />}
+                            sx={{ marginBottom: isMobile ? 2 : 0, marginTop: isMobile ? -5 : 0, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
+                        >Agregar vehículo</Button>
+                    }
                     <Button
                         onClick={handleCancelClick}
                         variant="outlined"
@@ -113,7 +123,7 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
                         startIcon={<CloseIcon />}
                         style={{ marginLeft: 20 }}
                     >
-                        Cancelar
+                        {isRowSelected ? "Cancelar" : "Cerrar"}
                     </Button>
                 </div>
 
@@ -122,6 +132,11 @@ const ViewVehiculosVisitanteModal = ({ show, onClose, visitante, onAdd, setSelec
                     onClose={() => setShowAddVehiculoModal(false)}
                     onAdd={onAdd}
                     visitanteId={visitante.id}
+                    isSaved={isSaved}
+                    setIsSaved={setIsSaved}
+                    isFailure={isFailure}
+                    setIsFailure={setIsFailure}
+                    message={message}
                 />
             </div>
         </div>
