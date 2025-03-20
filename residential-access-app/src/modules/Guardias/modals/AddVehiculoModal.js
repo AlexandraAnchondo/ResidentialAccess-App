@@ -57,7 +57,6 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null, isSaved, s
             return
         }
         onAdd(formData)
-        handleCloseClick()
     }
 
     const handleCloseClick = () => {

@@ -1,14 +1,28 @@
+// Resources
 import React from "react"
 import "../../styles/Guardias/VisitasActivas.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faList } from "@fortawesome/free-solid-svg-icons"
-import DataTable from "../../components/DataGrid"
 import { Button } from "@mui/material"
 
+// Components
+import DataTable from "../../components/DataGrid"
+import Loader from "../../components/Loader"
+
+// Hooks
+import {
+    useGetVisitas,
+    useUpdateVisita
+} from "../../hooks/visita.hook"
+
 const VisitasActivas = () => {
+    // API calls
+    const { visitas, setVisitas, loading } = useGetVisitas()
+    const { editVisita } = useUpdateVisita()
+
     const columns = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 30 },
-        { field: "ingreso", headerAlign: "center", headerName: "Ingreso", flex: 1, minWidth: 150 },
+        { field: "ingreso", headerAlign: "center", headerName: "Ingreso", flex: 1, minWidth: 180 },
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 150 },
         { field: "domicilio", headerAlign: "center", headerName: "Domicilio", flex: 1, minWidth: 150 },
         { field: "placas", headerAlign: "center", headerName: "Placas", flex: 1, minWidth: 150 },
@@ -21,11 +35,11 @@ const VisitasActivas = () => {
             field: "salida",
             headerName: "Salida",
             flex: 1,
-            minWidth: 150,
+            minWidth: 180,
             headerAlign: "center",
             align: "center",
-            renderCell: (params) => (
-                params.row.salida ? (
+            renderCell: (params) =>
+                params.row.salida !== "Sin registrar" ? (
                     params.row.salida
                 ) : (
                     <Button
@@ -43,38 +57,52 @@ const VisitasActivas = () => {
                         Asignar salida
                     </Button>
                 )
-            )
         }
     ]
 
-    const rows = [
-        { id: 1, ingreso: "08 - 01 - 2025", nombre: "Alexandra Anchondo", domicilio: "Av. Mallorca 1110", placas: "ORALE123J", modelo: "Hyundai Sonata", color: "Rojo", tipo: "Visita", estatus: "Terminada", numero_tarjeton: "T01", salida: "08 - 01 - 2025" },
-        { id: 2, ingreso: "05 - 01 - 2025", nombre: "Benito Juarez", domicilio: "Av. Espierba 1931", placas: "ORALE456H", modelo: "Honda Civic", color: "Azul", tipo: "Visita", estatus: "Activa", numero_tarjeton: "T02", salida: "" },
-        { id: 3, ingreso: "05 - 01 - 2025", nombre: "Benito Juarez", domicilio: "Av. Bruma 2942", placas: "ORALE456H", modelo: "Honda Civic", color: "Azul", tipo: "Proveedor", estatus: "Terminada", numero_tarjeton: "T03", salida: "08 - 01 - 2025" },
-        { id: 4, ingreso: "05 - 01 - 2025", nombre: "Benito Juarez", domicilio: "Av. Montecorto 1234", placas: "ORALE456H", modelo: "Honda Civic", color: "Azul", tipo: "Proveedor", estatus: "Activa", numero_tarjeton: "T04", salida: "" }
-    ]
+    const handleAsignarSalida = async (row) => {
+        const horaSalida = new Date().toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true
+        })
+        const fechaSalida = new Date().toLocaleDateString("es-MX", {
+            year: "numeric",
+            month: "numeric",
+            day: "numeric"
+        })
+        const fechaHoraSalida = `${fechaSalida} ${horaSalida}`
+        const hora_salida = new Date()
 
-    const handleAsignarSalida = (row) => {
-        const hoy = new Date().toISOString().split("T")[0]
+        // Actualiza la visita en la API
+        try {
+            await editVisita({ id: row.id, hora_salida: hora_salida })
 
-        // Aquí deberías actualizar el estado o hacer una llamada a la API para guardar el cambio
-        console.log(`Asignando salida para ID ${row.id}: ${hoy}`)
+            // Actualiza el estado de visitas para reflejar el cambio
+            setVisitas((prevState) =>
+                prevState.map((v) =>
+                    v.id === row.id ? { ...v, salida: fechaHoraSalida } : v
+                )
+            )
+        } catch (error) {
+            console.error("Error al asignar salida:", error)
+        }
     }
 
     return (
         <div className="visitas-activas-container">
-            {rows.length === 0 ? (
-                <div className="visitas-activas-no-data">
+            {visitas.length === 0 && !loading ? (
+                <div className="historial-no-data">
                     <FontAwesomeIcon icon={faList} className="icon-placeholder" />
                     <p>No hay datos que mostrar</p>
                 </div>
-            ): (
-                <DataTable
-                    rows={rows}
-                    columns={columns}
-                />
-            )
-            }
+            ) : loading ? (
+                <div className="loading-container" style={{ marginTop: "100px" }}>
+                    <Loader />
+                </div>
+            ) : (
+                <DataTable rows={visitas} columns={columns} />
+            )}
         </div>
     )
 }

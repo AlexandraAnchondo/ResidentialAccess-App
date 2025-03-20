@@ -20,6 +20,7 @@ const Navbar = () => {
     const [activeView, setActiveView] = useState("home")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [address, setAddress] = useState("Av. Ficticia 1234")
+    const [id_domicilio, setId_domicilio] = useState(1)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
     const navigate = useNavigate() // Hook para redirigir a otras páginas
@@ -221,15 +222,15 @@ const Navbar = () => {
                         className="nav-main"
                     >
                         {activeView === "historial" ? (
-                            <Historial />
+                            <Historial id_domicilio={id_domicilio}/>
                         ) : activeView === "visitantes" ? (
-                            <Visitantes />
+                            <Visitantes id_domicilio={id_domicilio}/>
                         ) : activeView === "residentes" ? (
-                            <Residentes />
+                            <Residentes id_domicilio={id_domicilio}/>
                         ) : activeView === "vehiculos" ? (
-                            <Vehiculos />
+                            <Vehiculos id_domicilio={id_domicilio}/>
                         ) : (
-                            <HomePage />
+                            <HomePage id_domicilio={id_domicilio}/>
                         )}
                     </motion.main>
                 </AnimatePresence>

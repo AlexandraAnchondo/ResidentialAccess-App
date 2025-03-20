@@ -24,7 +24,7 @@ import {
     useDeleteResidente
 } from "../../hooks/residente.hook"
 
-const Residentes = ({ id_domicilio = 1 }) => {
+const Residentes = ({ id_domicilio }) => {
     // API calls
     const { residentes, setResidentes, loading } = useGetResidentesByDomicilio(id_domicilio)
     const { saveResidente } = useCreateResidente()

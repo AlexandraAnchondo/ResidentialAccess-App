@@ -24,7 +24,7 @@ import {
     useDeleteVehiculo
 } from "../../hooks/vehiculo.hook"
 
-const Vehiculos = ({ id_domicilio = 1 }) => {
+const Vehiculos = ({ id_domicilio }) => {
     // API calls
     const { vehiculos, setVehiculos, loading } = useGetVehiculosByDomicilio(id_domicilio)
     const { saveVehiculo } = useCreateVehiculo()
@@ -83,7 +83,7 @@ const Vehiculos = ({ id_domicilio = 1 }) => {
         try {
             const response = await saveVehiculo({ ...nuevoVehiculo, id_domicilio: id_domicilio })
             if (response.id != null) {
-                setVehiculos([...vehiculos, { ...nuevoVehiculo, id: response.id, id_domicilio: 1 }])
+                setVehiculos([...vehiculos, { ...nuevoVehiculo, id: response.id, id_domicilio: id_domicilio }])
                 setIsSaved(true)
                 setMessage(response.message ? response.message : "Operación exitosa")
                 return

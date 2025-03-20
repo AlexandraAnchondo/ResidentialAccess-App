@@ -20,7 +20,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
         nombre: "",
-        apellido: "",
+        apellidos: "",
         ine: "",
         id_vehiculo: vehiculoId
     })
@@ -33,7 +33,7 @@ const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, s
             setClosing(false)
             setFormData({
                 nombre: "",
-                apellido: "",
+                apellidos: "",
                 ine: "",
                 id_vehiculo: vehiculoId
             })
@@ -60,7 +60,7 @@ const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, s
     }
 
     const isFormValid = () => {
-        return formData.nombre && formData.apellido && formData.ine
+        return formData.nombre && formData.apellidos && formData.ine
     }
 
     if (!show && !closing) {
@@ -107,9 +107,9 @@ const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, s
                                 fullWidth
                             />
                             <TextField
-                                label="Apellido"
-                                name="apellido"
-                                value={formData.apellido}
+                                label="Apellidos"
+                                name="apellidos"
+                                value={formData.apellidos}
                                 onChange={handleInputChange}
                                 InputProps={{
                                     startAdornment: (

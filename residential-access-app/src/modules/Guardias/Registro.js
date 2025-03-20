@@ -24,19 +24,28 @@ import {
 } from "../../hooks/visitante_frecuente.hook"
 
 import {
-    useCreateVisitaVisitante
+    useCreateVisitaVisitante,
+    useCreateVisitaConductor
 } from "../../hooks/visita.hook"
 
 import {
-    useGetVehiculos
+    useGetVehiculos,
+    useCreateVehiculo
 } from "../../hooks/vehiculo.hook"
+
+import {
+    useCreateConductor
+} from "../../hooks/conductor.hook"
 
 const Registro = ({ selectedOption, setSelectedOption }) => {
     // API calls
     const { visitantes_frecuentes, setVisitanteFrecuentes, loading: loadingVisitantesFrecuentes } = useGetVisitantesFrecuentesWithDomicilio()
     const { saveVisitaVisitante } = useCreateVisitaVisitante()
+    const { saveVisitaConductor } = useCreateVisitaConductor()
     const { assignVehicle } = useAssignVehicleToVisitante()
+    const { saveConductor } = useCreateConductor()
     const { vehiculos, setVehiculos, loading: loadingVehiculos } = useGetVehiculos()
+    const { saveVehiculo } = useCreateVehiculo()
 
     // Columns
     const columns_visitante = [
@@ -185,19 +194,30 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 setMessage(err.message || "Operación fallida")
             }
         } else {
-            console.log("Voy a registrar un vehiculo de un conductor cualquiera")
-            return
+            try {
+                const response = await saveVehiculo({ ...nuevoVehiculo })
+                if (response.id != null) {
+                    setVehiculos([...vehiculos, { ...nuevoVehiculo, id: response.id }])
+                    setIsSaved(true)
+                    setMessage(response.message ? response.message : "Operación exitosa")
+                    return
+                }
+                setIsFailure(true)
+            } catch (err) {
+                setIsFailure(true)
+                setMessage(err.message || "Operación fallida")
+            }
         }
     }
 
     const handleAddConductor = async (nuevoConductor) => {
         try {
-            const response = await assignVehicle({ ...nuevoConductor })
-            if (response.id_vehiculo != null) {
-                const nuevo_conductor_registrado = { ...nuevoConductor.conductor, id: response.id_conductor }
+            const response = await saveConductor({ ...nuevoConductor })
+            if (response.id_conductor != null) {
+                const nuevo_conductor_registrado = { ...nuevoConductor, id: response.id_conductor }
 
-                // Actualiza el vehiculo seleccionado
-                selectedVehiculoFromConductor(prevState => ({
+                // Actualiza el conductor seleccionado
+                setSelectedVehiculoFromConductor(prevState => ({
                     ...prevState,
                     conductores: [...(prevState.conductores || []), nuevo_conductor_registrado]
                 }))
@@ -265,6 +285,28 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         }
     }
 
+    const handleAddVisitaConductor = async (nuevaVisita) => {
+        try {
+            const response = await saveVisitaConductor({ ...nuevaVisita })
+            if (response.id_visita != null) {
+                setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
+                setSelectedOption("Registro de visitas")
+                setSelectedRow(null)
+                setSelectedConductor(null)
+                return
+            }
+            setSelectedRow(null)
+            setSelectedConductor(null)
+            setIsFailure(true)
+        } catch (err) {
+            setIsFailure(true)
+            setSelectedRow(null)
+            setSelectedConductor(null)
+            setMessage(err.message || "Operación fallida")
+        }
+    }
+
     return (
         <div className="registro-container">
             {selectedOption === "Registro de visitas" ? (
@@ -292,7 +334,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                     onClick={handleBackClick}
                                 >Atrás</Button>
                             </div>
-                        ): loadingVisitantesFrecuentes ? (
+                        ) : loadingVisitantesFrecuentes ? (
                             <div className="loading-container">
                                 <Loader/>
                             </div>
@@ -327,7 +369,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                     </div>
                 ) : (
                     <div className="vehiculo-container">
-                        {rows.length === 0 ? (
+                        {rows.length === 0 && !loadingVehiculos ? (
                             <div className="vehiculo-no-data">
                                 <FaList className="icon-placeholder" />
                                 <p>No se encontraron vehículos</p>
@@ -343,6 +385,10 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                     sx={{ marginTop: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
+                            </div>
+                        ) : loadingVehiculos ? (
+                            <div className="loading-container">
+                                <Loader/>
                             </div>
                         ) : (
                             <div className="vehiculo-table-section">
@@ -385,6 +431,11 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 show={showAddVehiculoModal}
                 onClose={() => setShowAddVehiculoModal(false)}
                 onAdd={handleAddVehiculo}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
             />
 
             <ViewVehiculoVisitanteModal
@@ -433,10 +484,14 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             <AddVisitaVehiculoModal
                 show={showAddVisitaVehiculoModal}
                 onClose={() => setShowAddVisitaVehiculoModal(false)}
+                onAdd={handleAddVisitaConductor}
                 conductor={selectedConductor}
-                setSelectedOption={setSelectedOption}
-                setSelectedRow={setSelectedRow}
-                setSelectedConductor={setSelectedConductor}
+                vehiculo={selectedVehiculoFromConductor}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
             />
         </div>
     )

@@ -35,8 +35,8 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
     const columns_conductores_vehiculos = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 300 },
-        { field: "apellido", headerAlign: "center", headerName: "Apellido", flex: 1, minWidth: 150 },
-        { field: "identificacion", headerAlign: "center", headerName: "INE", flex: 1, minWidth: 150 },
+        { field: "apellidos", headerAlign: "center", headerName: "Apellido", flex: 1, minWidth: 150 },
+        { field: "ine", headerAlign: "center", headerName: "INE", flex: 1, minWidth: 150 },
         ...(isRowSelected
             ? [
                 {

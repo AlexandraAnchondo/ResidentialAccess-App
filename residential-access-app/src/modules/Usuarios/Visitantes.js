@@ -24,7 +24,7 @@ import {
     useDeleteVisitanteFrecuente
 } from "../../hooks/visitante_frecuente.hook"
 
-const Visitantes = ({ id_domicilio = 1 }) => {
+const Visitantes = ({ id_domicilio }) => {
     // API calls
     const { visitantes_frecuentes, setVisitanteFrecuentes, loading } = useGetVisitantesFrecuentesByDomicilio(id_domicilio)
     const { saveVisitanteFrecuente } = useCreateVisitanteFrecuente()
