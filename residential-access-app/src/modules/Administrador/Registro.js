@@ -6,7 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/Administrador/Registro.scss"
 
 import useDomicilios from "../../hooks/domicilio.hook"
-import useUsuario from "../../hooks/usuario.hook"
+import { useUsuario } from "../../hooks/usuario.hook"
 
 const Registro = ({ selectedOption, setSelectedOption }) => {
     const isMobile = useMediaQuery("(max-width: 768px)")
