@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react"
 import { FaIdCard, FaUserFriends, FaList, FaUserPlus } from "react-icons/fa"
 import { Button } from "@mui/material"
-import { ArrowBack, AddCircle, DirectionsCar, CarCrash } from "@mui/icons-material"
+import { ArrowBack, AddCircle, DirectionsCar } from "@mui/icons-material"
 import "../../styles/Guardias/Registro.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 

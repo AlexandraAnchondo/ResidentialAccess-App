@@ -88,7 +88,7 @@ const Residentes = ({ id_domicilio }) => {
             const response = await editResidente({ ...residenteEditado, id_domicilio: id_domicilio })
             if (response.id != null) {
                 const updatedResidentes = residentes.map((residente) =>
-                    residente.id === residenteEditado.id ? { ...residenteEditado, id_domicilio: 1 } : residente
+                    residente.id === residenteEditado.id ? { ...residenteEditado, id_domicilio: id_domicilio } : residente
                 )
                 setResidentes(updatedResidentes)
                 setIsSaved(true)

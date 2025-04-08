@@ -13,6 +13,7 @@ import Loader from "../../components/Loader"
 
 // Modals
 import DeleteModal from "../../components/modals/DeleteModal"
+import EditGuardiaModal from "./modals/EditGuardiaModal"
 
 // Hooks
 import {
@@ -31,6 +32,11 @@ const Guardias = () => {
     const [guardiaSelected, setGuardiaSelected] = useState(null)
     const [showImageModal, setShowImageModal] = useState(false)
     const [imageSrc, setImageSrc] = useState("")
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [selectedGuardia, setSelectedGuardia] = useState(null)
+    const [isSaved, setIsSaved] = useState(false)
+    const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
 
     useEffect(() => {
         document.body.style.overflow = showDeleteModal || showImageModal ? "hidden" : "auto"
@@ -55,19 +61,29 @@ const Guardias = () => {
                     <IconButton onClick={() => handleDeleteClick(params.row)} color="error">
                         <DeleteIcon />
                     </IconButton>
-                    <IconButton onClick={() => handleToggleBlock(params.row.id)} color="error">
-                        <Edit color="primary" />
+                    <IconButton onClick={() => handleEditClick(params.row)} color="primary">
+                        <Edit />
                     </IconButton>
-                    <IconButton onClick={() => handleToggleBlock(params.row.id)} color="">
-                        {params.row.bloqueado ? <LockIcon /> : <LockOpenIcon />}
+                    <IconButton onClick={() => handleToggleBlock(params.row.id)}>
+                        {
+                            params.row.bloqueado ? (
+                                <LockIcon style={{ color: "red" }} />
+                            ) : (
+                                <LockOpenIcon style={{ color: "green" }} />
+                            )}
                     </IconButton>
                     <IconButton onClick={() => handleShowImage(params.row)} color="primary">
-                        <FaIdCard color="green" />
+                        <FaIdCard color="#004f79" />
                     </IconButton>
                 </>
             )
         }
     ]
+
+    const handleEditClick = (guardia) => {
+        setSelectedGuardia(guardia)
+        setShowEditModal(true)
+    }
 
     const handleToggleBlock = async (id) => {
         const updatedGuardias = await guardias.map((guardia) => {
@@ -78,6 +94,25 @@ const Guardias = () => {
             return guardia
         })
         setGuardias(updatedGuardias)
+    }
+
+    const handleEditarGuardia = async (guardiaEditado) => {
+        try {
+            const response = await editUsuario({ ...guardiaEditado })
+            if (response.id != null) {
+                const updatedGuardias = guardias.map((guardia) =>
+                    guardia.id === guardiaEditado.id ? { ...guardiaEditado } : guardia
+                )
+                setGuardias(updatedGuardias)
+                setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
+                return
+            }
+            setIsFailure(true)
+        } catch (err) {
+            setIsFailure(true)
+            setMessage(err.message || "Operación fallida")
+        }
     }
 
     const handleDeleteGuardia = async () => {
@@ -99,11 +134,11 @@ const Guardias = () => {
 
     const handleShowImage = (row) => {
         if (row.ine) {
-            const imagePath = "INE.png"
+            const imagePath = `${row.ine}`
             setImageSrc(imagePath)
             setShowImageModal(true)
         } else {
-            alert("No se encontró imagen para este guardia.")
+            alert("No se encontró ine para este guardia.")
         }
     }
 
@@ -160,6 +195,18 @@ const Guardias = () => {
                     )}
                 </Box>
             </Modal>
+
+            <EditGuardiaModal
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                onEdit={handleEditarGuardia}
+                guardia={selectedGuardia}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
+            />
         </div>
     )
 }

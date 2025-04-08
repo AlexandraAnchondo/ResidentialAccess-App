@@ -2,12 +2,25 @@ const API_URL = `${process.env.REACT_APP_API_URL}/usuario`
 
 export const createUsuario = async (usuarioData) => {
     try {
+        const formData = new FormData()
+
+        // Agregar datos al FormData
+        formData.append("nombre", usuarioData.nombre)
+        formData.append("apellidos", usuarioData.apellidos)
+        formData.append("telefono", usuarioData.telefono)
+        formData.append("correo_electronico", usuarioData.correo_electronico)
+        formData.append("id_rol", usuarioData.id_rol)
+        formData.append("id_domicilio", usuarioData.id_domicilio ? usuarioData.id_domicilio : null)
+        formData.append("rfc", usuarioData.rfc ? usuarioData.rfc : null)
+
+        // Agregar el archivo si existe
+        if (usuarioData.ine instanceof File) {
+            formData.append("ine", usuarioData.ine)
+        }
+
         const response = await fetch(`${API_URL}/create`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(usuarioData)
+            body: formData
         })
 
         if (!response.ok) {
@@ -39,12 +52,23 @@ export const getAllGuardias = async () => {
 
 export const updateUsuario = async (usuarioData) => {
     try {
+        const formData = new FormData()
+
+        // Agregar datos al FormData
+        formData.append("nombre", usuarioData.nombre)
+        formData.append("apellidos", usuarioData.apellidos)
+        formData.append("telefono", usuarioData.telefono)
+        formData.append("correo_electronico", usuarioData.correo_electronico)
+        formData.append("id_rol", usuarioData.id_rol)
+
+        // Agregar el archivo si existe
+        if (usuarioData.ine instanceof File) {
+            formData.append("ine", usuarioData.ine)
+        }
+
         const response = await fetch(`${API_URL}/update/${usuarioData.id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(usuarioData)
+            body: formData // No se necesita Content-Type aquí
         })
 
         if (!response.ok) {

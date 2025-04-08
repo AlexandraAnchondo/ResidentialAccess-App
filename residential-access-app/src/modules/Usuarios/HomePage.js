@@ -11,7 +11,7 @@ const HomePage = () => {
     const [name, setName] = useState("Alexandra Anchondo Robles")
     const [phone, setPhone] = useState("(686) 420-49-24")
     const [email, setEmail] = useState("correo@gmail.com")
-    const [ineSrc, setIneSrc] = useState("ALE.png")
+    const [ineSrc, setIneSrc] = useState("INE.png")
     const [showModal, setShowModal] = useState(false)
     const [qrCodes, setQrCodes] = useState([])
     const isUnder568 = useMediaQuery("(max-width: 568px)")

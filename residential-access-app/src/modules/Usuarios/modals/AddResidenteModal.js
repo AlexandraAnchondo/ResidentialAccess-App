@@ -11,12 +11,12 @@ import {
     Phone as PhoneIcon,
     Email as EmailIcon,
     Close as CloseIcon,
-    Save as SaveIcon,
-    CheckCircle as CheckCircleIcon,
-    CancelRounded as CancelRoundedIcon
+    Save as SaveIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
+
+import Check from "../../../components/Check"
 
 const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailure, setIsFailure, message  }) => {
 
@@ -166,22 +166,7 @@ const AddResidenteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                             />
                         </Box>
                     }
-                    {isFailure &&
-                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                            <CancelRoundedIcon className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
-                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
-                                {message}
-                            </Typography>
-                        </div>
-                    }
-                    {isSaved &&
-                        <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                            <CheckCircleIcon className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
-                            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                                {message}
-                            </Typography>
-                        </div>
-                    }
+                    <Check isFailure={isFailure} isSaved={isSaved} message={message} />
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     {!isSaved && !isFailure &&

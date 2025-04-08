@@ -5,8 +5,7 @@ import {
 } from "@mui/material"
 import {
     Close as CloseIcon,
-    AddCircle, 
-    User as UserIcon
+    AddCircle
 } from "@mui/icons-material"
 import { FaUserFriends } from "react-icons/fa"
 import "../../../styles/General/AddModal.scss"

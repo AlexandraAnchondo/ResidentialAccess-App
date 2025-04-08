@@ -1,10 +1,17 @@
+//Resources
 import React, { useState, useEffect } from "react"
 import { FaList, FaHouseUser, FaUserLock } from "react-icons/fa"
 import { Button, Typography, Box, TextField, InputAdornment, Select, MenuItem } from "@mui/material"
-import { ArrowBack, AddCard, People, Save, House, Phone, Email, CheckCircle, CancelRounded } from "@mui/icons-material"
+import { FaIdCard } from "react-icons/fa"
+import { ArrowBack, AddCard, People, Save, House, Phone, Email, CheckCircle, CameraAlt as CameraAltIcon, UploadFile as UploadFileIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/Administrador/Registro.scss"
 
+// Components
+import Check from "../../components/Check"
+import CameraModal from "../../components/modals/CameraModal"
+
+// Hooks
 import useDomicilios from "../../hooks/domicilio.hook"
 import { useUsuario } from "../../hooks/usuario.hook"
 
@@ -29,6 +36,8 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     })
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
+    const [showCameraModal, setShowCameraModal] = useState(false)
 
     const { domicilios } = useDomicilios(["id", "calle", "numero_calle"])
     const { saveUsuario, loading } = useUsuario()
@@ -61,6 +70,17 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         setFormData(prevState => ({ ...prevState, [name]: value }))
     }
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            if (selectedOption === "Residente") {
+                setFormResidenteData({ ...formResidenteData, ine: file })
+            } else {
+                setFormGuardiaData({ ...formGuardiaData, ine: file })
+            }
+        }
+    }
+
     const handleBackClick = () => {
         setSelectedOption("Registro de usuarios")
         setFormResidenteData({
@@ -89,18 +109,18 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
 
     const handleSaveClick = async () => {
         const usuarioData = selectedOption === "Residente" ? formResidenteData : formGuardiaData
-        usuarioData.tipo_usuario = selectedOption === "Residente" ? 3 : 2
+        usuarioData.id_rol = selectedOption === "Residente" ? 3 : 2
         try {
             const response = await saveUsuario(usuarioData)
             if (response.id != null) {
                 setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
                 return
             }
             setIsFailure(true)
-            console.error("Error al guardar usuario:", response.details)
         } catch (err) {
             setIsFailure(true)
-            console.error("Error al guardar usuario:", err)
+            setMessage(err.message || "Operación fallida")
         }
     }
 
@@ -149,14 +169,6 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                     InputProps={{ startAdornment: (<InputAdornment position="start"> <People /> </InputAdornment>) }}
                                 />
                                 <TextField
-                                    label="INE"
-                                    name="ine"
-                                    value={selectedOption === "Residente" ? formResidenteData.ine : formGuardiaData.ine}
-                                    onChange={(e) => handleInputChange(e, selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData)}
-                                    fullWidth
-                                    InputProps={{ startAdornment: (<InputAdornment position="start"> <AddCard /> </InputAdornment>) }}
-                                />
-                                <TextField
                                     label="Teléfono"
                                     name="telefono"
                                     value={selectedOption === "Residente" ? formResidenteData.telefono : formGuardiaData.telefono}
@@ -196,7 +208,65 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                         InputProps={{ startAdornment: (<InputAdornment position="start"> <FaList /> </InputAdornment>) }}
                                     />
                                 )}
+
+                                {/* Botón para tomar foto o subir INE */}
+                                <div style={{ display: "flex", gap: 30, justifyContent: "center" }}>
+                                    <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                                        <FaIdCard size={isMobile ? 20 : 25} color="gray" />
+                                        <Typography
+                                            variant="caption"
+                                            component={!isMobile ? "h2" : "h4"}
+                                            gutterBottom
+                                            color="gray"
+                                            margin={0}
+                                            fontFamily="'Lucida Sans', sans-serif"
+                                            fontWeight="bold"
+                                        >INE</Typography>
+                                    </div>
+                                    <Button
+                                        variant="contained"
+                                        startIcon={!isMobile ? <CameraAltIcon /> : ""}
+                                        onClick={() => setShowCameraModal(true)} // Abre el modal de la cámara
+                                    >
+                                        {!isMobile ? "Tomar foto" : <CameraAltIcon />}
+                                    </Button>
+
+                                    <Button
+                                        variant="contained"
+                                        component="label"
+                                        startIcon={!isMobile ?  <UploadFileIcon /> : ""}
+                                    >
+                                        {!isMobile ? "Subir archivo" : <UploadFileIcon />}
+                                        <input
+                                            type="file"
+                                            hidden
+                                            accept="image/*"
+                                            onChange={handleFileChange}
+                                        />
+                                    </Button>
+                                </div>
                             </Box>
+                            {formResidenteData.ine && !showCameraModal && (
+                                <center><img
+                                    src={typeof formResidenteData.ine === "string" ? formResidenteData.ine : URL.createObjectURL(formResidenteData.ine)}
+                                    alt="INE"
+                                    style={{ marginTop: 10, width: isMobile ? "90%" : "60%", borderRadius: 8 }}
+                                /></center>
+                            )}
+                            {formGuardiaData.ine && !showCameraModal && (
+                                <center><img
+                                    src={typeof formGuardiaData.ine === "string" ? formGuardiaData.ine : URL.createObjectURL(formGuardiaData.ine)}
+                                    alt="INE"
+                                    style={{ marginTop: 10, width: isMobile ? "90%" : "60%", borderRadius: 8 }}
+                                /></center>
+                            )}
+                            {showCameraModal && (
+                                <CameraModal
+                                    setFormData={selectedOption === "Residente" ? setFormResidenteData : setFormGuardiaData}
+                                    formData={selectedOption === "Residente" ? formResidenteData : formGuardiaData}
+                                    onClose={() => setShowCameraModal(false)} // Cierra modal después de tomar foto
+                                />
+                            )}
                             <Button
                                 onClick={handleSaveClick}
                                 variant="contained"
@@ -207,22 +277,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 {loading ? "Guardando..." : "Guardar"}
                             </Button>
                         </>}
-                        {isSaved &&
-                            <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                                <CheckCircle className="check-icon" sx={{ fontSize: 150, color: "#5bf18d" }} />
-                                <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
-                                    Captura exitosa
-                                </Typography>
-                            </div>
-                        }
-                        {isFailure &&
-                            <div className="add-modal-content-check" style={{ textAlign: "center", alignItems: "center" }}>
-                                <CancelRounded className="check-icon" sx={{ fontSize: 150, color: "#c53e39" }} />
-                                <Typography variant="h6" sx={{ fontWeight: "bold", color: "#862c29" }}>
-                                    Contactar a soporte
-                                </Typography>
-                            </div>
-                        }
+                        <Check isFailure={isFailure} isSaved={isSaved} message={message} />
                         <Button
                             variant="contained"
                             endIcon={isSaved ? <CheckCircle /> : <ArrowBack />}

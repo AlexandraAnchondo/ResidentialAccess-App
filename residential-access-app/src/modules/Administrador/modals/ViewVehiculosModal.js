@@ -2,11 +2,27 @@ import React, { useState, useEffect } from "react"
 import { Button, Typography, IconButton } from "@mui/material"
 import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
-import DataTable from "../../../components/DataGrid"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import DeleteModal from "../../../components/modals/DeleteModal"
 
+// Components
+import DataTable from "../../../components/DataGrid"
+import Loader from "../../../components/Loader"
+
+// Hooks
+import {
+    useGetVehiculosByDomicilioManual,
+    useGetVehiculoById,
+    useUpdateVehiculo,
+    useDeleteVehiculo
+} from "../../../hooks/vehiculo.hook"
+
 const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
+    // API calls
+    const { vehiculos, setVehiculos, loading, fetchVehiculos  } = useGetVehiculosByDomicilioManual()
+    const { fetchVehiculo, vehiculo, setVehiculo } = useGetVehiculoById()
+    const { editVehiculo } = useUpdateVehiculo()
+    const { removeVehiculo } = useDeleteVehiculo()
 
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
@@ -14,15 +30,12 @@ const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
     const [indexToDelete, setIndexToDelete] = useState(null)
 
     useEffect(() => {
+        if (show && domicilioId) {
+            fetchVehiculos(domicilioId)
+        }
         setClosing(false)
         document.body.style.overflow = showDeleteModal ? "hidden" : "auto"
-    }, [showDeleteModal]) // Se ejecuta solo cuando showDeleteModal cambia
-
-    const [vehiculos, setVehiculos] = useState([
-        { id: 1, placas: "ABC123", modelo: "Toyota", color: "Rojo", bloqueado: false },
-        { id: 2, placas: "DEF456", modelo: "Ford", color: "Azul", bloqueado: false },
-        { id: 3, placas: "GHI789", modelo: "Chevrolet", color: "Negro", bloqueado: false }
-    ])
+    }, [show, domicilioId, showDeleteModal]) // Se ejecuta solo cuando showDeleteModal cambia
 
     const handleToggleBlock = (id) => {
         setVehiculos((prev) => prev.map((res) => res.id === id ? { ...res, bloqueado: !res.bloqueado } : res))
@@ -90,9 +103,15 @@ const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
                         <Button onClick={handleCancelClick} startIcon={<CloseIcon />} color="white" size={isMobile ? "small" : "large"} />
                     </div>
                 </div>
-                <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
-                    <DataTable rows={vehiculos} columns={columns} />
-                </div>
+                { loading ? (
+                    <div className="loading-container" style={{ marginTop: "100px" }}>
+                        <Loader />
+                    </div>
+                ) : (
+                    <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
+                        <DataTable rows={vehiculos} columns={columns} />
+                    </div>
+                )}
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     <Button onClick={handleCancelClick} variant="outlined" color="error" startIcon={<CloseIcon />}>
                         Cerrar

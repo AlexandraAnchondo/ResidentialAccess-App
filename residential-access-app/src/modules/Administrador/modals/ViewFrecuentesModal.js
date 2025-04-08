@@ -2,35 +2,47 @@ import React, { useState, useEffect } from "react"
 import { Button, Typography, IconButton } from "@mui/material"
 import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
-import DataTable from "../../../components/DataGrid"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import DeleteModal from "../../../components/modals/DeleteModal"
 
-const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
+// Components
+import DataTable from "../../../components/DataGrid"
+import Loader from "../../../components/Loader"
 
-    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
+// Hooks
+import {
+    useGetVisitantesFrecuentesByDomicilioManual,
+    useGetVisitanteFrecuenteById,
+    useUpdateVisitanteFrecuente,
+    useDeleteVisitanteFrecuente
+} from "../../../hooks/visitante_frecuente.hook"
+
+const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
+    // API calls
+    const { visitantes, setVisitantes, loading, fetchVisitantes  } = useGetVisitantesFrecuentesByDomicilioManual()
+    const { fetchVisitanteFrecuente, visitante_frecuente, setVisitanteFrecuente } = useGetVisitanteFrecuenteById()
+    const { editVisitanteFrecuente } = useUpdateVisitanteFrecuente()
+    const { removeVisitanteFrecuente } = useDeleteVisitanteFrecuente()
+
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [indexToDelete, setIndexToDelete] = useState(null)
 
     useEffect(() => {
+        if (show && domicilioId) {
+            fetchVisitantes(domicilioId)
+        }
         setClosing(false)
         document.body.style.overflow = showDeleteModal ? "hidden" : "auto"
-    }, [showDeleteModal]) // Se ejecuta solo cuando showDeleteModal cambia
-
-    const [frecuentes, setFrecuentes] = useState([
-        { id: 1, nombre: "Juan", apellido: "Perez", telefono: "555-555-5555", placas: "FVSFB43VGS", modelo: "1234567890", bloqueado: false },
-        { id: 2, nombre: "Maria", apellido: "Garcia", telefono: "666-666-6666", placas: "BTRHER43T3R", modelo: "9876543210", bloqueado: false },
-        { id: 3, nombre: "Pedro", apellido: "Lopez", telefono: "777-777-7777", placas: "RHRH455GTR", modelo: "0987654321", bloqueado: false },
-        { id: 4, nombre: "Sofia", apellido: "Martinez", telefono: "888-888-8888", placas: "MJMGH665", modelo: "1234567890", bloqueado: true }
-    ])
+    }, [show, domicilioId, showDeleteModal]) // Se ejecuta solo cuando showDeleteModal cambia
 
     const handleToggleBlock = (id) => {
-        setFrecuentes((prev) => prev.map((res) => res.id === id ? { ...res, bloqueado: !res.bloqueado } : res))
+        setVisitantes((prev) => prev.map((res) => res.id === id ? { ...res, bloqueado: !res.bloqueado } : res))
     }
 
     const handleDelete = () => {
-        setFrecuentes((prev) => prev.filter((res) => res.id !== indexToDelete))
+        setVisitantes((prev) => prev.filter((res) => res.id !== indexToDelete))
         setShowDeleteModal(false)
     }
 
@@ -54,7 +66,7 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
     const columns = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 150 },
-        { field: "apellido", headerAlign: "center", headerName: "Apellido", flex: 1, minWidth: 150 },
+        { field: "apellidos", headerAlign: "center", headerName: "Apellidos", flex: 1, minWidth: 150 },
         { field: "telefono", headerAlign: "center", headerName: "Teléfono", flex: 1, minWidth: 150 },
         { field: "placas", headerAlign: "center", headerName: "Placas", flex: 1, minWidth: 150 },
         { field: "modelo", headerAlign: "center", headerName: "Modelo", flex: 1, minWidth: 50 },
@@ -93,9 +105,15 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
                         <Button onClick={handleCancelClick} startIcon={<CloseIcon />} color="white" size={isMobile ? "small" : "large"} />
                     </div>
                 </div>
-                <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
-                    <DataTable rows={frecuentes} columns={columns} />
-                </div>
+                { loading ? (
+                    <div className="loading-container" style={{ marginTop: "100px" }}>
+                        <Loader />
+                    </div>
+                ) : (
+                    <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
+                        <DataTable rows={visitantes} columns={columns} />
+                    </div>
+                )}
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>
                     <Button onClick={handleCancelClick} variant="outlined" color="error" startIcon={<CloseIcon />}>
                         Cerrar

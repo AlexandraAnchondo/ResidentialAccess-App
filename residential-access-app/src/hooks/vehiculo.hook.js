@@ -47,6 +47,25 @@ export const useGetVehiculosByDomicilio = (id_domicilio) => {
     return { vehiculos, setVehiculos, loading, error }
 }
 
+export const useGetVehiculosByDomicilioManual = () => {
+    const [vehiculos, setVehiculos] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const fetchVehiculos = async (id_domicilio) => {
+        try {
+            const data = await getAllVehiculosByDomicilio(id_domicilio)
+            setVehiculos(data)
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return { vehiculos, setVehiculos, loading, fetchVehiculos, error }
+}
+
 export const useGetVehiculoById = () => {
     const [vehiculo, setVehiculo] = useState(null)
     const [loading, setLoading] = useState(true)

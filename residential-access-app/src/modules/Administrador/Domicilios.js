@@ -1,23 +1,30 @@
+// Resources
 import React, { useState, useEffect } from "react"
 import "../../styles/Administrador/Domicilios.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faList, faCar, faHomeUser, faUserClock } from "@fortawesome/free-solid-svg-icons"
-import DataTable from "../../components/DataGrid"
 import { Button } from "@mui/material"
+
+// Components
+import DataTable from "../../components/DataGrid"
+import Loader from "../../components/Loader"
+
+// Modals
 import ViewResidentesModal from "./modals/ViewResidentesModal"
 import ViewVehiculosModal from "./modals/ViewVehiculosModal"
 import ViewFrecuentesModal from "./modals/ViewFrecuentesModal"
 
+// Hooks
+import useDomicilios from "../../hooks/domicilio.hook"
+
 const Domicilios = () => {
+    // API calls
+    const { domicilios, loading } = useDomicilios(["id", "calle", "numero_calle"])
+
     const columns = [
         { field: "id", headerName: "ID", flex: 1, minWidth: 30, hide: true },
         { field: "calle", headerAlign: "center", headerName: "Calle", flex: 1, minWidth: 150 },
-        { field: "numero_calle", headerAlign: "center", headerName: "Número", flex: 1, minWidth: 100 },
-        { field: "ciudad", headerAlign: "center", headerName: "Ciudad", flex: 1, minWidth: 150 },
-        { field: "estado", headerAlign: "center", headerName: "Estado", flex: 1, minWidth: 150 },
-        { field: "codigo_postal", headerAlign: "center", headerName: "Código Postal", flex: 1, minWidth: 120 },
-        { field: "pais", headerAlign: "center", headerName: "País", flex: 1, minWidth: 150 },
-        {
+        { field: "numero_calle", headerAlign: "center", headerName: "Número", flex: 1, minWidth: 100 },{
             field: "residentes",
             headerName: "Residentes",
             flex: 1,
@@ -82,11 +89,6 @@ const Domicilios = () => {
         }
     ]
 
-    const rows = [
-        { id: 1, calle: "Av. Mallorca", numero_calle: "1110", ciudad: "Ciudad A", estado: "Estado A", codigo_postal: "12345", pais: "México" },
-        { id: 2, calle: "Av. Espierba", numero_calle: "9302", ciudad: "Ciudad B", estado: "Estado B", codigo_postal: "67890", pais: "México" }
-    ]
-
     useEffect(() => {
         if (showViewResidentesModal  || showViewVehiculosModal || showViewFrecuentesModal) {
             document.body.style.overflow = "hidden"
@@ -101,30 +103,34 @@ const Domicilios = () => {
     const [selectedDomicilioId, setSelectedDomicilioId] = useState(null)
 
     const handleViewResidentesClick = (idDomicilio) => {
-        setShowViewResidentesModal(true)
         setSelectedDomicilioId(idDomicilio)
+        setShowViewResidentesModal(true)
     }
 
     const handleViewVehiculosClick = (idDomicilio) => {
-        setShowViewVehiculosModal(true)
         setSelectedDomicilioId(idDomicilio)
+        setShowViewVehiculosModal(true)
     }
 
     const handleViewFrecuentesClick = (idDomicilio) => {
-        setShowViewFrecuentesModal(true)
         setSelectedDomicilioId(idDomicilio)
+        setShowViewFrecuentesModal(true)
     }
 
     return (
         <div className="domicilios-container">
-            {rows.length === 0 ? (
+            {domicilios.length === 0 ? (
                 <div className="domicilios-no-data">
                     <FontAwesomeIcon icon={faList} className="icon-placeholder" />
                     <p>No hay datos que mostrar</p>
                 </div>
+            ) : loading ? (
+                <div className="loading-container" style={{ marginTop: "100px" }}>
+                    <Loader />
+                </div>
             ) : (
                 <DataTable
-                    rows={rows}
+                    rows={domicilios}
                     columns={columns}
                 />
             )}

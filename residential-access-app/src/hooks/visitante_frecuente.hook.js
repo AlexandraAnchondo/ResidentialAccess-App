@@ -32,6 +32,25 @@ export const useGetVisitantesFrecuentesByDomicilio = (id_domicilio) => {
     return { visitantes_frecuentes, setVisitanteFrecuentes, loading, error }
 }
 
+export const useGetVisitantesFrecuentesByDomicilioManual = () => {
+    const [visitantes, setVisitantes] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const fetchVisitantes = async (id_domicilio) => {
+        try {
+            const data = await getAllVisitanteFrecuentesByDomicilio(id_domicilio)
+            setVisitantes(data)
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return { visitantes, setVisitantes, loading, fetchVisitantes, error }
+}
+
 export const useGetVisitanteFrecuenteById = () => {
     const [visitante_frecuente, setVisitanteFrecuente] = useState(null)
     const [loading, setLoading] = useState(true)

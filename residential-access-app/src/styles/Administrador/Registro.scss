@@ -121,6 +121,14 @@
 } 
 
 @media screen and (min-width: 769px) and (max-width: 1068px) {
+    .guardia-content {
+        width: 80%;
+    }
+
+    .residente-content {
+        width: 80%;
+    }
+    
     .card-container {
         gap: 40px;
         justify-content: center;
