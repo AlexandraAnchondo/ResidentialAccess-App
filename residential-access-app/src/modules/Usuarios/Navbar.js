@@ -1,7 +1,7 @@
 // Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faQrcode, faHouse, faReceipt, faCar, faUserGroup, faBars } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faBars } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
@@ -15,6 +15,7 @@ import Visitantes from "./Visitantes"
 import Residentes from "./Residentes"
 import Vehiculos from "./Vehiculos"
 import HomePage from "./HomePage"
+import NavButtons from "./NavButtons"
 
 const Navbar = () => {
     const [activeView, setActiveView] = useState("home")
@@ -22,8 +23,8 @@ const Navbar = () => {
     const [address, setAddress] = useState("Av. Ficticia 1234")
     const [id_domicilio, setId_domicilio] = useState(1)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
-    const navigate = useNavigate() // Hook para redirigir a otras páginas
+    const isMobile = useMediaQuery("(max-width: 768px)")
+    const navigate = useNavigate()
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -34,184 +35,98 @@ const Navbar = () => {
 
     useEffect(() => {
         if (isSidebarOpen || showLogoutModal) {
-            document.body.style.overflow = "hidden"
+            document.body.classList.add("no-scroll")
         } else {
-            document.body.style.overflow = "auto"
+            document.body.classList.remove("no-scroll")
         }
-    })
 
-    /* Function for asigning the corresponding value for active view state and open the sidebar */
+        // Prevent the page from jumping to the top when the sidebar is opened
+        if (isSidebarOpen) {
+            window.scrollTo(0, window.scrollY)
+        }
+    }, [isSidebarOpen, showLogoutModal])
+
     const handleNavClick = (view) => {
         setActiveView(view)
         setIsSidebarOpen(false)
     }
 
-    /* Function for opening the logout modal */
     const handleLogoutClick = () => {
         setIsSidebarOpen(false)
-        setTimeout(() => {
-            setShowLogoutModal(true)
-        }, 450)
-
+        setTimeout(() => setShowLogoutModal(true), 450)
     }
 
-    /* Function for closing the logout modal and redirecting to log in page*/
     const handleLogoutConfirm = () => {
         setShowLogoutModal(false)
         navigate("/login")
     }
 
-    /* Function for closing the logout modal when cancel button is pressed */
-    const handleLogoutCancel = () => {
-        setShowLogoutModal(false)
-    }
+    const toggleSidebar = () => setIsSidebarOpen(prev => !prev)
 
-    /* Function for toggling the sidebar open and closed */
-    const toggleSidebar = () => {
-        if (window.scrollY > 0) {
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            })
-
-            // Esperar a que el usuario llegue arriba antes de cambiar el estado
-            const checkScroll = () => {
-                if (window.scrollY === 0) {
-                    setIsSidebarOpen(!isSidebarOpen)
-                    document.body.style.overflow = "hidden"
-                } else {
-                    requestAnimationFrame(checkScroll)
-                }
-            }
-            requestAnimationFrame(checkScroll)
-        } else {
-        // Si ya está arriba, cambiar el estado inmediatamente
-            setIsSidebarOpen(!isSidebarOpen)
-        }
+    const views = {
+        historial: <Historial />,
+        visitantes: <Visitantes />,
+        residentes: <Residentes />,
+        vehiculos: <Vehiculos />,
+        home: <HomePage />
     }
 
     return (
-        /* Home container that contains all the values for the navbar */
         <div className="nav-container">
-            {/* Header that contains the pages when desktop screen or the bars icon when tablet or cellphone */}
             <header className="nav-header">
-                {isMobile && // Only show icon when is tablet or cellphone
-                    <FontAwesomeIcon
-                        icon={faBars}
-                        className="menu-icon"
-                        onClick={toggleSidebar}
-                    />
-                }
-                {!isSidebarOpen && // Hide user address from header when sidebar is open
-                    <h1 className="user-name">{address}</h1>
-                }
-                {!isMobile && // Show nav pages when desktop screen
+                {isMobile && <FontAwesomeIcon icon={faBars} className="menu-icon" onClick={toggleSidebar} aria-label="Abrir menú" />}
+                {!isSidebarOpen && <h1 className="user-name">Av. Ficticia 1234</h1>}
+                {!isMobile && (
                     <nav className="nav-links">
-                        <button
-                            className={`nav-button ${activeView === "home" ? "active" : ""}`}
-                            onClick={() => handleNavClick("home")}
-                        >
-                            <FontAwesomeIcon icon={faQrcode} />&nbsp;Códigos QR
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "historial" ? "active" : ""}`}
-                            onClick={() => handleNavClick("historial")}
-                        >
-                            <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
-                            onClick={() => handleNavClick("visitantes")}
-                        >
-                            <FontAwesomeIcon icon={faUserGroup} />&nbsp;Visitantes
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
-                            onClick={() => handleNavClick("residentes")}
-                        >
-                            <FontAwesomeIcon icon={faHouse} />&nbsp;Residentes
-                        </button>
-                        <button
-                            className={`nav-button ${activeView === "vehiculos" ? "active" : ""}`}
-                            onClick={() => handleNavClick("vehiculos")}
-                        >
-                            <FontAwesomeIcon icon={faCar} />&nbsp;Vehículos
-                        </button>
-                        <button className="nav-button logout" onClick={handleLogoutClick}>
-                            <FontAwesomeIcon icon={faDoorOpen} />
-                        </button>
+                        <NavButtons
+                            activeView={activeView}
+                            onClick={handleNavClick}
+                            logout={handleLogoutClick}
+                        />
                     </nav>
-                }
+                )}
             </header>
 
-            {/* Sidebar that contains the user address and navigation links when tablet or cellphone */}
-            {isMobile &&
-            <div className="sidebar-container">
+            {isMobile && (
                 <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
                     <div className="sidebar-header">
-                        <h1 className="sidebar-user-name">{address}</h1>
+                        <h1 className="sidebar-user-name">Av. Ficticia 1234</h1>
                         <h2 className="sidebar-perfil-title">Perfil</h2>
                     </div>
-                    {isSidebarOpen &&
-                        <nav className="nav-links-sidebar">
-                            <button
-                                className={`nav-button ${activeView === "home" ? "active" : ""}`}
-                                onClick={() => handleNavClick("home")}
-                            >
-                                <FontAwesomeIcon icon={faQrcode} />&nbsp;&nbsp;Códigos QR
-                            </button>
-                            <button
-                                className={`nav-button ${activeView === "historial" ? "active" : ""}`}
-                                onClick={() => handleNavClick("historial")}
-                            >
-                                <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas
-                            </button>
-                            <button
-                                className={`nav-button ${activeView === "visitantes" ? "active" : ""}`}
-                                onClick={() => handleNavClick("visitantes")}
-                            >
-                                <FontAwesomeIcon icon={faUserGroup} />&nbsp;&nbsp;Visitantes
-                            </button>
-                            <button
-                                className={`nav-button ${activeView === "residentes" ? "active" : ""}`}
-                                onClick={() => handleNavClick("residentes")}
-                            >
-                                <FontAwesomeIcon icon={faHouse} />&nbsp;&nbsp;Residentes
-                            </button>
-                            <button
-                                className={`nav-button ${activeView === "vehiculos" ? "active" : ""}`}
-                                onClick={() => handleNavClick("vehiculos")}
-                            >
-                                <FontAwesomeIcon icon={faCar} />&nbsp;&nbsp;Vehículos
-                            </button>
-                            <button className="nav-button logout" onClick={handleLogoutClick}>
-                                <FontAwesomeIcon icon={faDoorOpen} />&nbsp;&nbsp;Cerrar sesión
-                            </button>
-                        </nav>
-                    }
+                    <nav className="nav-links-sidebar">
+                        <NavButtons
+                            activeView={activeView}
+                            onClick={handleNavClick}
+                            logout={handleLogoutClick}
+                        />
+                    </nav>
                 </div>
-            </div>
-            }
+            )}
 
-            {/* Container that has the logic for pushing the main content when sidebar is open */}
             <div className={`st-pusher ${isSidebarOpen ? "active" : ""}`}>
-                <div
-                    className={`overlay ${isSidebarOpen ? "active" : ""}`}
-                    onClick={toggleSidebar}
-                />
-
+                <div className={`overlay ${isSidebarOpen ? "active" : ""}`} onClick={toggleSidebar} />
                 {/* Welcome message for corresponding view */}
-                <div key={activeView} className="welcome-message">
-                    <p>
-                        {activeView === "home" ? "Bienvenido (a)" :
-                            activeView === "historial" ? "Historial de visitas" :
-                                activeView === "visitantes" ? "Visitantes frecuentes" :
-                                    activeView === "residentes" ? "Residentes" :
-                                        "Vehículos"}
-                    </p>
-                </div>
-
-                {/* Main container that contains the active view */}
+                {activeView === "home" ? (
+                    <div className="welcome-message">
+                        <p>Bienvenido&nbsp;(a)</p>
+                    </div>
+                ) : activeView === "historial" ? (
+                    <div className="welcome-message">
+                        <p>Historial de visitas</p>
+                    </div>
+                ) : activeView === "visitantes" ? (
+                    <div className="welcome-message">
+                        <p>Visitantes frecuentes</p>
+                    </div>
+                ) : activeView === "residentes" ? (
+                    <div className="welcome-message">
+                        <p>Residentes</p>
+                    </div>
+                ) : (
+                    <div className="welcome-message">
+                        <p>Autos</p>
+                    </div>
+                )}
                 <AnimatePresence mode="wait">
                     <motion.main
                         key={activeView}
@@ -234,52 +149,17 @@ const Navbar = () => {
                         )}
                     </motion.main>
                 </AnimatePresence>
-
             </div>
 
-            {/* Logout modal that appears when user clicks on logout button */}
             {showLogoutModal && (
                 <div className="logout-modal-background">
                     <div className="logout-modal">
-                        <p>
-                            ¿Deseas cerrar sesión?&nbsp;<FontAwesomeIcon icon={faDoorOpen} />
-                        </p>
-                        <svg
-                            className="modal-svg"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="100%"
-                            height="100%"
-                            viewBox="0 0 300 90"
-                            preserveAspectRatio="none"
-                        >
-                            <rect
-                                x="0"
-                                y="0"
-                                fill="none"
-                                width="300"
-                                height="90"
-                                rx="3"
-                                ry="3"
-                            ></rect>
-                        </svg>
+                        <p>¿Deseas cerrar sesión? <FontAwesomeIcon icon={faDoorOpen} /></p>
                         <div className="logout-modal-actions">
-                            <Button
-                                variant="contained"
-                                onClick={handleLogoutConfirm}
-                                startIcon={<CheckIcon />}
-                                sx={{
-                                    backgroundColor: "#00a8cc",
-                                    "&:hover": { backgroundColor: "#00a8ccCC" }
-                                }}
-                            >
+                            <Button variant="contained" onClick={handleLogoutConfirm} startIcon={<CheckIcon />} sx={{ backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8ccCC" } }}>
                                 Aceptar
                             </Button>
-                            <Button
-                                variant="outlined"
-                                color="error"
-                                onClick={handleLogoutCancel}
-                                startIcon={<CloseIcon />}
-                            >
+                            <Button variant="outlined" color="error" onClick={() => setShowLogoutModal(false)} startIcon={<CloseIcon />}>
                                 Cancelar
                             </Button>
                         </div>

@@ -1,5 +1,9 @@
 @import '../General/Colors.scss';
 
+$z-header: 1000;
+$z-sidebar: 1010;
+$z-modal: 1100;
+
 .nav-container {
     width: 100%;
     display: flex;
@@ -7,18 +11,18 @@
 }
 
 .nav-header {
-    --s: 50px; /* control the size */
+    --s: 50px;
     --c1: #004f79;
     --c2: #008db8;
-    
-    --_g:radial-gradient(#0000 60%,var(--c1) 61% 63%,#0000 64% 77%,var(--c1) 78% 80%,#0000 81%);
-    --_c:,#0000 75%,var(--c2) 0;
+
+    --_g: radial-gradient(#0000 60%, var(--c1) 61% 63%, #0000 64% 77%, var(--c1) 78% 80%, #0000 81%);
+    --_c: , #0000 75%, var(--c2) 0;
     background:
-    conic-gradient(at 12% 20% var(--_c)) calc(var(--s)* .44) calc(.9*var(--s)),
-    conic-gradient(at 12% 20% var(--_c)) calc(var(--s)*-.06) calc(.4*var(--s)),
-    conic-gradient(at 20% 12% var(--_c)) calc(.9*var(--s)) calc(var(--s)* .44),
-    conic-gradient(at 20% 12% var(--_c)) calc(.4*var(--s)) calc(var(--s)*-.06),
-    var(--_g),var(--_g) calc(var(--s)/2) calc(var(--s)/2) var(--c2);
+        conic-gradient(at 12% 20% var(--_c)) calc(var(--s) * .44) calc(.9 * var(--s)),
+        conic-gradient(at 12% 20% var(--_c)) calc(var(--s) * -.06) calc(.4 * var(--s)),
+        conic-gradient(at 20% 12% var(--_c)) calc(.9 * var(--s)) calc(var(--s) * .44),
+        conic-gradient(at 20% 12% var(--_c)) calc(.4 * var(--s)) calc(var(--s) * -.06),
+        var(--_g), var(--_g) calc(var(--s) / 2) calc(var(--s) / 2) var(--c2);
     background-size: var(--s) var(--s);
     color: white;
     text-align: center;
@@ -26,13 +30,12 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 30px;
-    color: var(--primary-color);
-    position: fixed; /* Fija el header en la parte superior */
-    top: 0; /* Asegura que esté en la parte superior */
+    position: fixed;
+    top: 0;
     left: 0;
-    width: 100%; /* Ocupar todo el ancho de la pantalla */
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* (Opcional) Sombra para diferenciarlo del contenido */
+    width: 100%;
+    z-index: $z-header;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .nav-main {
@@ -40,18 +43,29 @@
 }
 
 .user-name {
-    font-size: 1.5rem;
     font-family: 'Times New Roman', Times, serif;
     font-weight: lighter;
-    font-size: 2rem;
-    margin-left: 50px;
-    color: white;
+
+    @media screen and (max-width: 768px) {
+        font-size: 1rem;
+        text-overflow: ellipsis;
+        padding-right: 50px;
+        align-self: right !important;
+        animation: fadeInUserName 0.8s ease-in-out forwards;
+    }
+
+    @media screen and (min-width: 769px) {
+        font-size: 2rem;
+        margin-left: 50px;
+        color: white;
+    }
 }
 
 .menu-icon {
     font-size: 1.8rem;
     cursor: pointer;
     color: white;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .nav-links {
@@ -70,21 +84,29 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .nav-button:hover {
     background-color: rgb(194, 194, 194);
 }
 
-.nav-button.active {
+.nav-button.active-button {
     background-color: var(--active-button);
     border: none;
     color: var(--primary-color);
     font-weight: 900;
 }
 
-.nav-button.active:hover {
+.nav-button.active-button:hover {
     background-color: var(--active-button-hover);
+}
+
+.nav-button.logout {
+    background-color: var(--secondary-color);
+    color: white;
 }
 
 .nav-button.logout {
@@ -97,14 +119,14 @@
 }
 
 .welcome-message {
-    margin-top: 180px;
+    margin-top: 150px;
     text-align: left;
     font-size: 3.5rem;
     font-family: 'Times New Roman', Times, serif;
     font-weight: 450;
     color: black;
     margin-left: 80px;
-    margin-bottom: -40px;
+    margin-bottom: -60px;
     opacity: 0;
     transform: translateY(-20px);
     animation: fadeInMove .5s .2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
@@ -116,6 +138,20 @@ h2 {
     color: var(--primary-color);
 }
 
+// Estilos específicos para botones del sidebar (modo mobile)
+.nav-button.sidebar-button {
+    display: grid;
+    grid-template-columns: 30px auto;
+    align-items: center;
+    border-radius: 5px;
+    text-align: left;
+    gap: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 1.2rem;
+    width: 100%;
+}
+
 .logout-modal-background {
     position: fixed;
     top: 0;
@@ -125,7 +161,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: $z-modal;
     transform: scale(1);
     background: rgba(0, 0, 0, .0);
     animation: fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
@@ -174,6 +210,17 @@ h2 {
     justify-content: center;
     gap: 10px;
     margin-top: 15px;
+}
+
+.no-scroll {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 @keyframes fadeInMove {
@@ -389,19 +436,20 @@ h2 {
         width: 100%;
     }
 
-    .overlay {
-        position: fixed;
-        visibility: hidden;
-        z-index: 999;
+        .overlay {
+            position: fixed;
+            visibility: hidden;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
     }
 
-    .overlay.active {
-        background-color: rgba(77, 77, 77, 0.5);
-        visibility: visible;
-        margin-top: -80px;
-        width: 100%;
-        height: 2000px;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+        .overlay.active {
+            background-color: rgba(77, 77, 77, 0.5);
+            visibility: visible;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 }
 

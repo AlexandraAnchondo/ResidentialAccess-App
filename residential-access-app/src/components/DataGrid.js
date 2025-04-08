@@ -60,6 +60,7 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
             </StyledGridOverlay>
         )
     }
+
     return (
         <div className="data-table-container">
             <Paper className="data-table">
@@ -68,7 +69,7 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
                     columns={columns}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10, 20, 30]}
-                    checkboxSelection={checkboxSelection ? true : false}
+                    checkboxSelection={checkboxSelection}
                     filterMode="client" // Para filtrar en el cliente
                     slots={{
                         toolbar: GridToolbar, // Agregar toolbar con filtros
@@ -76,6 +77,11 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
                             variant: "skeleton"
                         },
                         noRowsOverlay: CustomNoRowsOverlay
+                    }}
+                    slotProps={{
+                        toolbar: {
+                            showQuickFilter: true
+                        }
                     }}
                     disableRowSelectionOnClick={true}
                     sx={{
@@ -90,4 +96,3 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
         </div>
     )
 }
-

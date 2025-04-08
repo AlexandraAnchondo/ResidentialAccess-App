@@ -33,10 +33,11 @@
 .data-table {
     max-width: 1540px;
     width: 100%;
+    height: auto;
     overflow: auto;
     padding: 10px;
     background-color: white; /* Fondo del Paper */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     border-radius: 8px; /* Bordes redondeados */
 }
 
@@ -70,5 +71,26 @@
 }
 
 .css-1ccsd5i-MuiButtonBase-root-MuiButton-root {
-    color: var(--primary-color) !important
+    color: var(--primary-color) !important;
+}
+
+/* Optimización para el renderizado de texto */
+.MuiDataGrid-root {
+    -webkit-font-smoothing: antialiased; /* Mejora la suavidad de las fuentes */
+    -moz-osx-font-smoothing: grayscale;  /* Mejora la suavidad de las fuentes en macOS */
+    text-rendering: optimizeLegibility;  /* Mejora la legibilidad en todos los navegadores */
+}
+
+.MuiDataGrid-root .MuiDataGrid-cell {
+    font-size: 14px;   /* Ajusta el tamaño de fuente si es necesario */
+    line-height: 1.5;  /* Mejora la legibilidad de las filas */
+}
+
+/* Ajustes del campo de búsqueda */
+.MuiTextField-root {
+    font-size: 14px; /* Ajusta el tamaño del texto en la barra de búsqueda */
+    line-height: 1.5; /* Aumenta la legibilidad del texto */
+    input {
+        font-size: 14px; /* Asegura que el tamaño del texto dentro del campo sea correcto */
+    }
 }
