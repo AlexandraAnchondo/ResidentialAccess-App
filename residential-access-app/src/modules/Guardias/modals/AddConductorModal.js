@@ -8,14 +8,16 @@ import {
 } from "@mui/material"
 import {
     People,
-    AddCard,
     Close as CloseIcon,
-    Save as SaveIcon
+    Save as SaveIcon,
+    CameraAlt as CameraAltIcon,
+    UploadFile as UploadFileIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 import Check from "../../../components/Check"
+import CameraModal from "../../../components/modals/CameraModal"
 
 const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
@@ -27,6 +29,7 @@ const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, s
 
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
+    const [showCameraModal, setShowCameraModal] = useState(false)
 
     useEffect(() => {
         if (!show) {
@@ -43,6 +46,13 @@ const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, s
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
+    }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            setFormData({ ...formData, ine: file }) // Guarda el archivo como File
+        }
     }
 
     const handleAcceptClick = () => {
@@ -120,20 +130,42 @@ const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, s
                                 }}
                                 fullWidth
                             />
-                            <TextField
-                                label="Ine"
-                                name="ine"
-                                value={formData.ine}
-                                onChange={handleInputChange}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <AddCard />
-                                        </InputAdornment>
-                                    )
-                                }}
-                                fullWidth
-                            />
+
+                            <Button
+                                variant="contained"
+                                startIcon={<CameraAltIcon />}
+                                onClick={() => setShowCameraModal(true)} // Abre el modal de la cámara
+                            >
+                                Abrir cámara
+                            </Button>
+                            <Button
+                                variant="contained"
+                                component="label"
+                                startIcon={<UploadFileIcon />}
+                            >
+                                Subir archivo
+                                <input
+                                    type="file"
+                                    hidden
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                />
+                            </Button>
+
+                            {formData.ine && !showCameraModal && (
+                                <center><img
+                                    src={typeof formData.ine === "string" ? formData.ine : URL.createObjectURL(formData.ine)}
+                                    alt="INE"
+                                    style={{ marginTop: 10, width: isMobile ? "80%" : "60%", borderRadius: 8 }}
+                                /></center>
+                            )}
+                            {showCameraModal && (
+                                <CameraModal
+                                    setFormData={setFormData}
+                                    formData={formData}
+                                    onClose={() => setShowCameraModal(false)} // Cierra modal después de tomar foto
+                                />
+                            )}
                         </Box>
                     }
                     <Check isFailure={isFailure} isSaved={isSaved} message={message} />
