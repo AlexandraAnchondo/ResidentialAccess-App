@@ -17,3 +17,41 @@ export const getAllDomicilios = async (fields = []) => {
     }
 }
 
+export const getDomicilioById = async id_domicilio => {
+    try {
+        const url = `${API_URL}/get/${id_domicilio}`
+        const response = await fetch(url)
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener domicilio: ${response.statusText}`)
+        }
+
+        return await response.json()
+
+    } catch (error) {
+        console.error("Error en getDomicilioById:", error)
+        throw error
+    }
+}
+
+export const createAccessCode = async (codesData) => {
+    try {
+        const response = await fetch(`${API_URL}/create_access_codes`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(codesData)
+        })
+
+        if (!response.ok) {
+            throw new Error(`Error al crear el código de acceso: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en createAccessCode:", error)
+        throw error
+    }
+}
+

@@ -7,13 +7,21 @@ import { Button } from "@mui/material"
 import { QRCodeCanvas } from "qrcode.react"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const HomePage = () => {
-    const [name, setName] = useState("Alexandra Anchondo Robles")
-    const [phone, setPhone] = useState("(686) 420-49-24")
-    const [email, setEmail] = useState("correo@gmail.com")
-    const [ineSrc, setIneSrc] = useState("INE.png")
+// Hooks
+import {
+    useCreateAccessCode
+} from "../../hooks/domicilio.hook"
+
+
+const HomePage = ({ domicilio, id_domicilio, name, phone, email, ineSrc }) => {
+    // API calls
+    const { saveCode } = useCreateAccessCode()
+
     const [showModal, setShowModal] = useState(false)
-    const [qrCodes, setQrCodes] = useState([])
+    const [qrCodes, setQrCodes] = useState(domicilio != null ? domicilio.access_codes : [])
+    const [isSaved, setIsSaved] = useState(false)
+    const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
     const isUnder568 = useMediaQuery("(max-width: 568px)")
     const isUnder768 = useMediaQuery("(max-width: 768px)")
     const isUnder1068 = useMediaQuery("(max-width: 1068px)")
@@ -28,13 +36,39 @@ const HomePage = () => {
 
     const handleGenerateClick = () => {
         setShowModal(true)
+        console.log(domicilio)
     }
 
-    const handleCloseModal = (newQrCodes) => {
-        setShowModal(false)
-        if (newQrCodes && newQrCodes.length > 0) {
-            setQrCodes(() => [...newQrCodes])
+    const handleSaveCode = async (selectedCodes) => {
+        const codesToGenerate = selectedCodes.map((value) => ({
+            duration:
+                value === "1-month"
+                    ? "1 mes"
+                    : value === "1-week"
+                        ? "1 semana"
+                        : "1 día",
+            id: `${value}-${Date.now()}`
+        }))
+
+        try {
+            const response = await saveCode({ id_domicilio: id_domicilio, codes: codesToGenerate })
+            if (response.success !== false) {
+                setQrCodes(() => [...qrCodes, ...codesToGenerate])
+                setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
+                return
+            }
+            setIsFailure(true)
+        } catch (err) {
+            setIsFailure(true)
+            setMessage(err.message || "Operación fallida")
         }
+        await saveCode({ codes: codesToGenerate })
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false)
+        setMessage(null)
     }
 
     const handleShareClick = (code) => {
@@ -130,6 +164,12 @@ const HomePage = () => {
                 show={showModal}
                 onClose={handleCloseModal}
                 existingCodes={qrCodes}
+                onAdd={handleSaveCode}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
             />
         </div>
     )

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react"
 import "../../../styles/Usuarios/CodeModal.scss"
-import { Button } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import { Check as CheckIcon, Cancel as CancelIcon, Close } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
-const CodeModal = ({ show, onClose, existingCodes }) => {
+import Check from "../../../components/Check"
+
+const CodeModal = ({ show, onClose, existingCodes, onAdd, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [selectedCodes, setSelectedCodes] = useState([])
     const [disabledOptions, setDisabledOptions] = useState([])
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
@@ -13,7 +15,7 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
 
     useEffect(() => {
         if (show) {
-            setClosing(false) //Reinicia el estado al abrir el modal
+            setClosing(false)
             // Determinar los tipos de códigos ya vigentes para deshabilitar sus checkboxes
             const activeDurations = existingCodes.map((code) => code.duration)
             const disabled = []
@@ -40,21 +42,13 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
     }
 
     const handleAcceptClick = () => {
-        const codesToGenerate = selectedCodes.map((value) => ({
-            duration:
-                value === "1-month"
-                    ? "1 mes"
-                    : value === "1-week"
-                        ? "1 semana"
-                        : "1 día",
-            id: `${value}-${Date.now()}`
-        }))
-        handleCancelClick()
-        onClose(codesToGenerate)
+        onAdd(selectedCodes)
     }
 
     const handleCancelClick = () => {
         setClosing(true)
+        setIsSaved(false)
+        setIsFailure(false)
         setTimeout(() => {
             onClose()
             setClosing(false)
@@ -69,7 +63,9 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
         <div className={`code-modal-overlay ${closing ? "fade-out" : ""}`}>
             <div className={`code-modal ${closing ? "scale-down" : ""}`}>
                 <div className="code-modal-header">
-                    <h2>¿Qué tipo de código desea crear?</h2>
+                    <Typography variant="h5" component="h2" gutterBottom>
+                        {isSaved ? "Códigos creados" : isFailure ?  "Error al crear los códigos" : "¿Qué tipo de código desea crear?" }
+                    </Typography>
                     <div className="close-button">
                         <Button
                             onClick={handleCancelClick}
@@ -87,63 +83,68 @@ const CodeModal = ({ show, onClose, existingCodes }) => {
                     </div>
                 </div>
                 <div className="code-modal-content">
-                    <div className="code-modal-options">
-                        {["1-month", "1-week", "1-day"].map((value) => {
-                            const isDisabled = disabledOptions.includes(value)
-                            const labelText =
+                    {!isSaved && !isFailure &&
+                        <div className="code-modal-options">
+                            {["1-month", "1-week", "1-day"].map((value) => {
+                                const isDisabled = disabledOptions.includes(value)
+                                const labelText =
                                 value === "1-month"
                                     ? "Un mes de vigencia"
                                     : value === "1-week"
                                         ? "Una semana de vigencia"
                                         : "Un día de vigencia"
-                            return (
-                                <label
-                                    key={value}
-                                    style={{
-                                        color: isDisabled ? "red" : "inherit",
-                                        cursor: isDisabled ? "not-allowed" : "pointer"
-                                    }}
-                                    title={
-                                        isDisabled
-                                            ? "Ya existe un código con esta duración activo."
-                                            : ""
-                                    }
-                                >
-                                    <input
-                                        type="checkbox"
-                                        name="codeType"
-                                        value={value}
-                                        onChange={handleCheckboxChange}
-                                        disabled={isDisabled}
-                                        style={{ marginRight: 8 }}
-                                    />
-                                    {labelText}
-                                </label>
-                            )
-                        })}
-                    </div>
+                                return (
+                                    <label
+                                        key={value}
+                                        style={{
+                                            color: isDisabled ? "red" : "inherit",
+                                            cursor: isDisabled ? "not-allowed" : "pointer"
+                                        }}
+                                        title={
+                                            isDisabled
+                                                ? "Ya existe un código con esta duración activo."
+                                                : ""
+                                        }
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            name="codeType"
+                                            value={value}
+                                            onChange={handleCheckboxChange}
+                                            disabled={isDisabled}
+                                            style={{ marginRight: 8 }}
+                                        />
+                                        {labelText}
+                                    </label>
+                                )
+                            })}
+                        </div>
+                    }
+                    <Check isFailure={isFailure} isSaved={isSaved} message={message} />
                 </div>
                 <div className="code-modal-actions">
-                    <Button
-                        onClick={handleAcceptClick}
-                        variant="contained"
-                        startIcon={<CheckIcon />}
-                        disabled={selectedCodes.length === 0 || existingCodes.length === 3}
-                        size={isMobile ? "small" : "large"}
-                        sx={{
-                            color: "#fff",
-                            marginBottom: isMobile ? 0 : 4,
-                            marginLeft: isMobile ? 0 : 5,
-                            backgroundColor: selectedCodes.length > 0 ? "#00a8cc" : "#cccccc",
-                            "&:hover": {
-                                backgroundColor: selectedCodes.length > 0
-                                    ? "#00a8ccCC"
-                                    : "#cccccc"
-                            }
-                        }}
-                    >
-                        Aceptar
-                    </Button>
+                    {!isSaved && !isFailure &&
+                        <Button
+                            onClick={handleAcceptClick}
+                            variant="contained"
+                            startIcon={<CheckIcon />}
+                            disabled={selectedCodes.length === 0 || existingCodes.length === 3}
+                            size={isMobile ? "small" : "large"}
+                            sx={{
+                                color: "#fff",
+                                marginBottom: isMobile ? 0 : 4,
+                                marginLeft: isMobile ? 0 : 5,
+                                backgroundColor: selectedCodes.length > 0 ? "#00a8cc" : "#cccccc",
+                                "&:hover": {
+                                    backgroundColor: selectedCodes.length > 0
+                                        ? "#00a8ccCC"
+                                        : "#cccccc"
+                                }
+                            }}
+                        >
+                            Aceptar
+                        </Button>
+                    }
                     <Button
                         onClick={handleCancelClick}
                         variant="outlined"

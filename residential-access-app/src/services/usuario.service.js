@@ -34,6 +34,23 @@ export const createUsuario = async (usuarioData) => {
     }
 }
 
+export const getUsuarioById = async id_usuario => {
+    try {
+        const url = `${API_URL}/get/${id_usuario}`
+        const response = await fetch(url)
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener usuario: ${response.statusText}`)
+        }
+
+        return await response.json()
+
+    } catch (error) {
+        console.error("Error en getUsuarioById:", error)
+        throw error
+    }
+}
+
 export const getAllGuardias = async () => {
     try {
         const url = `${API_URL}/get_all_guardias`
@@ -60,6 +77,7 @@ export const updateUsuario = async (usuarioData) => {
         formData.append("telefono", usuarioData.telefono)
         formData.append("correo_electronico", usuarioData.correo_electronico)
         formData.append("id_rol", usuarioData.id_rol)
+        formData.append("bloqueado", usuarioData.bloqueado)
 
         // Agregar el archivo si existe
         if (usuarioData.ine instanceof File) {

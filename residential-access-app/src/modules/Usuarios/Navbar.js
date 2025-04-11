@@ -17,11 +17,21 @@ import Vehiculos from "./Vehiculos"
 import HomePage from "./HomePage"
 import NavButtons from "./NavButtons"
 
+// Hooks
+import {
+    useGetUsuarioById
+} from "../../hooks/usuario.hook"
+import {
+    useGetDomicilioById
+} from "../../hooks/domicilio.hook"
+
 const Navbar = () => {
+    // API calls
+    const { fetchUsuario, usuario } = useGetUsuarioById()
+    const { fetchDomicilio, domicilio } = useGetDomicilioById()
+
     const [activeView, setActiveView] = useState("home")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
-    const [address, setAddress] = useState("Av. Ficticia 1234")
-    const [id_domicilio, setId_domicilio] = useState(1)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)")
     const navigate = useNavigate()
@@ -40,11 +50,24 @@ const Navbar = () => {
             document.body.classList.remove("no-scroll")
         }
 
-        // Prevent the page from jumping to the top when the sidebar is opened
         if (isSidebarOpen) {
             window.scrollTo(0, window.scrollY)
         }
     }, [isSidebarOpen, showLogoutModal])
+
+    // Cargar usuario al montar
+    useEffect(() => {
+        if (!usuario) {
+            fetchUsuario(17)
+        }
+    }, [usuario, fetchUsuario])
+
+    // Cargar domicilio cuando ya se tenga el usuario
+    useEffect(() => {
+        if (usuario?.id_domicilio && domicilio == null) {
+            fetchDomicilio(usuario.id_domicilio)
+        }
+    }, [usuario, fetchDomicilio])
 
     const handleNavClick = (view) => {
         setActiveView(view)
@@ -63,19 +86,11 @@ const Navbar = () => {
 
     const toggleSidebar = () => setIsSidebarOpen(prev => !prev)
 
-    const views = {
-        historial: <Historial />,
-        visitantes: <Visitantes />,
-        residentes: <Residentes />,
-        vehiculos: <Vehiculos />,
-        home: <HomePage />
-    }
-
     return (
         <div className="nav-container">
             <header className="nav-header">
                 {isMobile && <FontAwesomeIcon icon={faBars} className="menu-icon" onClick={toggleSidebar} aria-label="Abrir menú" />}
-                {!isSidebarOpen && <h1 className="user-name">Av. Ficticia 1234</h1>}
+                {!isSidebarOpen && <h1 className="user-name">{`${domicilio?.calle} ${domicilio?.numero_calle}`}</h1>}
                 {!isMobile && (
                     <nav className="nav-links">
                         <NavButtons
@@ -90,7 +105,7 @@ const Navbar = () => {
             {isMobile && (
                 <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
                     <div className="sidebar-header">
-                        <h1 className="sidebar-user-name">Av. Ficticia 1234</h1>
+                        <h1 className="sidebar-user-name">{`${domicilio?.calle} ${domicilio?.numero_calle}`}</h1>
                         <h2 className="sidebar-perfil-title">Perfil</h2>
                     </div>
                     <nav className="nav-links-sidebar">
@@ -137,15 +152,15 @@ const Navbar = () => {
                         className="nav-main"
                     >
                         {activeView === "historial" ? (
-                            <Historial id_domicilio={id_domicilio}/>
+                            <Historial id_domicilio={usuario?.id_domicilio}/>
                         ) : activeView === "visitantes" ? (
-                            <Visitantes id_domicilio={id_domicilio}/>
+                            <Visitantes id_domicilio={usuario?.id_domicilio}/>
                         ) : activeView === "residentes" ? (
-                            <Residentes id_domicilio={id_domicilio}/>
+                            <Residentes id_domicilio={usuario?.id_domicilio}/>
                         ) : activeView === "vehiculos" ? (
-                            <Vehiculos id_domicilio={id_domicilio}/>
+                            <Vehiculos id_domicilio={usuario?.id_domicilio}/>
                         ) : (
-                            <HomePage id_domicilio={id_domicilio}/>
+                            <HomePage domicilio={domicilio} id_domicilio={usuario?.id_domicilio} name={`${usuario?.nombre} ${usuario?.apellidos}`} phone={usuario?.telefono} email={usuario?.correo_electronico} ineSrc={usuario?.ine} />
                         )}
                     </motion.main>
                 </AnimatePresence>

@@ -15,7 +15,7 @@ import ViewVehiculosModal from "./modals/ViewVehiculosModal"
 import ViewFrecuentesModal from "./modals/ViewFrecuentesModal"
 
 // Hooks
-import useDomicilios from "../../hooks/domicilio.hook"
+import { useDomicilios } from "../../hooks/domicilio.hook"
 
 const Domicilios = () => {
     // API calls

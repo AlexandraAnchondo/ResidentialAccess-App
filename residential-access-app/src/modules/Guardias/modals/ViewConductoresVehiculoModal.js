@@ -1,7 +1,10 @@
 import React, { useState } from "react"
 import {
     Button,
-    Typography
+    Typography,
+    IconButton,
+    Modal,
+    Box
 } from "@mui/material"
 import {
     Close as CloseIcon,
@@ -12,11 +15,14 @@ import "../../../styles/General/AddModal.scss"
 import DataTable from "../../../components/DataGrid"
 import AddConductorModal from "./AddConductorModal"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import { FaIdCard } from "react-icons/fa"
 
 const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelectedConductor, selectedConductor, isRowSelected, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
 
     const [closing, setClosing] = useState(false)
     const [showAddConductorModal, setShowAddConductorModal] = useState(false)
+    const [showImageModal, setShowImageModal] = useState(false)
+    const [imageSrc, setImageSrc] = useState("")
     const isMobile = useMediaQuery("(max-width: 768px)")
 
     if (!show && !closing) {
@@ -31,11 +37,39 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
         }, 500) // Tiempo de la animación en ms
     }
 
+    const handleShowImage = (row) => {
+        if (row.ine) {
+            const ineUrl = typeof row.ine === "string" ? row.ine : URL.createObjectURL(row.ine)
+            const imagePath = `${ineUrl}`
+            setImageSrc(imagePath)
+            setShowImageModal(true)
+        } else {
+            alert("No se encontró ine para este conductor.")
+        }
+    }
+
+    const handleCloseImageModal = () => {
+        setShowImageModal(false)
+        setImageSrc("")
+    }
+
     const columns_conductores_vehiculos = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 300 },
         { field: "apellidos", headerAlign: "center", headerName: "Apellido", flex: 1, minWidth: 150 },
-        { field: "ine", headerAlign: "center", headerName: "INE", flex: 1, minWidth: 150 },
+        {
+            field: "ine",
+            headerName: "INE",
+            flex: 1,
+            minWidth: 50,
+            headerAlign: "center",
+            align: "center",
+            renderCell: (params) => (
+                <IconButton onClick={() => handleShowImage(params.row)} color="primary">
+                    <FaIdCard color="#004f79" />
+                </IconButton>
+            )
+        },
         ...(isRowSelected
             ? [
                 {
@@ -126,19 +160,53 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
                         {isRowSelected ? "Cancelar" : "Cerrar"}
                     </Button>
                 </div>
-
-                <AddConductorModal
-                    show={showAddConductorModal}
-                    onClose={() => setShowAddConductorModal(false)}
-                    onAdd={onAdd}
-                    vehiculoId={vehiculo.id}
-                    isSaved={isSaved}
-                    setIsSaved={setIsSaved}
-                    isFailure={isFailure}
-                    setIsFailure={setIsFailure}
-                    message={message}
-                />
             </div>
+
+            {/* Modal para mostrar la imagen */}
+            <Modal open={showImageModal} onClose={handleCloseImageModal}>
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 800,
+                        bgcolor: "white",
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 2,
+                        textAlign: "center"
+                    }}
+                >
+                    {imageSrc ? (
+                        <img
+                            src={imageSrc}
+                            alt="Identificación"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "8px",
+                                maxHeight: "60vh",
+                                objectFit: "contain"
+                            }}
+                        />
+                    ) : (
+                        <p>No se encontró la imagen.</p>
+                    )}
+                </Box>
+            </Modal>
+
+            <AddConductorModal
+                show={showAddConductorModal}
+                onClose={() => setShowAddConductorModal(false)}
+                onAdd={onAdd}
+                vehiculoId={vehiculo.id}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
+            />
         </div>
     )
 }

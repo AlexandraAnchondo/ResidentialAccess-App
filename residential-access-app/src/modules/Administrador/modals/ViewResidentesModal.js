@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react"
 import { Button, Typography, IconButton, Modal, Box } from "@mui/material"
-import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon } from "@mui/icons-material"
+import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon, Edit } from "@mui/icons-material"
 import { FaIdCard } from "react-icons/fa"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
+
+// Modals
 import DeleteModal from "../../../components/modals/DeleteModal"
+import EditResidenteModal from "../modals/EditResidenteModal"
 
 // Components
 import DataTable from "../../../components/DataGrid"
@@ -31,6 +34,11 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
     const [indexToDelete, setIndexToDelete] = useState(null)
     const [imageSrc, setImageSrc] = useState("")
     const [showImageModal, setShowImageModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [selectedResidente, setSelectedResidente] = useState(null)
+    const [isSaved, setIsSaved] = useState(false)
+    const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
 
     useEffect(() => {
         if (show && domicilioId) {
@@ -40,8 +48,39 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
         document.body.style.overflow = showDeleteModal ? "hidden" : "auto"
     }, [show, domicilioId, showDeleteModal]) // Se ejecuta solo cuando showDeleteModal cambia
 
-    const handleToggleBlock = (id) => {
-        setResidentes((prev) => prev.map((res) => res.id === id ? { ...res, bloqueado: !res.bloqueado } : res))
+    const handleEditClick = (residente) => {
+        setSelectedResidente(residente)
+        setShowEditModal(true)
+    }
+
+    const handleEditarResidente = async (residenteEditado) => {
+        try {
+            const response = await editResidente({ ...residenteEditado })
+            if (response.id != null) {
+                const updatedResidentes = residentes.map((residente) =>
+                    residente.id === residenteEditado.id ? { ...residenteEditado } : residente
+                )
+                setResidentes(updatedResidentes)
+                setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
+                return
+            }
+            setIsFailure(true)
+        } catch (err) {
+            setIsFailure(true)
+            setMessage(err.message || "Operación fallida")
+        }
+    }
+
+    const handleToggleBlock = async(id) => {
+        const updatedResidentes = await residentes.map((residente) => {
+            if (residente.id === id) {
+                editResidente({ ...residente, bloqueado: !residente.bloqueado })
+                return { ...residente, bloqueado: !residente.bloqueado }
+            }
+            return residente
+        })
+        setResidentes(updatedResidentes)
     }
 
     const handleDelete = () => {
@@ -68,7 +107,7 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
 
     const handleShowImage = (row) => {
         if (row.ine) {
-            const imagePath = `${row.ine}`
+            const imagePath = typeof row.ine === "string" ? row.ine : URL.createObjectURL(row.ine)
             setImageSrc(imagePath)
             setShowImageModal(true)
         } else {
@@ -105,8 +144,17 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
                             <FaIdCard color="#004f79" />
                         </IconButton>
                     }
-                    <IconButton onClick={() => handleToggleBlock(params.row.id)} color="primary">
-                        {params.row.bloqueado ? <LockIcon /> : <LockOpenIcon />}
+                    <IconButton onClick={() => handleEditClick(params.row)} color="primary">
+                        <Edit />
+                    </IconButton>
+                    <IconButton onClick={() => handleToggleBlock(params.row.id)}>
+                        {
+                            params.row.bloqueado ? (
+                                <LockIcon style={{ color: "red" }} />
+                            ) : (
+                                <LockOpenIcon style={{ color: "green" }} />
+                            )
+                        }
                     </IconButton>
                 </>
             )
@@ -171,6 +219,18 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
                     )}
                 </Box>
             </Modal>
+
+            <EditResidenteModal
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                onEdit={handleEditarResidente}
+                residente={selectedResidente}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
+            />
 
             <DeleteModal
                 showDeleteModal={showDeleteModal}

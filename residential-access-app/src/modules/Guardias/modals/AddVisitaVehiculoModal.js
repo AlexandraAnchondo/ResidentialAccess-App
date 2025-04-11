@@ -20,7 +20,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 
 import Check from "../../../components/Check"
 
-import useDomicilios from "../../../hooks/domicilio.hook"
+import { useDomicilios } from "../../../hooks/domicilio.hook"
 
 const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
 

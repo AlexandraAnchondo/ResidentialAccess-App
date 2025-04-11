@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import { getAllDomicilios } from "../services/domicilio.service"
+import { getAllDomicilios, getDomicilioById, createAccessCode } from "../services/domicilio.service"
 
-const useDomicilios = (fields = ["*"]) => {
+export const useDomicilios = (fields = ["*"]) => {
     const [domicilios, setDomicilios] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -24,4 +24,67 @@ const useDomicilios = (fields = ["*"]) => {
     return { domicilios, loading, error }
 }
 
-export default useDomicilios
+export const useGetDomicilioById = () => {
+    const [domicilio, setDomicilio] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    const fetchDomicilio = async (id_domicilio) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const response = await getDomicilioById(id_domicilio)
+            setDomicilio(response)
+            return response
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return { fetchDomicilio, domicilio, setDomicilio, loading, error }
+}
+
+export const useGetDomicilioByIdManual = (id_domicilio) => {
+    const [domicilio, setDomicilio] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const fetchDomicilio = async () => {
+            try {
+                const data = await getDomicilioById(id_domicilio)
+                setDomicilio(data)
+            } catch (err) {
+                setError(err.message)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchDomicilio()
+    }, []) // <- Se ejecuta solo una vez al montar el componente
+
+    return { domicilio, loading, error }
+}
+
+export const useCreateAccessCode = () => {
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const saveCode = async (codeData) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const response = await createAccessCode(codeData)
+            return response
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return { saveCode, loading, error }
+}

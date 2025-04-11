@@ -12,7 +12,7 @@ import Check from "../../components/Check"
 import CameraModal from "../../components/modals/CameraModal"
 
 // Hooks
-import useDomicilios from "../../hooks/domicilio.hook"
+import { useDomicilios } from "../../hooks/domicilio.hook"
 import { useUsuario } from "../../hooks/usuario.hook"
 
 const Registro = ({ selectedOption, setSelectedOption }) => {

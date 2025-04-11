@@ -93,14 +93,14 @@ $z-modal: 1100;
     background-color: rgb(194, 194, 194);
 }
 
-.nav-button.active-button {
+.nav-button.active {
     background-color: var(--active-button);
     border: none;
     color: var(--primary-color);
     font-weight: 900;
 }
 
-.nav-button.active-button:hover {
+.nav-button.active:hover {
     background-color: var(--active-button-hover);
 }
 

@@ -24,7 +24,7 @@ import Check from "../../../components/Check"
 
 import CameraModal from "../../../components/modals/CameraModal"
 
-const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
+const EditGuardiaModal = ({ show, onClose, onEdit, residente, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) // Estado para manejar animacion de cierre
     const [showCameraModal, setShowCameraModal] = useState(false)
@@ -35,7 +35,7 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
         telefono: "",
         correo_electronico: "",
         ine: null,
-        id_rol: null
+        is_principal: false
     })
 
     useEffect(() => {
@@ -47,21 +47,21 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
                 telefono: "",
                 correo_electronico: "",
                 ine: null,
-                id_rol: null
+                is_principal: false
             })
         }
-        if (guardia != null) {
+        if (residente != null) {
             setFormData({
-                id: guardia.id,
-                nombre: guardia.nombre,
-                apellidos: guardia.apellidos,
-                telefono: guardia.telefono,
-                correo_electronico: guardia.correo_electronico,
-                ine: guardia.ine,
-                id_rol: guardia.id_rol
+                id: residente.id,
+                nombre: residente.nombre,
+                apellidos: residente.apellidos,
+                telefono: residente.telefono,
+                correo_electronico: residente.correo_electronico,
+                ine: residente.ine,
+                is_principal: residente.is_principal
             })
         }
-    }, [show, guardia])
+    }, [show, residente])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -90,13 +90,22 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
     }
 
     const isFormValid = () => {
-        return (
-            formData.nombre &&
-            formData.apellidos &&
-            formData.telefono &&
-            formData.correo_electronico &&
-            formData.ine
-        )
+        if (residente.is_principal) {
+            return (
+                formData.nombre &&
+                formData.apellidos &&
+                formData.telefono &&
+                formData.correo_electronico &&
+                formData.ine
+            )
+        } else {
+            return (
+                formData.nombre &&
+                formData.apellidos &&
+                formData.telefono &&
+                formData.correo_electronico
+            )
+        }
     }
 
     if (!show && !closing) {
@@ -108,7 +117,7 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
             <div className={`edit-modal ${closing ? "scale-down" : ""}`}>
                 <div className="edit-modal-header">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        {isSaved ? "Información editada" : isFailure ?  "Error al editar la información" : "Edita la información del guardia" }
+                        {isSaved ? "Información editada" : isFailure ?  "Error al editar la información" : "Edita la información del residente" }
                     </Typography>
                     <IconButton onClick={handleCancelClick} color="error">
                         <CloseIcon />
@@ -175,44 +184,47 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
                                 />
 
                                 {/* Botón para tomar foto o subir INE */}
-                                <div style={{ display: "flex", gap: 10 }}>
-                                    <Button
-                                        variant="contained"
-                                        startIcon={<CameraAltIcon />}
-                                        onClick={() => setShowCameraModal(true)} // Abre el modal de la cámara
-                                    >
+                                {residente.is_principal ? (
+                                    <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+                                        <Button
+                                            variant="contained"
+                                            startIcon={<CameraAltIcon />}
+                                            onClick={() => setShowCameraModal(true)} // Abre el modal de la cámara
+                                        >
                                         Abrir cámara
-                                    </Button>
+                                        </Button>
 
-                                    <Button
-                                        variant="contained"
-                                        component="label"
-                                        startIcon={<UploadFileIcon />}
-                                    >
+                                        <Button
+                                            variant="contained"
+                                            component="label"
+                                            startIcon={<UploadFileIcon />}
+                                        >
                                         Subir archivo
-                                        <input
-                                            type="file"
-                                            hidden
-                                            accept="image/*"
-                                            onChange={handleFileChange}
-                                        />
-                                    </Button>
-                                </div>
+                                            <input
+                                                type="file"
+                                                hidden
+                                                accept="image/*"
+                                                onChange={handleFileChange}
+                                            />
+                                        </Button>
+                                    </div>
+                                ) : <br></br>}
 
-                                {formData.ine && !showCameraModal ? (
+                                {residente.is_principal && formData.ine && !showCameraModal ? (
                                     <center><img
                                         src={typeof formData.ine === "string" ? formData.ine : URL.createObjectURL(formData.ine)}
                                         alt="INE"
                                         style={{ marginTop: 10, width: isMobile ? "100%" : "60%", borderRadius: 8, maxHeight: "60vh", objectFit: "contain" }}
                                     /></center>
-                                ) : <br></br>}
-                                {showCameraModal && (
+                                ) : null}
+
+                                {residente.is_principal && showCameraModal ? (
                                     <CameraModal
                                         setFormData={setFormData}
                                         formData={formData}
                                         onClose={() => setShowCameraModal(false)} // Cierra modal después de tomar foto
                                     />
-                                )}
+                                ) : null}
                             </Box>
                     }
                     <Check isFailure={isFailure} isSaved={isSaved} message={message} />
@@ -250,4 +262,4 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
     )
 }
 
-export default EditResidenteModal
+export default EditGuardiaModal

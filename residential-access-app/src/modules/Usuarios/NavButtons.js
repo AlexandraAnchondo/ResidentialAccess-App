@@ -24,7 +24,7 @@ const NavButtons = ({ activeView, onClick, logout, isSidebarOpen }) => {
                 <button
                     key={view}
                     onClick={() => onClick(view)}
-                    className={`nav-button ${activeView === view ? "active-button" : ""} ${isSidebarOpen ? "sidebar-button" : ""}`}
+                    className={`nav-button ${activeView === view ? "active" : ""} ${isSidebarOpen ? "sidebar-button" : ""}`}
                 >
                     <FontAwesomeIcon icon={icon} />
                     <span>{label}</span>

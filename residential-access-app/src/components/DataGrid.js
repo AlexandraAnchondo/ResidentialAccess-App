@@ -1,6 +1,7 @@
 import * as React from "react"
 import Paper from "@mui/material/Paper"
 import { DataGrid, GridToolbar } from "@mui/x-data-grid"
+import { esES } from "@mui/x-data-grid/locales"
 import "../styles/General/DataGrid.scss"
 import { styled } from "@mui/material/styles"
 import Box from "@mui/material/Box"
@@ -67,6 +68,7 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
                 <DataGrid
                     rows={rows}
                     columns={columns}
+                    localeText={esES.components.MuiDataGrid.defaultProps.localeText}
                     initialState={{ pagination: { paginationModel } }}
                     pageSizeOptions={[5, 10, 20, 30]}
                     checkboxSelection={checkboxSelection}

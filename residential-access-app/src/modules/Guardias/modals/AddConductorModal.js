@@ -101,64 +101,75 @@ const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, s
                 </div>
                 <div className="add-modal-content">
                     {!isSaved && !isFailure &&
-                        <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
-                            <TextField
-                                label="Nombre"
-                                name="nombre"
-                                value={formData.nombre}
-                                onChange={handleInputChange}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <People />
-                                        </InputAdornment>
-                                    )
-                                }}
-                                fullWidth
-                            />
-                            <TextField
-                                label="Apellidos"
-                                name="apellidos"
-                                value={formData.apellidos}
-                                onChange={handleInputChange}
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <People />
-                                        </InputAdornment>
-                                    )
-                                }}
-                                fullWidth
-                            />
-
-                            <Button
-                                variant="contained"
-                                startIcon={<CameraAltIcon />}
-                                onClick={() => setShowCameraModal(true)} // Abre el modal de la cámara
-                            >
-                                Abrir cámara
-                            </Button>
-                            <Button
-                                variant="contained"
-                                component="label"
-                                startIcon={<UploadFileIcon />}
-                            >
-                                Subir archivo
-                                <input
-                                    type="file"
-                                    hidden
-                                    accept="image/*"
-                                    onChange={handleFileChange}
+                        <>
+                            <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
+                                <TextField
+                                    label="Nombre"
+                                    name="nombre"
+                                    value={formData.nombre}
+                                    onChange={handleInputChange}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <People />
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                    fullWidth
                                 />
-                            </Button>
+                                <TextField
+                                    label="Apellidos"
+                                    name="apellidos"
+                                    value={formData.apellidos}
+                                    onChange={handleInputChange}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <People />
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                    fullWidth
+                                />
 
+                                <Button
+                                    variant="contained"
+                                    startIcon={<CameraAltIcon />}
+                                    onClick={() => setShowCameraModal(true)} // Abre el modal de la cámara
+                                >
+                                Abrir cámara
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                    startIcon={<UploadFileIcon />}
+                                >
+                                Subir archivo
+                                    <input
+                                        type="file"
+                                        hidden
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                    />
+                                </Button>
+                            </Box>
                             {formData.ine && !showCameraModal && (
-                                <center><img
-                                    src={typeof formData.ine === "string" ? formData.ine : URL.createObjectURL(formData.ine)}
-                                    alt="INE"
-                                    style={{ marginTop: 10, width: isMobile ? "80%" : "60%", borderRadius: 8 }}
-                                /></center>
+                                <center>
+                                    <img
+                                        src={typeof formData.ine === "string" ? formData.ine : URL.createObjectURL(formData.ine)}
+                                        alt="INE"
+                                        style={{
+                                            marginTop: 30,
+                                            marginBottom: -40,
+                                            width: isMobile ? "80%" : "50%",
+                                            maxHeight: "60vh",
+                                            objectFit: "contain",
+                                            borderRadius: 8
+                                        }}
+                                    />
+                                </center>
                             )}
+
                             {showCameraModal && (
                                 <CameraModal
                                     setFormData={setFormData}
@@ -166,7 +177,7 @@ const AddConductorModal = ({ show, onClose, onAdd, vehiculoId = null, isSaved, s
                                     onClose={() => setShowCameraModal(false)} // Cierra modal después de tomar foto
                                 />
                             )}
-                        </Box>
+                        </>
                     }
                     <Check isFailure={isFailure} isSaved={isSaved} message={message} />
                 </div>

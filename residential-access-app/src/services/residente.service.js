@@ -56,12 +56,23 @@ export const createResidente = async (residenteData) => {
 
 export const updateResidente = async (residenteData) => {
     try {
+        const formData = new FormData()
+
+        // Agregar datos al FormData
+        formData.append("nombre", residenteData.nombre)
+        formData.append("apellidos", residenteData.apellidos)
+        formData.append("telefono", residenteData.telefono)
+        formData.append("correo_electronico", residenteData.correo_electronico)
+        formData.append("bloqueado", residenteData.bloqueado)
+
+        // Agregar el archivo si existe
+        if (residenteData.ine instanceof File) {
+            formData.append("ine", residenteData.ine)
+        }
+
         const response = await fetch(`${API_URL}/update/${residenteData.id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(residenteData)
+            body: formData
         })
 
         if (!response.ok) {
