@@ -58,7 +58,7 @@ const Navbar = () => {
     // Cargar usuario al montar
     useEffect(() => {
         if (!usuario) {
-            fetchUsuario(17)
+            fetchUsuario(17) // MI USUARIO
         }
     }, [usuario, fetchUsuario])
 
@@ -160,7 +160,7 @@ const Navbar = () => {
                         ) : activeView === "vehiculos" ? (
                             <Vehiculos id_domicilio={usuario?.id_domicilio}/>
                         ) : (
-                            <HomePage domicilio={domicilio} id_domicilio={usuario?.id_domicilio} name={`${usuario?.nombre} ${usuario?.apellidos}`} phone={usuario?.telefono} email={usuario?.correo_electronico} ineSrc={usuario?.ine} />
+                            <HomePage id_domicilio={usuario?.id_domicilio} name={`${usuario?.nombre} ${usuario?.apellidos}`} phone={usuario?.telefono} email={usuario?.correo_electronico} ineSrc={usuario?.ine} />
                         )}
                     </motion.main>
                 </AnimatePresence>
@@ -169,12 +169,45 @@ const Navbar = () => {
             {showLogoutModal && (
                 <div className="logout-modal-background">
                     <div className="logout-modal">
-                        <p>¿Deseas cerrar sesión? <FontAwesomeIcon icon={faDoorOpen} /></p>
+                        <p>
+                            ¿Deseas cerrar sesión?&nbsp;<FontAwesomeIcon icon={faDoorOpen} />
+                        </p>
+                        <svg
+                            className="modal-svg"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="100%"
+                            height="100%"
+                            viewBox="0 0 300 90"
+                            preserveAspectRatio="none"
+                        >
+                            <rect
+                                x="0"
+                                y="0"
+                                fill="none"
+                                width="300"
+                                height="90"
+                                rx="3"
+                                ry="3"
+                            ></rect>
+                        </svg>
                         <div className="logout-modal-actions">
-                            <Button variant="contained" onClick={handleLogoutConfirm} startIcon={<CheckIcon />} sx={{ backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8ccCC" } }}>
+                            <Button
+                                variant="contained"
+                                onClick={handleLogoutConfirm}
+                                startIcon={<CheckIcon />}
+                                sx={{
+                                    backgroundColor: "#00a8cc",
+                                    "&:hover": { backgroundColor: "#00a8ccCC" }
+                                }}
+                            >
                                 Aceptar
                             </Button>
-                            <Button variant="outlined" color="error" onClick={() => setShowLogoutModal(false)} startIcon={<CloseIcon />}>
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                onClick={() => setShowLogoutModal(false)}
+                                startIcon={<CloseIcon />}
+                            >
                                 Cancelar
                             </Button>
                         </div>

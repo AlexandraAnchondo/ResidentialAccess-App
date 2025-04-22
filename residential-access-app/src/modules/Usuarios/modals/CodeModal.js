@@ -28,6 +28,9 @@ const CodeModal = ({ show, onClose, existingCodes, onAdd, isSaved, setIsSaved, i
             if (activeDurations.includes("1 día")) {
                 disabled.push("1-day")
             }
+            if (activeDurations.includes("1 uso único")) {
+                disabled.push("single-use")
+            }
             setDisabledOptions(disabled)
         }
     }, [show, existingCodes])
@@ -85,14 +88,16 @@ const CodeModal = ({ show, onClose, existingCodes, onAdd, isSaved, setIsSaved, i
                 <div className="code-modal-content">
                     {!isSaved && !isFailure &&
                         <div className="code-modal-options">
-                            {["1-month", "1-week", "1-day"].map((value) => {
+                            {["1-month", "1-week", "1-day", "single-use"].map((value) => {
                                 const isDisabled = disabledOptions.includes(value)
                                 const labelText =
                                 value === "1-month"
                                     ? "Un mes de vigencia"
                                     : value === "1-week"
                                         ? "Una semana de vigencia"
-                                        : "Un día de vigencia"
+                                        : value === "1-day"
+                                            ? "Un día de vigencia" :
+                                            "Un solo uso"
                                 return (
                                     <label
                                         key={value}

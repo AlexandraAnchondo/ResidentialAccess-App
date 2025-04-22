@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faImage, faShareAlt, faQrcode } from "@fortawesome/free-solid-svg-icons"
 import CodeModal from "./modals/CodeModal"
@@ -7,18 +7,26 @@ import { Button } from "@mui/material"
 import { QRCodeCanvas } from "qrcode.react"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
+// Components
+import CountdownTimer from "../../components/CountdownTimer"
+
+// Utils
+import { shareQrImage } from "../../utils/shareQRImage"
+
 // Hooks
 import {
+    useGetDomicilioById,
     useCreateAccessCode
 } from "../../hooks/domicilio.hook"
 
-
-const HomePage = ({ domicilio, id_domicilio, name, phone, email, ineSrc }) => {
+const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
     // API calls
+    const { fetchDomicilio, domicilio } = useGetDomicilioById()
     const { saveCode } = useCreateAccessCode()
 
     const [showModal, setShowModal] = useState(false)
-    const [qrCodes, setQrCodes] = useState(domicilio != null ? domicilio.access_codes : [])
+    const [qrCodes, setQrCodes] = useState([])
+    const qrRefs = useRef({})
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
     const [message, setMessage] = useState(false)
@@ -26,34 +34,65 @@ const HomePage = ({ domicilio, id_domicilio, name, phone, email, ineSrc }) => {
     const isUnder768 = useMediaQuery("(max-width: 768px)")
     const isUnder1068 = useMediaQuery("(max-width: 1068px)")
 
+    // Cargar domicilio cuando ya se tenga el id
+    useEffect(() => {
+        if (id_domicilio && domicilio == null) {
+            fetchDomicilio(id_domicilio)
+        }
+    }, [fetchDomicilio])
+
     useEffect(() => {
         if (showModal) {
             document.body.style.overflow = "hidden"
         } else {
             document.body.style.overflow = "auto"
         }
-    })
+
+        if (domicilio != null && domicilio.access_codes != null) {
+            const validCodes = domicilio.access_codes.filter(code => code.id != null)
+            setQrCodes(validCodes)
+        }
+    }, [showModal, domicilio])
 
     const handleGenerateClick = () => {
         setShowModal(true)
-        console.log(domicilio)
     }
 
     const handleSaveCode = async (selectedCodes) => {
-        const codesToGenerate = selectedCodes.map((value) => ({
-            duration:
-                value === "1-month"
-                    ? "1 mes"
-                    : value === "1-week"
-                        ? "1 semana"
-                        : "1 día",
-            id: `${value}-${Date.now()}`
-        }))
+        const codesToGenerate = selectedCodes.map((value) => {
+            let duration
+            let expiration
+
+            // Asignar la duración
+            if (value === "1-month") {
+                duration = "1 mes"
+                expiration = new Date()
+                expiration.setMonth(expiration.getMonth() + 1) // Agregar 1 mes
+            } else if (value === "1-week") {
+                duration = "1 semana"
+                expiration = new Date()
+                expiration.setDate(expiration.getDate() + 7) // Agregar 7 días
+            } else if (value === "1-day") {
+                duration = "1 día"
+                expiration = new Date()
+                expiration.setDate(expiration.getDate() + 1) // Agregar 1 día
+            } else if (value === "single-use") {
+                duration = "1 uso único"
+                expiration = "" // No hay fecha de expiración
+            }
+
+            return {
+                duration,
+                id: `${value}-${Date.now()}`,
+                expiration: expiration ? expiration.toISOString() : "1 uso único" // La fecha de expiración en formato ISO
+            }
+        })
 
         try {
             const response = await saveCode({ id_domicilio: id_domicilio, codes: codesToGenerate })
             if (response.success !== false) {
                 setQrCodes(() => [...qrCodes, ...codesToGenerate])
+                domicilio.access_codes = [...domicilio.access_codes, ...codesToGenerate]
                 setIsSaved(true)
                 setMessage(response.message ? response.message : "Operación exitosa")
                 return
@@ -63,7 +102,6 @@ const HomePage = ({ domicilio, id_domicilio, name, phone, email, ineSrc }) => {
             setIsFailure(true)
             setMessage(err.message || "Operación fallida")
         }
-        await saveCode({ codes: codesToGenerate })
     }
 
     const handleCloseModal = () => {
@@ -72,10 +110,8 @@ const HomePage = ({ domicilio, id_domicilio, name, phone, email, ineSrc }) => {
     }
 
     const handleShareClick = (code) => {
-        navigator.share({
-            title: "Código QR",
-            text: `Aquí tienes un código QR con vencimiento en ${code.duration}`
-        })
+        const qrCanvas = qrRefs.current[code.id]
+        shareQrImage(qrCanvas, code, "Privadas Campestre 2")
     }
 
     return (
@@ -122,32 +158,54 @@ const HomePage = ({ domicilio, id_domicilio, name, phone, email, ineSrc }) => {
                         </div>
                     ) : (
                         <div className="qr-codes-container">
-                            {qrCodes.map((code, index) => (
-                                <div
-                                    key={code.id}
-                                    className={`qr-code-card position-${index % 2 === 0 ? "left" : "right"}`}
-                                >
-                                    {/* Imagen QR */}
-                                    <QRCodeCanvas value={code.id} size={isUnder568 ? 100 : isUnder768 ? 120 : isUnder1068  ? 100 : 150} />
-                                    {/* Contenedor del texto y botón */}
-                                    <div className="content">
-                                        <p>Vence en: {code.duration}</p>
-                                        <Button
-                                            variant="outlined"
-                                            startIcon={<FontAwesomeIcon icon={faShareAlt} />}
-                                            onClick={() => handleShareClick(code)}
-                                        >
+                            {qrCodes.map((code, index) => {
+                                if (!code.id) {
+                                    return null
+                                }
+
+                                const handleCodeExpire = () => {
+                                    setQrCodes((prev) => prev.filter((c) => c.id !== code.id))
+                                }
+
+                                return (
+                                    <div
+                                        key={code.id}
+                                        className={`qr-code-card position-${index % 2 === 0 ? "left" : "right"}`}
+                                    >
+                                        <QRCodeCanvas
+                                            ref={(el) => {
+                                                if (el) {
+                                                    qrRefs.current[code.id] = el
+                                                }
+                                            }}
+                                            value={code.id}
+                                            size={isUnder568 ? 100 : isUnder768 ? 120 : isUnder1068 ? 100 : 150}
+                                        />
+
+                                        <div className="content">
+                                            <p>
+                                                Vence en:{" "}
+                                                <CountdownTimer expiration={code.expiration} onExpire={handleCodeExpire} /> (
+                                                {code.duration})
+                                            </p>
+                                            <Button
+                                                variant="outlined"
+                                                startIcon={<FontAwesomeIcon icon={faShareAlt} />}
+                                                onClick={() => handleShareClick(code)}
+                                            >
                                             Compartir
-                                        </Button>
+                                            </Button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
+
                     )}
                     <Button
                         variant="contained"
                         onClick={handleGenerateClick}
-                        disabled={qrCodes.length === 3}
+                        disabled={qrCodes.length === 4}
                         sx={{
                             backgroundColor: "#00a8cc",
                             "&:hover": { backgroundColor: "#00a8ccCC" },

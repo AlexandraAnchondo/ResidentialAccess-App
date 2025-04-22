@@ -32,10 +32,9 @@ const NavButtons = ({ activeView, onClick, logout, isSidebarOpen }) => {
             ))}
             <button
                 onClick={logout}
-                className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
+                className={`nav-button logout ${isSidebarOpen ? "sidebar-button" : ""}`}
             >
                 <FontAwesomeIcon icon={faDoorOpen} />
-                <span>Cerrar sesión</span>
             </button>
         </>
     )
