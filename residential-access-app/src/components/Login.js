@@ -3,21 +3,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import "../styles/General/Login.scss"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../hooks/auth.hook"
 
 const Login = () => {
-    const [username, setUsername] = useState("") // Estado para el usuario
-    const [passwordVisible, setPasswordVisible] = useState(false) // Estado para mostrar u ocultar la contraseña
-    const navigate = useNavigate() // Hook para redirigir a otras páginas
+    const [correo, setCorreo] = useState("")
+    const [password, setPassword] = useState("")
+    const { loginUser } = useAuth()
+    const navigate = useNavigate()
 
     // Función para manejar el inicio de sesión
-    const handleLogin = (e) => {
-        e.preventDefault() // Evita que se recargue la página
-        if (username === "Usuario") {
-            navigate("/users") // Redirige a HomePage si el usuario es "Usuario"
-        } else if (username === "Guardia")  {
-            navigate("/guards") // Redirige a Registro si el usuario es "Guardia"
-        } else{
-            alert("Usuario no válido") // Mensaje si el usuario no es válido
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        try {
+            const { rol } = await loginUser({ correo_electronico: correo, contraseña: "ABC123" })
+
+            if (rol === "usuario") {
+                navigate("/users")
+            } else if (rol === "guardia") {
+                navigate("/guards")
+            } else if (rol === "admin") {
+                navigate("/admin")
+            } else {
+                alert("Rol no reconocido")
+            }
+        } catch (err) {
+            alert("Error al iniciar sesión: " + err.message)
         }
     }
 
@@ -30,9 +40,9 @@ const Login = () => {
                     <div className="input-container">
                         <input
                             type="text"
-                            placeholder="Usuario"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)} // Actualiza el estado
+                            placeholder="Correo"
+                            value={correo}
+                            onChange={(e) => setCorreo(e.target.value)} // Actualiza el estado
                             required
                         />
                         <span className="icon" style={{ cursor: "default" }}>
@@ -42,16 +52,16 @@ const Login = () => {
                     {/* Campo de contraseña */}
                     <div className="input-container">
                         <input
-                            type={passwordVisible ? "text" : "password"}
+                            type={password ? "text" : "password"}
                             placeholder="Contraseña"
                             required
                         />
                         <span
                             className="icon"
-                            onClick={() => setPasswordVisible(!passwordVisible)}
-                            title={passwordVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
+                            onClick={() => setPassword(!password)}
+                            title={password ? "Ocultar contraseña" : "Mostrar contraseña"}
                         >
-                            <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
+                            <FontAwesomeIcon icon={password ? faEyeSlash : faEye} />
                         </span>
                     </div>
                     {/* Opciones */}
