@@ -55,3 +55,24 @@ export const createAccessCode = async (codesData) => {
     }
 }
 
+export const validateAccessCode = async (id) => {
+    try {
+        const response = await fetch(`${API_URL}/validate_access_code`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(id)
+        })
+
+        if (!response.ok) {
+            throw new Error(`Error al encontrar el código de acceso: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en validateAccessCode:", error)
+        throw error
+    }
+}
+

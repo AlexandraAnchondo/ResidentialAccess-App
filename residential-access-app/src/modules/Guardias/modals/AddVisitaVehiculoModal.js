@@ -18,17 +18,22 @@ import {
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
+// Components
 import Check from "../../../components/Check"
+import QRCodeScanner from "../../../components/QRCodeScanner"
 
-import { useDomicilios } from "../../../hooks/domicilio.hook"
+// Hooks
+import { useDomicilios, useValidateAccessCode } from "../../../hooks/domicilio.hook"
 
-const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
+const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, setMessage }) => {
 
     const { domicilios } = useDomicilios(["id", "calle", "numero_calle"])
+    const { validateCode } = useValidateAccessCode()
 
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
     const [step, setStep] = useState(1) // Controla la vista (1 = cámara, 2 = check, 3 = formulario 4 = confirmación)
+    const [showScanner, setShowScanner] = useState(false)
 
     const [formData, setFormData] = useState({
         numero_tarjeton: "",
@@ -65,6 +70,31 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
         }, 500)
     }
 
+    const validateQR = async (accessCode) => {
+        try {
+            const response = await validateCode({ id: accessCode })
+            if (response.success !== false) {
+                setStep(2)
+                return
+            }
+            setIsFailure(true)
+            setMessage("Código no válido")
+        } catch (err) {
+            setIsFailure(true)
+            setMessage("Código no válido")
+        }
+    }
+
+    const handleScan = (decodedText) => {
+        try {
+            const code = decodedText
+            validateQR(code)
+        } catch (e) {
+            alert("QR inválido")
+        }
+        setShowScanner(false)
+    }
+
     const isFormValid = () => {
         return formData.numero_tarjeton && formData.id_domicilio
     }
@@ -98,15 +128,16 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
 
                 {!isSaved && !isFailure && <>
                     {/* Paso 1: Botón de cámara */}
-                    {step === 1 && (
-                        <div className="add-modal-content-v2" style={{ textAlign: "center" }}>
+                    {step === 1 && !showScanner && (
+                        <div className="add-modal-content-v2" style={{ textAlign: "center", alignItems: "center" }}>
                             <Button
-                                onClick={() => setStep(2)}
+                                onClick={() => setShowScanner(true)}
                                 variant="contained"
                                 sx={{
-                                    width: "50%",
+                                    width: isMobile ? "80%" : "50%",
                                     height: "150px",
-                                    fontSize: "1.5rem",
+                                    fontSize: isMobile ? "1.2rem" : "1.5rem",
+
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
@@ -116,9 +147,16 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                                 }}
                             >
                                 <QRCodeIcon sx={{ fontSize: 80 }} />
-                                Escanear QR
+                        Escanear QR
                             </Button>
                         </div>
+                    )}
+
+                    {showScanner && (
+                        <QRCodeScanner
+                            onScanSuccess={handleScan}
+                            onClose={() => setShowScanner(false)}
+                        />
                     )}
 
                     {/* Paso 2: QR gigante + Botón Siguiente */}

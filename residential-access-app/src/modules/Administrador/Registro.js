@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import { FaList, FaHouseUser, FaUserLock } from "react-icons/fa"
 import { Button, Typography, Box, TextField, InputAdornment, Select, MenuItem } from "@mui/material"
 import { FaIdCard } from "react-icons/fa"
-import { ArrowBack, AddCard, People, Save, House, Phone, Email, CheckCircle, CameraAlt as CameraAltIcon, UploadFile as UploadFileIcon } from "@mui/icons-material"
+import { ArrowBack, People, Save, House, Phone, Email, CheckCircle, CameraAlt as CameraAltIcon, UploadFile as UploadFileIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/Administrador/Registro.scss"
 

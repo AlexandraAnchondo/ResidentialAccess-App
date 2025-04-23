@@ -9,7 +9,7 @@ import {
     faDoorOpen
 } from "@fortawesome/free-solid-svg-icons"
 
-const NavButtons = ({ activeView, onClick, logout, isSidebarOpen }) => {
+const NavButtons = ({ isMobile, activeView, onClick, logout, isSidebarOpen }) => {
     const buttons = [
         { icon: faHouse, view: "home", label: "Inicio" },
         { icon: faReceipt, view: "historial", label: "Historial" },
@@ -35,6 +35,7 @@ const NavButtons = ({ activeView, onClick, logout, isSidebarOpen }) => {
                 className={`nav-button logout ${isSidebarOpen ? "sidebar-button" : ""}`}
             >
                 <FontAwesomeIcon icon={faDoorOpen} />
+                <span>{isMobile ? "Cerrar Sesión" : "Salir"}</span>
             </button>
         </>
     )

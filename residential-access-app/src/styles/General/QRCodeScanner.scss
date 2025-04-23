@@ -1,0 +1,51 @@
+@use '../General/Colors.scss';
+
+.qr-reader {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    color: var(--primary-color);
+    max-height: 80vh
+}
+
+.qr-reader button, .qr-reader-button {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    color: #fff;
+    background-color: var(--dark-color);
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.qr-reader img {
+    width: 10%;
+}
+
+.qr-reader select {
+    width: 80%;
+    padding: 8px;
+    border-radius: 8px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.qr-reader button:hover, .qr-reader-button:hover {
+    background-color: #32638b;
+}
+
+.qr-reader video {
+    max-height: 50vh
+}
+
+@media screen and (max-width: 768px) {
+    .qr-reader img {
+        width: 25%;
+    }
+
+    .qr-reader {
+        font-size: 15px;
+    }
+
+    .qr-reader button, .qr-reader-button {
+        font-size: 12px;
+    }
+}

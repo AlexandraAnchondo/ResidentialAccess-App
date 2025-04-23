@@ -1,5 +1,5 @@
 /* Importar variables globales */
-@import '../General/Colors.scss';
+@use '../General/Colors.scss';
 
 .historial-container {
     display: flex;

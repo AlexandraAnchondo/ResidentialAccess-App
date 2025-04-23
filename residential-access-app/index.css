@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap');
-@import './src/styles/Colors.css';
+@use url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap');
+@use './src/styles/Colors.css';
 
 .generic-button {
     background-color: var(--secondary-color);

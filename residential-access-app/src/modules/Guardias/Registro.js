@@ -492,6 +492,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
                 message={message}
+                setMessage={setMessage}
             />
         </div>
     )

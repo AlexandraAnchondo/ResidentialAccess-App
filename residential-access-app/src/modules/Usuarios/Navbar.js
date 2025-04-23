@@ -113,6 +113,7 @@ const Navbar = () => {
                             activeView={activeView}
                             onClick={handleNavClick}
                             logout={handleLogoutClick}
+                            isMobile={isMobile}
                         />
                     </nav>
                 </div>
