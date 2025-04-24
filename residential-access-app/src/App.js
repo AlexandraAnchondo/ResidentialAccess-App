@@ -7,8 +7,10 @@ import AdminNavbar from "./modules/Administrador/Navbar"
 import ProtectedRoute from "./components/ProtectedRoute"
 
 function App() {
+
     return (
         <Router>
+
             <Routes>
                 <Route path="/login" element={<Login />} />
 
@@ -29,4 +31,3 @@ function App() {
 }
 
 export default App
-

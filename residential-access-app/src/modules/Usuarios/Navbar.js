@@ -1,12 +1,11 @@
 // Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faBars } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faBars, faKey } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
 import { Button } from "@mui/material"
-import { useNavigate } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 
 // Components
@@ -24,9 +23,14 @@ import {
 import {
     useGetDomicilioById
 } from "../../hooks/domicilio.hook"
+import { useAuth, useRefreshToken } from "../../hooks/auth.hook"
+import { useSessionWarning } from "../../hooks/session.warning"
 
 const Navbar = () => {
     // API calls
+    const { logout } = useAuth()
+    const { showWarning, tiempoRestante, setToken } = useSessionWarning()
+    const { getRefreshedToken } = useRefreshToken()
     const { fetchUsuario, usuario } = useGetUsuarioById()
     const { fetchDomicilio, domicilio } = useGetDomicilioById()
 
@@ -34,7 +38,6 @@ const Navbar = () => {
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)")
-    const navigate = useNavigate()
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -81,10 +84,25 @@ const Navbar = () => {
 
     const handleLogoutConfirm = () => {
         setShowLogoutModal(false)
-        navigate("/login")
+        logout()
     }
 
     const toggleSidebar = () => setIsSidebarOpen(prev => !prev)
+
+    const handleRefreshToken = async () => {
+        try {
+            const response = await getRefreshedToken()
+            if (!response?.token) {
+                return
+            }
+
+            localStorage.setItem("token", response.token)
+            setToken(response.token)
+        } catch (err) {
+            alert("⚠️ Error al extender sesión. Inicia sesión de nuevo.")
+            window.location.href = "/login"
+        }
+    }
 
     return (
         <div className="nav-container">
@@ -213,6 +231,13 @@ const Navbar = () => {
                             </Button>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {showWarning && (
+                <div className="session-warning">
+                    <p>⚠️ Tu sesión expira pronto ({Math.round(tiempoRestante)}s)</p>
+                    <button onClick={handleRefreshToken}>Seguir conectado &nbsp;<FontAwesomeIcon icon={faKey} color="#855918"/></button>
                 </div>
             )}
         </div>

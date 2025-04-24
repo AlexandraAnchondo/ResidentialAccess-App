@@ -6,7 +6,6 @@ import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
 import { Button } from "@mui/material"
-import { useNavigate } from "react-router-dom"
 import { AnimatePresence, motion } from "framer-motion"
 
 // Components
@@ -15,13 +14,18 @@ import Visitas from "./Visitas"
 import Domicilios from "./Domicilios"
 import Guardias from "./Guardias"
 
+// Hooks
+import { useAuth } from "../../hooks/auth.hook"
+import { useSessionWarning } from "../../hooks/session.warning"
+
 const Navbar = () => {
+    const { logout } = useAuth()
+    const { showWarning } = useSessionWarning()
     const [activeView, setActiveView] = useState("Registro de usuarios")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [name, setName] = useState("Alexandra Anchondo Robles")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
-    const navigate = useNavigate() // Hook para redirigir a otras páginas
     const [selectedOption, setSelectedOption] = useState("Registro de usuarios")
 
     // Definir la animación de entrada y salida
@@ -57,8 +61,7 @@ const Navbar = () => {
     /* Function for closing the logout modal and redirecting to log in page*/
     const handleLogoutConfirm = () => {
         setShowLogoutModal(false)
-        // Can you use relative redirects instead
-        navigate("/login")
+        logout()
     }
 
     /* Function for closing the logout modal when cancel button is pressed */
@@ -259,6 +262,13 @@ const Navbar = () => {
                             </Button>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {showWarning && (
+                <div className="session-warning">
+                    <p>⚠️ Tu sesión expira pronto</p>
+                    <button onClick={() => window.location.reload()}>Seguir conectado</button>
                 </div>
             )}
         </div>
