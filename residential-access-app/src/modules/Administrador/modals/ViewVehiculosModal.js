@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { Button, Typography, IconButton } from "@mui/material"
-import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon } from "@mui/icons-material"
+import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon, Edit } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
+
+// Modals
 import DeleteModal from "../../../components/modals/DeleteModal"
+import EditVehiculoModal from "../modals/EditVehiculoModal"
 
 // Components
 import DataTable from "../../../components/DataGrid"
@@ -12,7 +15,6 @@ import Loader from "../../../components/Loader"
 // Hooks
 import {
     useGetVehiculosByDomicilioManual,
-    useGetVehiculoById,
     useUpdateVehiculo,
     useDeleteVehiculo
 } from "../../../hooks/vehiculo.hook"
@@ -20,14 +22,18 @@ import {
 const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
     // API calls
     const { vehiculos, setVehiculos, loading, fetchVehiculos  } = useGetVehiculosByDomicilioManual()
-    const { fetchVehiculo, vehiculo, setVehiculo } = useGetVehiculoById()
     const { editVehiculo } = useUpdateVehiculo()
     const { removeVehiculo } = useDeleteVehiculo()
 
+    // State variables
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [indexToDelete, setIndexToDelete] = useState(null)
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [selectedVehiculo, setSelectedVehiculo] = useState(null)
+    const [isSaved, setIsSaved] = useState(false)
+    const [isFailure, setIsFailure] = useState(false)
+    const [message, setMessage] = useState(false)
 
     useEffect(() => {
         if (show && domicilioId) {
@@ -37,18 +43,51 @@ const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
         document.body.style.overflow = showDeleteModal ? "hidden" : "auto"
     }, [show, domicilioId, showDeleteModal]) // Se ejecuta solo cuando showDeleteModal cambia
 
-    const handleToggleBlock = (id) => {
-        setVehiculos((prev) => prev.map((res) => res.id === id ? { ...res, bloqueado: !res.bloqueado } : res))
+    const handleEditClick = (residente) => {
+        setSelectedVehiculo(residente)
+        setShowEditModal(true)
     }
 
-    const handleDelete = () => {
-        setVehiculos((prev) => prev.filter((res) => res.id !== indexToDelete))
-        setShowDeleteModal(false)
+    const handleEditarVehiculo = async (vehiculo_editado) => {
+        try {
+            const response = await editVehiculo({ ...vehiculo_editado })
+            if (response.id != null) {
+                const updatedVehiculos = vehiculos.map((residente) =>
+                    residente.id === vehiculo_editado.id ? { ...vehiculo_editado } : residente
+                )
+                setVehiculos(updatedVehiculos)
+                setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
+                return
+            }
+            setIsFailure(true)
+        } catch (err) {
+            setIsFailure(true)
+            setMessage(err.message || "Operación fallida")
+        }
     }
 
-    const handleDeleteClick = (id) => {
+    const handleToggleBlock = async(id) => {
+        const updatedVehiculos = await vehiculos.map((vehiculo) => {
+            if (vehiculo.id === id) {
+                editVehiculo({ ...vehiculo, bloqueado: !vehiculo.bloqueado })
+                return { ...vehiculo, bloqueado: !vehiculo.bloqueado }
+            }
+            return vehiculo
+        })
+        setVehiculos(updatedVehiculos)
+    }
+
+    const handleDeleteClick = (vehiculo) => {
         setShowDeleteModal(true)
-        setIndexToDelete(id)
+        setSelectedVehiculo(vehiculo)
+    }
+
+    const handleBorrarVehiculo= async () => {
+        await removeVehiculo(selectedVehiculo)
+        const newResidentes = vehiculos.filter((value) => value.id !== selectedVehiculo)
+        setVehiculos(newResidentes)
+        setShowDeleteModal(false)
     }
 
     const handleCloseDeleteModal = () => {
@@ -79,6 +118,9 @@ const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
                 <>
                     <IconButton onClick={() => handleDeleteClick(params.row.id)} color="error">
                         <DeleteIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleEditClick(params.row)} color="primary">
+                        <Edit />
                     </IconButton>
                     <IconButton onClick={() => handleToggleBlock(params.row.id)} color="primary">
                         {params.row.bloqueado ? <LockIcon /> : <LockOpenIcon />}
@@ -119,10 +161,22 @@ const ViewVehiculosModal = ({ show, onClose, domicilioId }) => {
                 </div>
             </div>
 
+            <EditVehiculoModal
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                onEdit={handleEditarVehiculo}
+                vehiculo={selectedVehiculo}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
+            />
+
             <DeleteModal
                 showDeleteModal={showDeleteModal}
                 onCloseDeleteModal={handleCloseDeleteModal}
-                onDelete={handleDelete}
+                onDelete={handleBorrarVehiculo}
             />
         </div>
     )

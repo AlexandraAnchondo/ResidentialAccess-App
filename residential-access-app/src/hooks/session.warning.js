@@ -20,9 +20,6 @@ export const useSessionWarning = () => {
                 const now = Date.now() / 1000
                 const timeLeft = Math.floor(exp - now)
 
-                console.log(`⏳ Tiempo restante: ${Math.round(timeLeft)} segundos`)
-                console.log(token)
-
                 if (timeLeft < 60 && timeLeft > 0) {
                     setShowWarning(true)
                     setTiempoRestante(timeLeft)
@@ -49,6 +46,7 @@ export const useSessionWarning = () => {
                 if (timeLeft <= 0) {
                     localStorage.removeItem("token")
                     localStorage.removeItem("rol")
+                    localStorage.removeItem("user")
                     window.location.href = "/login"
                 }
             } catch (err) {

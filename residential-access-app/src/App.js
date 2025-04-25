@@ -5,28 +5,30 @@ import UserNavbar from "./modules/Usuarios/Navbar"
 import GuardsNavbar from "./modules/Guardias/Navbar"
 import AdminNavbar from "./modules/Administrador/Navbar"
 import ProtectedRoute from "./components/ProtectedRoute"
+import { AuthProvider } from "./context/auth.context"
 
 function App() {
-
     return (
-        <Router>
+        <AuthProvider>
+            <Router>
 
-            <Routes>
-                <Route path="/login" element={<Login />} />
+                <Routes>
+                    <Route path="/login" element={<Login />} />
 
-                <Route element={<ProtectedRoute roles={["usuario"]} />}>
-                    <Route path="/users" element={<UserNavbar />} />
-                </Route>
+                    <Route element={<ProtectedRoute roles={["usuario"]} />}>
+                        <Route path="/users" element={<UserNavbar />} />
+                    </Route>
 
-                <Route element={<ProtectedRoute roles={["guardia"]} />}>
-                    <Route path="/guards" element={<GuardsNavbar />} />
-                </Route>
+                    <Route element={<ProtectedRoute roles={["guardia"]} />}>
+                        <Route path="/guards" element={<GuardsNavbar />} />
+                    </Route>
 
-                <Route element={<ProtectedRoute roles={["admin"]} />}>
-                    <Route path="/admin" element={<AdminNavbar />} />
-                </Route>
-            </Routes>
-        </Router>
+                    <Route element={<ProtectedRoute roles={["admin"]} />}>
+                        <Route path="/admin" element={<AdminNavbar />} />
+                    </Route>
+                </Routes>
+            </Router>
+        </AuthProvider>
     )
 }
 

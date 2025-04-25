@@ -13,6 +13,7 @@ export const useAuth = () => {
     const logout = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("rol")
+        localStorage.removeItem("user")
         window.location.href = "/login"
     }
 
@@ -56,7 +57,6 @@ export const useRefreshToken = () => {
         setError(null)
         try {
             const response = await refreshToken()
-            //localStorage.setItem("token", response.token)
             setToken(response)
             return response
         } catch (err) {

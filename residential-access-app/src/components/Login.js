@@ -4,18 +4,22 @@ import { faUser, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import "../styles/General/Login.scss"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/auth.hook"
+import { useAuthContext } from "../context/auth.context"
 
 const Login = () => {
     const [correo, setCorreo] = useState("")
-    const [password, setPassword] = useState("")
+    const [contraseña, setContraseña] = useState("")
+    const [verPassword, setVerPassword] = useState(false)
     const { loginUser } = useAuth()
+    const { setUser } = useAuthContext()
     const navigate = useNavigate()
 
     // Función para manejar el inicio de sesión
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
-            const { rol } = await loginUser({ correo_electronico: correo, contraseña: "ABC123" })
+            const { rol, user } = await loginUser({ correo_electronico: correo, contraseña: contraseña })
+            setUser({ rol, ...user }) // se guarda en contexto y localStorage
 
             if (rol === "usuario") {
                 navigate("/users")
@@ -52,17 +56,20 @@ const Login = () => {
                     {/* Campo de contraseña */}
                     <div className="input-container">
                         <input
-                            type={password ? "text" : "password"}
+                            type={verPassword ? "text" : "password"}
                             placeholder="Contraseña"
+                            value={contraseña}
+                            onChange={(e) => setContraseña(e.target.value)}
                             required
                         />
                         <span
                             className="icon"
-                            onClick={() => setPassword(!password)}
-                            title={password ? "Ocultar contraseña" : "Mostrar contraseña"}
+                            onClick={() => setVerPassword(!verPassword)}
+                            title={verPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                         >
-                            <FontAwesomeIcon icon={password ? faEyeSlash : faEye} />
+                            <FontAwesomeIcon icon={verPassword ? faEyeSlash : faEye} />
                         </span>
+
                     </div>
                     {/* Opciones */}
                     <div className="login-options">

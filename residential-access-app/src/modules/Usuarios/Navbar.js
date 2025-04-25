@@ -18,20 +18,18 @@ import NavButtons from "./NavButtons"
 
 // Hooks
 import {
-    useGetUsuarioById
-} from "../../hooks/usuario.hook"
-import {
     useGetDomicilioById
 } from "../../hooks/domicilio.hook"
 import { useAuth, useRefreshToken } from "../../hooks/auth.hook"
 import { useSessionWarning } from "../../hooks/session.warning"
+import { useAuthContext } from "../../context/auth.context"
 
 const Navbar = () => {
     // API calls
     const { logout } = useAuth()
+    const { user } = useAuthContext()
     const { showWarning, tiempoRestante, setToken } = useSessionWarning()
     const { getRefreshedToken } = useRefreshToken()
-    const { fetchUsuario, usuario } = useGetUsuarioById()
     const { fetchDomicilio, domicilio } = useGetDomicilioById()
 
     const [activeView, setActiveView] = useState("home")
@@ -58,19 +56,12 @@ const Navbar = () => {
         }
     }, [isSidebarOpen, showLogoutModal])
 
-    // Cargar usuario al montar
-    useEffect(() => {
-        if (!usuario) {
-            fetchUsuario(17) // MI USUARIO
-        }
-    }, [usuario, fetchUsuario])
-
     // Cargar domicilio cuando ya se tenga el usuario
     useEffect(() => {
-        if (usuario?.id_domicilio && domicilio == null) {
-            fetchDomicilio(usuario.id_domicilio)
+        if (user?.id_domicilio && domicilio == null) {
+            fetchDomicilio(user.id_domicilio)
         }
-    }, [usuario, fetchDomicilio])
+    }, [user, fetchDomicilio])
 
     const handleNavClick = (view) => {
         setActiveView(view)
@@ -171,15 +162,15 @@ const Navbar = () => {
                         className="nav-main"
                     >
                         {activeView === "historial" ? (
-                            <Historial id_domicilio={usuario?.id_domicilio}/>
+                            <Historial id_domicilio={user?.id_domicilio}/>
                         ) : activeView === "visitantes" ? (
-                            <Visitantes id_domicilio={usuario?.id_domicilio}/>
+                            <Visitantes id_domicilio={user?.id_domicilio}/>
                         ) : activeView === "residentes" ? (
-                            <Residentes id_domicilio={usuario?.id_domicilio}/>
+                            <Residentes id_domicilio={user?.id_domicilio}/>
                         ) : activeView === "vehiculos" ? (
-                            <Vehiculos id_domicilio={usuario?.id_domicilio}/>
+                            <Vehiculos id_domicilio={user?.id_domicilio}/>
                         ) : (
-                            <HomePage id_domicilio={usuario?.id_domicilio} name={`${usuario?.nombre} ${usuario?.apellidos}`} phone={usuario?.telefono} email={usuario?.correo_electronico} ineSrc={usuario?.ine} />
+                            <HomePage id_domicilio={user?.id_domicilio} name={`${user?.nombre} ${user?.apellidos}`} phone={user?.telefono} email={user?.correo_electronico} ineSrc={user?.ine} />
                         )}
                     </motion.main>
                 </AnimatePresence>

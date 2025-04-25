@@ -16,7 +16,6 @@ import Loader from "../../../components/Loader"
 // Hooks
 import {
     useGetResidentesByDomicilioManual,
-    useGetResidenteById,
     useUpdateResidente,
     useDeleteResidente
 } from "../../../hooks/residente.hook"
@@ -24,14 +23,13 @@ import {
 const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
     // API calls
     const { residentes, setResidentes, loading, fetchResidentes  } = useGetResidentesByDomicilioManual()
-    const { fetchResidente, residente, setResidente } = useGetResidenteById()
     const { editResidente } = useUpdateResidente()
     const { removeResidente } = useDeleteResidente()
 
+    // State variables
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
     const [showDeleteModal, setShowDeleteModal] = useState(false)
-    const [indexToDelete, setIndexToDelete] = useState(null)
     const [imageSrc, setImageSrc] = useState("")
     const [showImageModal, setShowImageModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
@@ -83,14 +81,16 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
         setResidentes(updatedResidentes)
     }
 
-    const handleDelete = () => {
-        setResidentes((prev) => prev.filter((res) => res.id !== indexToDelete))
-        setShowDeleteModal(false)
+    const handleDeleteClick = (residente) => {
+        setShowDeleteModal(true)
+        setSelectedResidente(residente)
     }
 
-    const handleDeleteClick = (id) => {
-        setShowDeleteModal(true)
-        setIndexToDelete(id)
+    const handleBorrarResidente = async () => {
+        await removeResidente(selectedResidente)
+        const newResidentes = residentes.filter((value) => value.id !== selectedResidente)
+        setResidentes(newResidentes)
+        setShowDeleteModal(false)
     }
 
     const handleCloseDeleteModal = () => {
@@ -235,7 +235,7 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
             <DeleteModal
                 showDeleteModal={showDeleteModal}
                 onCloseDeleteModal={handleCloseDeleteModal}
-                onDelete={handleDelete}
+                onDelete={handleBorrarResidente}
             />
         </div>
     )

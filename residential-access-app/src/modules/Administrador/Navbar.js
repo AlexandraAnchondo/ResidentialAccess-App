@@ -17,13 +17,15 @@ import Guardias from "./Guardias"
 // Hooks
 import { useAuth } from "../../hooks/auth.hook"
 import { useSessionWarning } from "../../hooks/session.warning"
+import { useAuthContext } from "../../context/auth.context"
 
 const Navbar = () => {
     const { logout } = useAuth()
+    const { user } = useAuthContext()
     const { showWarning } = useSessionWarning()
     const [activeView, setActiveView] = useState("Registro de usuarios")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
-    const [name, setName] = useState("Alexandra Anchondo Robles")
+    const [name, setName] = useState(null)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
     const [selectedOption, setSelectedOption] = useState("Registro de usuarios")
@@ -40,6 +42,14 @@ const Navbar = () => {
             document.body.style.overflow = "hidden"
         } else {
             document.body.style.overflow = "auto"
+        }
+    })
+
+    useEffect(() => {
+        if (user) {
+            setName(`${user.nombre} ${user.apellidos}`)
+        } else {
+            setName(null)
         }
     })
 
