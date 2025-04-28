@@ -158,6 +158,34 @@ input::placeholder {
     text-decoration: underline;
 }
 
+.recover-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    text-align: center;
+
+    input {
+        width: 80%;
+        margin-bottom: 10px;
+    }
+
+    button {
+        margin: 5px;
+    }
+}
+
+.forgot-password {
+    margin-top: 10px;
+    text-align: center;
+
+    a {
+        color: #007bff;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
 @keyframes flipOutX {
 	0% {
 		-webkit-transform: perspective(900px);
