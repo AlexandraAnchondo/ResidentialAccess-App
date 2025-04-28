@@ -49,3 +49,43 @@ export const refreshToken = async () => {
         throw error
     }
 }
+
+export const recoverPassword = async (correoRecuperacion) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/recuperar_password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ correo: correoRecuperacion })
+        })
+
+        if (!response.ok) {
+            const error = await response.json()
+            throw new Error(error.message || "No se pudo recuperar la contraseña")
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en al recuperar contraseña:", error)
+        throw error
+    }
+}
+
+export const resetPassword = async ({ token, correo, nuevaContraseña }) => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/reset_password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: token, correo_electronico: correo, nuevaContraseña: nuevaContraseña })
+        })
+
+        if (!response.ok) {
+            const error = await response.json()
+            throw new Error(error.message || "No se pudo resetear la contraseña")
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en al resetear contraseña:", error)
+        throw error
+    }
+}

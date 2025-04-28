@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
-import { login, refreshToken } from "../services/auth.service"
+import { login, refreshToken, recoverPassword, resetPassword } from "../services/auth.service"
 
 export const useAuth = () => {
     const loginUser = async (credentials) => {
@@ -67,4 +67,44 @@ export const useRefreshToken = () => {
     }
 
     return { getRefreshedToken, token, loading, error }
+}
+
+export const useRecoverPassword = () => {
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    const sendEmailToChangePassword = async (correoRecuperacion) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const response = await recoverPassword(correoRecuperacion)
+            return response
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return { sendEmailToChangePassword, loading, error }
+}
+
+export const useResetPassword = () => {
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    const changePassword = async (correoRecuperacion) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const response = await resetPassword(correoRecuperacion)
+            return response
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return { changePassword, loading, error }
 }

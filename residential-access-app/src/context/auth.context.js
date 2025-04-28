@@ -1,5 +1,4 @@
 /* eslint-disable react/react-in-jsx-scope */
-// src/context/AuthContext.js
 import { createContext, useContext, useState, useEffect } from "react"
 
 const AuthContext = createContext()

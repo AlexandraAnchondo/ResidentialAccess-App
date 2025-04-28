@@ -1,13 +1,23 @@
+// Resources
 import React, { useState, useEffect } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 
+// Hooks
+import { useResetPassword } from "../hooks/auth.hook"
+
 const ResetPassword = () => {
+    // API calls
+    const { changePassword } = useResetPassword()
+
+    const navigate = useNavigate()
+
+    // State variables
     const [searchParams] = useSearchParams()
     const [nuevaContraseña, setNuevaContraseña] = useState("")
     const [confirmarContraseña, setConfirmarContraseña] = useState("")
     const [mensaje, setMensaje] = useState("")
-    const navigate = useNavigate()
 
+    // Parameters
     const token = searchParams.get("token")
     const correo = searchParams.get("correo")
 
@@ -26,19 +36,12 @@ const ResetPassword = () => {
         }
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/reset_password`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: token, correo_electronico: correo, nuevaContraseña: nuevaContraseña })
-            })
-
-            const data = await response.json()
-
-            if (response.ok) {
+            const response = await changePassword({ token, correo, nuevaContraseña })
+            if (response.id_usuario != null) {
                 alert("Contraseña actualizada con éxito. Ahora puedes iniciar sesión.")
                 navigate("/login") // Redirigir al login
             } else {
-                alert(data.error || "Error al cambiar la contraseña")
+                alert(response.error || "Error al cambiar la contraseña")
             }
         } catch (err) {
             alert("Error de red o del servidor.")
@@ -62,10 +65,11 @@ const ResetPassword = () => {
                         placeholder="Confirmar contraseña"
                         value={confirmarContraseña}
                         onChange={(e) => setConfirmarContraseña(e.target.value)}
+                        style={{ marginTop: "15px" }}
                         required
                     />
                     {mensaje && <p style={{ color: "red" }}>{mensaje}</p>}
-                    <button type="submit">Cambiar contraseña</button>
+                    <button style={{ marginTop: "15px" }} type="submit">Cambiar contraseña</button>
                 </form>
             </div>
         </div>

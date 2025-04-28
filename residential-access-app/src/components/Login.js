@@ -1,27 +1,33 @@
+// Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "../hooks/auth.hook"
-import { useAuthContext } from "../context/auth.context"
-import ReCAPTCHA from "react-google-recaptcha" // <-- Importa reCAPTCHA
-import "../styles/General/Login.scss"
+import ReCAPTCHA from "react-google-recaptcha"
 import useMediaQuery from "@mui/material/useMediaQuery"
+import "../styles/General/Login.scss"
+
+// Hooks & Context
+import { useAuth, useRecoverPassword } from "../hooks/auth.hook"
+import { useAuthContext } from "../context/auth.context"
 
 const Login = () => {
+    // API calls
+    const { loginUser } = useAuth()
+    const { sendEmailToChangePassword } = useRecoverPassword()
+    const { setUser } = useAuthContext()
+
+    const navigate = useNavigate()
+    const isMobile = useMediaQuery("(max-width: 849px)")
+
+    // State variables
     const [correo, setCorreo] = useState("")
     const [contraseña, setContraseña] = useState("")
     const [verPassword, setVerPassword] = useState(false)
-    const [captchaToken, setCaptchaToken] = useState(null) // <-- Estado para el token
+    const [captchaToken, setCaptchaToken] = useState(null)
     const [recordarContraseña, setRecordarContraseña] = useState(false)
     const [mostrarRecuperar, setMostrarRecuperar] = useState(false)
     const [correoRecuperacion, setCorreoRecuperacion] = useState("")
-
-    const { loginUser } = useAuth()
-    const { setUser } = useAuthContext()
-    const navigate = useNavigate()
-
-    const isMobile = useMediaQuery("(max-width: 849px)")
 
     useEffect(() => {
         const correoGuardado = localStorage.getItem("recordarCorreo")
@@ -39,7 +45,6 @@ const Login = () => {
             return
         }
 
-        // 👇 Guardar el correo si el usuario quiere recordar
         if (recordarContraseña) {
             localStorage.setItem("recordarCorreo", correo)
         } else {
@@ -71,20 +76,14 @@ const Login = () => {
         }
 
         try {
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/recuperar_password`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ correo: correoRecuperacion })
-            })
+            const response = await sendEmailToChangePassword(correoRecuperacion)
 
-            const data = await response.json()
-
-            if (response.ok) {
+            if (response.correo != null) {
                 alert("Correo de recuperación enviado. Revisa tu bandeja.")
                 setMostrarRecuperar(false)
                 setCorreoRecuperacion("")
             } else {
-                alert(data.error || "Error al intentar recuperar contraseña.")
+                alert(response.error || "Error al intentar recuperar contraseña.")
             }
         } catch (err) {
             alert("Error de red o del servidor.")
