@@ -14,6 +14,7 @@ import Loader from "../../components/Loader"
 // Modals
 import DeleteModal from "../../components/modals/DeleteModal"
 import EditGuardiaModal from "./modals/EditGuardiaModal"
+import NotificationModal from "../../components/modals/NotificacionModal"
 
 // Hooks
 import {
@@ -37,6 +38,8 @@ const Guardias = () => {
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
     const [message, setMessage] = useState(false)
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
 
     useEffect(() => {
         document.body.style.overflow = showDeleteModal || showImageModal ? "hidden" : "auto"
@@ -130,6 +133,8 @@ const Guardias = () => {
     const handleCloseModal = () => {
         setShowDeleteModal(false)
         setGuardiaSelected(null)
+        setShowNotificationModal(false)
+        setModalMensaje("")
     }
 
     const handleShowImage = (row) => {
@@ -138,13 +143,18 @@ const Guardias = () => {
             setImageSrc(imagePath)
             setShowImageModal(true)
         } else {
-            alert("No se encontró ine para este guardia.")
+            handleNotificationModalMessage("No se encontró ine para este guardia.")
         }
     }
 
     const handleCloseImageModal = () => {
         setShowImageModal(false)
         setImageSrc("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
     }
 
     return (
@@ -206,6 +216,12 @@ const Guardias = () => {
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
                 message={message}
+            />
+
+            <NotificationModal
+                message={modalMensaje}
+                onClose={handleCloseModal}
+                isOpen={showNotificationModal}
             />
         </div>
     )

@@ -8,6 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 // Modals
 import DeleteModal from "../../../components/modals/DeleteModal"
 import EditResidenteModal from "../modals/EditResidenteModal"
+import NotificationModal from "../../../components/modals/NotificacionModal"
 
 // Components
 import DataTable from "../../../components/DataGrid"
@@ -37,6 +38,8 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
     const [message, setMessage] = useState(false)
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
 
     useEffect(() => {
         if (show && domicilioId) {
@@ -93,12 +96,15 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
         setShowDeleteModal(false)
     }
 
-    const handleCloseDeleteModal = () => {
+    const handleCloseModal = () => {
         setShowDeleteModal(false)
+        setShowNotificationModal(false)
+        setModalMensaje("")
     }
 
     const handleCancelClick = () => {
         setClosing(true)
+        setSelectedResidente(null)
         setTimeout(() => {
             onClose()
             setClosing(false)
@@ -111,13 +117,18 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
             setImageSrc(imagePath)
             setShowImageModal(true)
         } else {
-            alert("No se encontró ine para este residente.")
+            handleNotificationModalMessage("No se encontró ine para este residente.")
         }
     }
 
     const handleCloseImageModal = () => {
         setShowImageModal(false)
         setImageSrc("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
     }
 
     const columns = [
@@ -234,8 +245,14 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
 
             <DeleteModal
                 showDeleteModal={showDeleteModal}
-                onCloseDeleteModal={handleCloseDeleteModal}
+                onCloseDeleteModal={handleCloseModal}
                 onDelete={handleBorrarResidente}
+            />
+
+            <NotificationModal
+                message={modalMensaje}
+                onClose={handleCloseModal}
+                isOpen={showNotificationModal}
             />
         </div>
     )

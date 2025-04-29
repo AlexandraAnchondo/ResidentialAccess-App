@@ -25,6 +25,9 @@ import QRCodeScanner from "../../../components/QRCodeScanner"
 // Hooks
 import { useDomicilios, useValidateAccessCode } from "../../../hooks/domicilio.hook"
 
+// Modals
+import NotificationModal from "../../../components/modals/NotificacionModal"
+
 const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, setMessage }) => {
 
     const { domicilios } = useDomicilios(["id", "calle", "numero_calle"])
@@ -34,6 +37,8 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
     const [step, setStep] = useState(1) // Controla la vista (1 = cámara, 2 = check, 3 = formulario 4 = confirmación)
     const [showScanner, setShowScanner] = useState(false)
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
 
     const [formData, setFormData] = useState({
         numero_tarjeton: "",
@@ -90,13 +95,23 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
             const code = decodedText
             validateQR(code)
         } catch (e) {
-            alert("QR inválido")
+            handleNotificationModalMessage("QR inválido")
         }
         setShowScanner(false)
     }
 
     const isFormValid = () => {
         return formData.numero_tarjeton && formData.id_domicilio
+    }
+
+    const handleCloseNotificationModal = () => {
+        setShowNotificationModal(false)
+        setModalMensaje("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
     }
 
     if (!show && !closing) {
@@ -259,6 +274,12 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                         {isSaved || isFailure ? "Cerrar" : "Cancelar"}
                     </Button>
                 </div>
+
+                <NotificationModal
+                    message={modalMensaje}
+                    onClose={handleCloseNotificationModal}
+                    isOpen={showNotificationModal}
+                />
             </div>
         </div>
     )

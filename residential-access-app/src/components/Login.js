@@ -11,6 +11,9 @@ import "../styles/General/Login.scss"
 import { useAuth, useRecoverPassword } from "../hooks/auth.hook"
 import { useAuthContext } from "../context/auth.context"
 
+// Modals
+import NotificationModal from "../components/modals/NotificacionModal"
+
 const Login = () => {
     // API calls
     const { loginUser } = useAuth()
@@ -28,6 +31,8 @@ const Login = () => {
     const [recordarContraseña, setRecordarContraseña] = useState(false)
     const [mostrarRecuperar, setMostrarRecuperar] = useState(false)
     const [correoRecuperacion, setCorreoRecuperacion] = useState("")
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
 
     useEffect(() => {
         const correoGuardado = localStorage.getItem("recordarCorreo")
@@ -41,7 +46,7 @@ const Login = () => {
         e.preventDefault()
 
         if (!captchaToken) {
-            alert("Por favor, verifica el CAPTCHA antes de continuar.")
+            handleNotificationModalMessage("Por favor, verifica el CAPTCHA antes de continuar.")
             return
         }
 
@@ -62,16 +67,16 @@ const Login = () => {
             } else if (rol === "admin") {
                 navigate("/admin")
             } else {
-                alert("Rol no reconocido")
+                handleNotificationModalMessage("Rol no reconocido")
             }
         } catch (err) {
-            alert("Error al iniciar sesión: " + err.message)
+            handleNotificationModalMessage("Error al iniciar sesión: " + err.message)
         }
     }
 
     const handleRecuperarContraseña = async () => {
         if (!correoRecuperacion) {
-            alert("Por favor ingresa un correo válido.")
+            handleNotificationModalMessage("Por favor ingresa un correo válido.")
             return
         }
 
@@ -79,15 +84,25 @@ const Login = () => {
             const response = await sendEmailToChangePassword(correoRecuperacion)
 
             if (response.correo != null) {
-                alert("Correo de recuperación enviado. Revisa tu bandeja.")
+                handleNotificationModalMessage("Correo de recuperación enviado. Revisa tu bandeja.")
                 setMostrarRecuperar(false)
                 setCorreoRecuperacion("")
             } else {
-                alert(response.error || "Error al intentar recuperar contraseña.")
+                handleNotificationModalMessage(response.error || "Error al intentar recuperar contraseña.")
             }
         } catch (err) {
-            alert("Error de red o del servidor.")
+            handleNotificationModalMessage("Error de red o del servidor.")
         }
+    }
+
+    const handleCloseNotificationModal = () => {
+        setShowNotificationModal(false)
+        setModalMensaje("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
     }
 
     return (
@@ -182,6 +197,12 @@ const Login = () => {
                     <a href="#">Comuníquese con el administrador</a>
                 </p>
             </div>
+
+            <NotificationModal
+                message={modalMensaje}
+                onClose={handleCloseNotificationModal}
+                isOpen={showNotificationModal}
+            />
         </div>
     )
 }

@@ -300,3 +300,14 @@ input::placeholder {
         font-size: .8rem;
     }
 }
+
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+  .login-box {
+        width: 400px;
+        padding: 10px 50px;
+    }
+    
+    .login-box h2 {
+        font-size: 2.5rem;
+    }
+}

@@ -35,7 +35,8 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
         telefono: "",
         correo_electronico: "",
         ine: null,
-        id_rol: null
+        id_rol: null,
+        rfc: ""
     })
 
     useEffect(() => {
@@ -47,7 +48,8 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
                 telefono: "",
                 correo_electronico: "",
                 ine: null,
-                id_rol: null
+                id_rol: null,
+                rfc: ""
             })
         }
         if (guardia != null) {
@@ -58,7 +60,8 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
                 telefono: guardia.telefono,
                 correo_electronico: guardia.correo_electronico,
                 ine: guardia.ine,
-                id_rol: guardia.id_rol
+                id_rol: guardia.id_rol,
+                rfc: guardia.rfc
             })
         }
     }, [show, guardia])

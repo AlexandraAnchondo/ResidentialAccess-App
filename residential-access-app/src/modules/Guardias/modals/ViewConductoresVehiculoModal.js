@@ -17,6 +17,9 @@ import AddConductorModal from "./AddConductorModal"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { FaIdCard } from "react-icons/fa"
 
+// Modals
+import NotificationModal from "../../../components/modals/NotificacionModal"
+
 const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelectedConductor, selectedConductor, isRowSelected, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
 
     const [closing, setClosing] = useState(false)
@@ -24,6 +27,8 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
     const [showImageModal, setShowImageModal] = useState(false)
     const [imageSrc, setImageSrc] = useState("")
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
 
     if (!show && !closing) {
         return null
@@ -44,13 +49,23 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
             setImageSrc(imagePath)
             setShowImageModal(true)
         } else {
-            alert("No se encontró ine para este conductor.")
+            handleNotificationModalMessage("No se encontró ine para este conductor.")
         }
     }
 
     const handleCloseImageModal = () => {
         setShowImageModal(false)
         setImageSrc("")
+    }
+
+    const handleCloseNotificationModal = () => {
+        setShowNotificationModal(false)
+        setModalMensaje("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
     }
 
     const columns_conductores_vehiculos = [
@@ -206,6 +221,12 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
                 message={message}
+            />
+
+            <NotificationModal
+                message={modalMensaje}
+                onClose={handleCloseNotificationModal}
+                isOpen={showNotificationModal}
             />
         </div>
     )

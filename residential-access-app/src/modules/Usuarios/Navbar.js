@@ -24,6 +24,9 @@ import { useAuth, useRefreshToken } from "../../hooks/auth.hook"
 import { useSessionWarning } from "../../hooks/session.warning"
 import { useAuthContext } from "../../context/auth.context"
 
+// Modals
+import NotificationModal from "../../components/modals/NotificacionModal"
+
 const Navbar = () => {
     // API calls
     const { logout } = useAuth()
@@ -36,6 +39,8 @@ const Navbar = () => {
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -90,9 +95,19 @@ const Navbar = () => {
             localStorage.setItem("token", response.token)
             setToken(response.token)
         } catch (err) {
-            alert("⚠️ Error al extender sesión. Inicia sesión de nuevo.")
+            handleNotificationModalMessage("⚠️ Error al extender sesión. Inicia sesión de nuevo.")
             window.location.href = "/login"
         }
+    }
+
+    const handleCloseNotificationModal = () => {
+        setShowNotificationModal(false)
+        setModalMensaje("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
     }
 
     return (
@@ -231,6 +246,12 @@ const Navbar = () => {
                     <button onClick={handleRefreshToken}>Seguir conectado &nbsp;<FontAwesomeIcon icon={faKey} color="#855918"/></button>
                 </div>
             )}
+
+            <NotificationModal
+                message={modalMensaje}
+                onClose={handleCloseNotificationModal}
+                isOpen={showNotificationModal}
+            />
         </div>
     )
 }
