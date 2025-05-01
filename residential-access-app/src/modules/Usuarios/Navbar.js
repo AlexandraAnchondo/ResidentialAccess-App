@@ -1,7 +1,7 @@
 // Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faBars, faKey } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faBars, faKey, faCog } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
@@ -20,17 +20,19 @@ import NavButtons from "./NavButtons"
 import {
     useGetDomicilioById
 } from "../../hooks/domicilio.hook"
-import { useAuth, useRefreshToken } from "../../hooks/auth.hook"
+import { useAuth, useRefreshToken, useResetPassword } from "../../hooks/auth.hook"
 import { useSessionWarning } from "../../hooks/session.warning"
 import { useAuthContext } from "../../context/auth.context"
 
 // Modals
 import NotificationModal from "../../components/modals/NotificacionModal"
+import ChangePasswordModal from "../../components/modals/ChangePasswordModal"
 
 const Navbar = () => {
     // API calls
     const { logout } = useAuth()
     const { user } = useAuthContext()
+    const { changePassword } = useResetPassword()
     const { showWarning, tiempoRestante, setToken } = useSessionWarning()
     const { getRefreshedToken } = useRefreshToken()
     const { fetchDomicilio, domicilio } = useGetDomicilioById()
@@ -41,6 +43,8 @@ const Navbar = () => {
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [modalMensaje, setModalMensaje] = useState("")
     const [showNotificationModal, setShowNotificationModal] = useState("")
+    const [showSettingsMenu, setShowSettingsMenu] = useState(false)
+    const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -110,6 +114,27 @@ const Navbar = () => {
         setShowNotificationModal(true)
     }
 
+    const handleSettings = () => {
+        setShowSettingsMenu(!showSettingsMenu)
+    }
+
+    const handlePasswordChange = async (nuevaContraseña) => {
+        const token = localStorage.getItem("token")
+        const correo = user.correo_electronico
+        try {
+            const response = await changePassword({ token, correo, nuevaContraseña })
+            if (response.id_usuario != null) {
+                handleNotificationModalMessage("Contraseña actualizada con éxito. Ahora puedes iniciar sesión con la nueva contraseña.")
+            } else {
+                handleNotificationModalMessage(response.error || "Error al cambiar la contraseña")
+            }
+        } catch (err) {
+            handleNotificationModalMessage("Error de red o del servidor.")
+        }
+        setShowChangePasswordModal(false)
+        setShowSettingsMenu(false)
+    }
+
     return (
         <div className="nav-container">
             <header className="nav-header">
@@ -122,6 +147,12 @@ const Navbar = () => {
                             onClick={handleNavClick}
                             logout={handleLogoutClick}
                         />
+                        <button
+                            onClick={handleSettings}
+                            className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
+                        >
+                            <FontAwesomeIcon icon={faCog} />
+                        </button>
                     </nav>
                 )}
             </header>
@@ -139,6 +170,12 @@ const Navbar = () => {
                             logout={handleLogoutClick}
                             isMobile={isMobile}
                         />
+                        <button
+                            onClick={handleSettings}
+                            className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
+                        >
+                            <FontAwesomeIcon icon={faCog} />&nbsp;Configuración
+                        </button>
                     </nav>
                 </div>
             )}
@@ -246,6 +283,43 @@ const Navbar = () => {
                     <button onClick={handleRefreshToken}>Seguir conectado &nbsp;<FontAwesomeIcon icon={faKey} color="#855918"/></button>
                 </div>
             )}
+
+            {showSettingsMenu && (
+                <div className="settings-dropdown">
+                    <Button
+                        onClick={() => {
+                            setShowChangePasswordModal(true)
+                            setShowSettingsMenu(false)
+                        }}
+                        variant="outlined"
+                        startIcon={<FontAwesomeIcon icon={faKey} />}
+                        size="small"
+                        sx={{
+                            backgroundColor: "#00a8cc",
+                            "&:hover": "#00a8ccCC"
+                        }}
+                    >
+                        Cambiar contraseña
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setShowSettingsMenu(false)
+                        }}
+                        variant="outlined"
+                        color="error"
+                        startIcon={<CloseIcon />}
+                        size="small"
+                    >
+                        Cancelar
+                    </Button>
+                </div>
+            )}
+
+            <ChangePasswordModal
+                isOpen={showChangePasswordModal}
+                onClose={() => setShowChangePasswordModal(false)}
+                onSubmit={handlePasswordChange}
+            />
 
             <NotificationModal
                 message={modalMensaje}
