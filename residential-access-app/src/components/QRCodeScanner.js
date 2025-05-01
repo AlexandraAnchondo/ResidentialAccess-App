@@ -11,7 +11,7 @@ const QRCodeScanner = ({ onScanSuccess, onClose }) => {
         })
 
         scanner.render(
-            (decodedText, decodedResult) => {
+            (decodedText) => {
                 scanner.clear().then(() => {
                     onScanSuccess(decodedText)
                 })

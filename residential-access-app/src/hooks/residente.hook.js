@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react"
-import { getAllResidentesByDomicilio, getResidenteById, createResidente, updateResidente, deleteResidente } from "../services/residente.service"
+import {
+    getAllResidentesByDomicilio,
+    getResidenteById, createResidente,
+    updateResidente, deleteResidente,
+    getResidentesWithDomicilio
+} from "../services/residente.service"
 
 export const useGetResidentesByDomicilio = (id_domicilio) => {
     const [residentes, setResidentes] = useState([])
@@ -19,6 +24,29 @@ export const useGetResidentesByDomicilio = (id_domicilio) => {
         }
 
         fetchResidentes()
+    }, [])
+
+    return { residentes, setResidentes, loading, error }
+}
+
+export const useGetResidentesWithDomicilio = () => {
+    const [residentes, setResidentes] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const fetchResidentesWithDomicilio = async () => {
+            try {
+                const data = await getResidentesWithDomicilio()
+                setResidentes(data)
+            } catch (err) {
+                setError(err.message)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchResidentesWithDomicilio()
     }, [])
 
     return { residentes, setResidentes, loading, error }

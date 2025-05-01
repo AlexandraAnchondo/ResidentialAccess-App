@@ -20,11 +20,12 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 
 import Check from "../../../components/Check"
 
-const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
+const AddVehiculoModal = ({ show, onClose, onAdd, id_domicilio = null, visitanteId = null, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [formData, setFormData] = useState({
         placas: "",
         modelo: "",
-        color: ""
+        color: "",
+        id_domicilio: id_domicilio
     })
 
     const isMobile = useMediaQuery("(max-width: 768px)")
@@ -37,7 +38,8 @@ const AddVehiculoModal = ({ show, onClose, onAdd, visitanteId = null, isSaved, s
             setFormData({
                 placas: "",
                 modelo: "",
-                color: ""
+                color: "",
+                id_domicilio: id_domicilio
             })
         }
     }, [show])

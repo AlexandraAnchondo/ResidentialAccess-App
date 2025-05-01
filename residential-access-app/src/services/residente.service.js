@@ -16,6 +16,22 @@ export const getAllResidentesByDomicilio = async id_domicilio => {
     }
 }
 
+export const getResidentesWithDomicilio = async () => {
+    try {
+        const url = `${API_URL}/get_all_with_domicilio`
+        const response = await fetch(url)
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener residente frecuentes: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en getAllResidenteFrecuentes:", error)
+        throw error
+    }
+}
+
 export const getResidenteById = async id_residente => {
     try {
         const url = `${API_URL}/get/${id_residente}`
