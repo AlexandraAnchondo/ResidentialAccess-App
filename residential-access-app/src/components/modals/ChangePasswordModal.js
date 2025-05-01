@@ -13,6 +13,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [shakeError, setShakeError] = useState(false)
+    const [closing, setClosing] = useState(false) // Estado para manejar animacion de cierre
 
     const handleSubmit = () => {
         if (confirmPassword !== newPassword || !newPassword || !confirmPassword) {
@@ -29,19 +30,23 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
     }
 
     const handleClose = () => {
-        setConfirmPassword("")
-        setNewPassword("")
-        setMensaje("")
-        onClose()
+        setClosing(true)
+        setTimeout(() => {
+            setConfirmPassword("")
+            setNewPassword("")
+            setMensaje("")
+            onClose()
+            setClosing(false)
+        }, 500)
     }
 
-    if (!isOpen) {
+    if (!isOpen && !closing) {
         return null
     }
 
     return (
-        <div className="change-password-overlay">
-            <div className="change-password-modal" style={{ height: mensaje != "" ? "280px" : "250px" }}>
+        <div className={`change-password-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`change-password-modal ${closing ? "scale-down" : ""}`} style={{ height: mensaje != "" ? "280px" : "250px" }}>
                 <h2>Cambiar contraseña</h2>
 
                 <TextField
@@ -91,7 +96,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
                         sx={{
                             backgroundColor: "#00a8cc",
                             "&:hover": { backgroundColor: "#00a8ccCC" },
-                            marginLeft: 2,
+                            marginLeft: isMobile ? 0 : 2,
                             marginTop: mensaje ? -1 : 2
                         }}
                     >
@@ -103,7 +108,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
                         color="error"
                         startIcon={<Close />}
                         size={isMobile ? "small" : "large"}
-                        sx={{ marginLeft: 2, marginTop: mensaje ? -1 : 2 }}
+                        sx={{ marginLeft: isMobile ? 0 : 2, marginTop: mensaje ? -1 : 2 }}
                     >
                         Cancelar
                     </Button>

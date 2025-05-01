@@ -1,7 +1,7 @@
 //Resources
 import React, { useState, useEffect } from "react"
 import { FaList, FaHouseUser, FaUserLock } from "react-icons/fa"
-import { Button, Typography, Box, TextField, InputAdornment, Select, MenuItem } from "@mui/material"
+import { Button, Typography, Box, TextField, InputAdornment, Autocomplete } from "@mui/material"
 import { FaIdCard } from "react-icons/fa"
 import { ArrowBack, People, Save, House, Phone, Email, CheckCircle, CameraAlt as CameraAltIcon, UploadFile as UploadFileIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -185,19 +185,31 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                     InputProps={{ startAdornment: (<InputAdornment position="start"> <Email /> </InputAdornment>) }}
                                 />
                                 {selectedOption === "Residente" ? (
-                                    <Select name="id_domicilio"
-                                        value={formResidenteData.id_domicilio}
-                                        onChange={(e) => handleInputChange(e, setFormResidenteData)}
-                                        displayEmpty
-                                        fullWidth
-                                        startAdornment={<InputAdornment position="start"> <House /> </InputAdornment>}>
-                                        <MenuItem
-                                            value=""
-                                            disabled>
-                                            Selecciona la dirección
-                                        </MenuItem>
-                                        {domicilios.map(domicilio => (<MenuItem key={domicilio.id} value={domicilio.id}>{`${domicilio.calle} ${domicilio.numero_calle}`}</MenuItem>))}
-                                    </Select>
+                                    <Autocomplete
+                                        options={domicilios}
+                                        getOptionLabel={(domicilio) => `${domicilio.calle} ${domicilio.numero_calle}`}
+                                        value={domicilios.find((d) => d.id === formResidenteData.id_domicilio) || null}
+                                        onChange={(event, newValue) => {
+                                            setFormResidenteData({
+                                                ...formResidenteData,
+                                                id_domicilio: newValue ? newValue.id : ""
+                                            })
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                label="Selecciona la dirección"
+                                                InputProps={{
+                                                    ...params.InputProps,
+                                                    startAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <House />
+                                                        </InputAdornment>
+                                                    )
+                                                }}
+                                            />
+                                        )}
+                                    />
                                 ) : (
                                     <TextField
                                         label="RFC"

@@ -1,7 +1,7 @@
 // Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faPaperclip, faReceipt, faBars, faHomeUser, faUserLock } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faPaperclip, faReceipt, faBars, faHomeUser, faUserLock, faCog, faKey } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
@@ -15,20 +15,33 @@ import Domicilios from "./Domicilios"
 import Guardias from "./Guardias"
 
 // Hooks
-import { useAuth } from "../../hooks/auth.hook"
+import { useAuth, useRefreshToken, useResetPassword } from "../../hooks/auth.hook"
 import { useSessionWarning } from "../../hooks/session.warning"
 import { useAuthContext } from "../../context/auth.context"
 
+// Modals
+import NotificationModal from "../../components/modals/NotificacionModal"
+import ChangePasswordModal from "../../components/modals/ChangePasswordModal"
+
 const Navbar = () => {
+    // API calls
     const { logout } = useAuth()
     const { user } = useAuthContext()
-    const { showWarning } = useSessionWarning()
+    const { changePassword } = useResetPassword()
+    const { showWarning, tiempoRestante, setToken } = useSessionWarning()
+    const { getRefreshedToken } = useRefreshToken()
+
+    // State variables
     const [activeView, setActiveView] = useState("Registro de usuarios")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [name, setName] = useState(null)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
     const [selectedOption, setSelectedOption] = useState("Registro de usuarios")
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
+    const [showSettingsMenu, setShowSettingsMenu] = useState(false)
+    const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -96,6 +109,52 @@ const Navbar = () => {
 
     })
 
+    const handleRefreshToken = async () => {
+        try {
+            const response = await getRefreshedToken()
+            if (!response?.token) {
+                return
+            }
+
+            localStorage.setItem("token", response.token)
+            setToken(response.token)
+        } catch (err) {
+            handleNotificationModalMessage("⚠️ Error al extender sesión. Inicia sesión de nuevo.")
+            window.location.href = "/login"
+        }
+    }
+
+    const handleCloseNotificationModal = () => {
+        setShowNotificationModal(false)
+        setModalMensaje("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
+    }
+
+    const handleSettings = () => {
+        setShowSettingsMenu(!showSettingsMenu)
+    }
+
+    const handlePasswordChange = async (nuevaContraseña) => {
+        const token = localStorage.getItem("token")
+        const correo = user.correo_electronico
+        try {
+            const response = await changePassword({ token, correo, nuevaContraseña })
+            if (response.id_usuario != null) {
+                handleNotificationModalMessage("Contraseña actualizada con éxito. Ahora puedes iniciar sesión con la nueva contraseña.")
+            } else {
+                handleNotificationModalMessage(response.error || "Error al cambiar la contraseña")
+            }
+        } catch (err) {
+            handleNotificationModalMessage("Error de red o del servidor.")
+        }
+        setShowChangePasswordModal(false)
+        setShowSettingsMenu(false)
+    }
+
     return (
         /* registro container that contains all the values for the navbar */
         <div className="nav-container">
@@ -137,6 +196,12 @@ const Navbar = () => {
                         >
                             <FontAwesomeIcon icon={faUserLock} />&nbsp;Guardias
                         </button>
+                        <button
+                            onClick={handleSettings}
+                            className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
+                        >
+                            <FontAwesomeIcon icon={faCog} />
+                        </button>
                         <button className="nav-button logout" onClick={handleLogoutClick}>
                             <FontAwesomeIcon icon={faDoorOpen} />
                         </button>
@@ -177,6 +242,12 @@ const Navbar = () => {
                                 onClick={() => handleNavClick("Guardias")}
                             >
                                 <FontAwesomeIcon icon={faUserLock} />&nbsp;Guardias
+                            </button>
+                            <button
+                                onClick={handleSettings}
+                                className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
+                            >
+                                <FontAwesomeIcon icon={faCog} />&nbsp;Configuración
                             </button>
                             <button className="nav-button logout" onClick={handleLogoutClick}>
                                 <FontAwesomeIcon icon={faDoorOpen} />&nbsp;&nbsp;Cerrar sesión
@@ -277,10 +348,53 @@ const Navbar = () => {
 
             {showWarning && (
                 <div className="session-warning">
-                    <p>⚠️ Tu sesión expira pronto</p>
-                    <button onClick={() => window.location.reload()}>Seguir conectado</button>
+                    <p>⚠️ Tu sesión expira pronto ({Math.round(tiempoRestante)}s)</p>
+                    <button onClick={handleRefreshToken}>Seguir conectado</button>
                 </div>
             )}
+
+            {showSettingsMenu && (
+                <div className="settings-dropdown">
+                    <Button
+                        onClick={() => {
+                            setShowChangePasswordModal(true)
+                            setShowSettingsMenu(false)
+                        }}
+                        variant="outlined"
+                        startIcon={<FontAwesomeIcon icon={faKey} />}
+                        size="small"
+                        sx={{
+                            backgroundColor: "#00a8cc",
+                            "&:hover": "#00a8ccCC"
+                        }}
+                    >
+                                    Cambiar contraseña
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setShowSettingsMenu(false)
+                        }}
+                        variant="outlined"
+                        color="error"
+                        startIcon={<CloseIcon />}
+                        size="small"
+                    >
+                                    Cancelar
+                    </Button>
+                </div>
+            )}
+
+            <ChangePasswordModal
+                isOpen={showChangePasswordModal}
+                onClose={() => setShowChangePasswordModal(false)}
+                onSubmit={handlePasswordChange}
+            />
+
+            <NotificationModal
+                message={modalMensaje}
+                onClose={handleCloseNotificationModal}
+                isOpen={showNotificationModal}
+            />
         </div>
     )
 }

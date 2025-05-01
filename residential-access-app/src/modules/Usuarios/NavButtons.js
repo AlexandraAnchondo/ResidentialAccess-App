@@ -15,7 +15,7 @@ const NavButtons = ({ isMobile, activeView, onClick, logout, isSidebarOpen }) =>
         { icon: faReceipt, view: "historial", label: "Historial" },
         { icon: faQrcode, view: "visitantes", label: "Visitantes" },
         { icon: faUserGroup, view: "residentes", label: "Residentes" },
-        { icon: faCar, view: "vehiculos", label: "Autos" },
+        { icon: faCar, view: "vehiculos", label: "Autos" }
     ]
 
     return (
