@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import {
     createVisitaVisitante,
     createVisitaConductor,
+    createVisitaResidente,
     getAllVisitasByDomicilio,
     getAllVisitas,
     updateVisita
@@ -91,6 +92,26 @@ export const useCreateVisitaConductor = () => {
     }
 
     return { saveVisitaConductor, loading, error }
+}
+
+export const useCreateVisitaResidente = () => {
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const saveVisitaResidente = async (visitaData) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const response = await createVisitaResidente(visitaData)
+            return response
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    return { saveVisitaResidente, loading, error }
 }
 
 export const useUpdateVisita = () => {

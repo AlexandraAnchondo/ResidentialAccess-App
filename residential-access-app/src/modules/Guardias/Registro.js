@@ -31,7 +31,8 @@ import {
 
 import {
     useCreateVisitaVisitante,
-    useCreateVisitaConductor
+    useCreateVisitaConductor,
+    useCreateVisitaResidente
 } from "../../hooks/visita.hook"
 
 import {
@@ -50,6 +51,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const { residentes, setResidentes, loading: loadingResidentes } = useGetResidentesWithDomicilio()
     const { saveVisitaVisitante } = useCreateVisitaVisitante()
     const { saveVisitaConductor } = useCreateVisitaConductor()
+    const { saveVisitaResidente } = useCreateVisitaResidente()
     const { assignVehicle } = useAssignVehicleToVisitante()
     const { saveConductor } = useCreateConductor()
     const { saveVehiculo } = useCreateVehiculo()
@@ -378,9 +380,9 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         }
     }
 
-    const handleAddVisitaResidente = async (nuevaVisita) => {
+    const handleAddVisitaResidente = async () => {
         try {
-            const response = await saveVisitaVisitante({ ...nuevaVisita })
+            const response = await saveVisitaResidente({ id_residente: selectedResidente.id, id_vehiculo: selectedVehiculoFromResidente.id })
             if (response.id_visita != null) {
                 setShowAddVisitaResidenteModal(true)
                 setIsSaved(true)

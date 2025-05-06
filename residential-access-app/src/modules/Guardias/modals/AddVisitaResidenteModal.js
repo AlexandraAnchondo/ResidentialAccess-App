@@ -8,8 +8,7 @@ import {
 import {
     Close as CloseIcon,
     Save as SaveIcon,
-    AddCard as AddCardIcon,
-    SignalCellularNullRounded
+    AddCard as AddCardIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"

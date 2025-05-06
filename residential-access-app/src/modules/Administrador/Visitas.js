@@ -76,12 +76,12 @@ const VisitasActivas = () => {
 
         // Actualiza la visita en la API
         try {
-            await editVisita({ id: row.id, hora_salida: hora_salida })
+            await editVisita({ id: row.id, hora_salida: hora_salida, estatus: "Finalizada" })
 
             // Actualiza el estado de visitas para reflejar el cambio
             setVisitas((prevState) =>
                 prevState.map((v) =>
-                    v.id === row.id ? { ...v, salida: fechaHoraSalida } : v
+                    v.id === row.id ? { ...v, salida: fechaHoraSalida, estatus: "Finalizada" } : v
                 )
             )
         } catch (error) {

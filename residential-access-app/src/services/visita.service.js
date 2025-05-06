@@ -74,6 +74,27 @@ export const createVisitaConductor = async (visitaData) => {
     }
 }
 
+export const createVisitaResidente = async (visitaData) => {
+    try {
+        const response = await fetch(`${API_URL}/create_visita_residente`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(visitaData)
+        })
+
+        if (!response.ok) {
+            throw new Error(`Error al crear visita: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en createVisitaResidente:", error)
+        throw error
+    }
+}
+
 export const updateVisita = async (visitaData) => {
     try {
         const response = await fetch(`${API_URL}/update/${visitaData.id}`, {
