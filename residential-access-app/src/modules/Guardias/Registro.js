@@ -406,18 +406,18 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     }
 
     return (
-        <div className="registro-container">
+        <div className="guard-registro-container">
             {selectedOption === "Registro de visitas" ? (
-                <div className="card-container">
-                    <button className="card" onClick={() => handleCardSelection("Visitante frecuente")}>
+                <div className="guard-card-container">
+                    <button className="guard-card" onClick={() => handleCardSelection("Visitante frecuente")}>
                         <FaUserFriends size={isMobile ? 130 : 200} />
                         <span>Visitante frecuente</span>
                     </button>
-                    <button className="card" onClick={() => handleCardSelection("Vehículos")}>
+                    <button className="guard-card" onClick={() => handleCardSelection("Vehículos")}>
                         <FaIdCard size={isMobile ? 150 : 230} />
                         <span>Conductor</span>
                     </button>
-                    <button className="card" onClick={() => handleCardSelection("Residente")}>
+                    <button className="guard-card" onClick={() => handleCardSelection("Residente")}>
                         <FaUserFriends size={isMobile ? 130 : 200} />
                         <span>Residente</span>
                     </button>
@@ -432,7 +432,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
-                                    sx={{ marginLeft: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                                    sx={{ marginLeft: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
                             </div>
@@ -463,7 +463,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
-                                    sx={{ marginLeft: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                                    sx={{ marginLeft: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
                             </div>
@@ -484,7 +484,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
-                                    sx={{ marginTop: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                                    sx={{ marginTop: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
                             </div>
@@ -521,7 +521,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
-                                    sx={{ marginLeft: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                                    sx={{ marginLeft: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
                             </div>
@@ -536,7 +536,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
-                                    sx={{ marginTop: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                                    sx={{ marginTop: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
                             </div>
@@ -567,7 +567,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                 <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
-                                    sx={{ marginLeft: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
+                                    sx={{ marginLeft: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
                                 >Atrás</Button>
                             </div>
