@@ -17,6 +17,23 @@ export const getAllDomicilios = async (fields = []) => {
     }
 }
 
+export const getAvailableDomicilios = async (fields = []) => {
+    try {
+        const queryParams = fields.length ? `?fields=${fields.join(",")}` : ""
+        const url = `${API_URL}/get_available${queryParams}`
+        const response = await fetch(url)
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener domicilios: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en getAllDomicilios:", error)
+        throw error
+    }
+}
+
 export const getDomicilioById = async id_domicilio => {
     try {
         const url = `${API_URL}/get/${id_domicilio}`

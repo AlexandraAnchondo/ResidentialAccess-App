@@ -49,6 +49,7 @@ const CodeModal = ({ show, onClose, existingCodes, onAdd, isSaved, setIsSaved, i
     }
 
     const handleCancelClick = () => {
+        setSelectedCodes([])
         setClosing(true)
         setIsSaved(false)
         setIsFailure(false)
@@ -133,7 +134,7 @@ const CodeModal = ({ show, onClose, existingCodes, onAdd, isSaved, setIsSaved, i
                             onClick={handleAcceptClick}
                             variant="contained"
                             startIcon={<CheckIcon />}
-                            disabled={selectedCodes.length === 0 || existingCodes.length === 3}
+                            disabled={selectedCodes.length === 0 || existingCodes.length === 4}
                             size={isMobile ? "small" : "large"}
                             sx={{
                                 color: "#fff",

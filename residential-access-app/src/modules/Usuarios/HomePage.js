@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faImage, faShareAlt, faQrcode } from "@fortawesome/free-solid-svg-icons"
+import { faImage, faShareAlt, faQrcode, faPencil } from "@fortawesome/free-solid-svg-icons"
 import CodeModal from "./modals/CodeModal"
 import "../../styles/Usuarios/HomePage.scss"
 import { Button } from "@mui/material"
@@ -26,6 +26,7 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
 
     const [showModal, setShowModal] = useState(false)
     const [qrCodes, setQrCodes] = useState([])
+    const [numericCode, setNumericCode] = useState(null)
     const qrRefs = useRef({})
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
@@ -51,6 +52,7 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
         if (domicilio != null && domicilio.access_codes != null) {
             const validCodes = domicilio.access_codes.filter(code => code.id != null)
             setQrCodes(validCodes)
+            setNumericCode(domicilio.codigo_numerico)
         }
     }, [showModal, domicilio])
 
@@ -150,14 +152,44 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
                 </div>
 
                 <section className="code-generator">
-                    <h2>Generador de códigos:</h2>
+                    <h2>Códigos de acceso:</h2>
+                    <div className="numeric-code-container">
+                        <p className="code-title">Código numérico</p>
+                        <div className="numeric-code-card">
+                            <div className="content">
+                                <div className="left">
+                                    <h2 className="numeric-code">{numericCode}</h2>
+                                </div>
+                                <div className="right">
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<FontAwesomeIcon icon={faShareAlt} />}
+                                        onClick={() => handleShareClick(numericCode)}
+                                        fullWidth
+                                    >
+                                        Compartir
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<FontAwesomeIcon icon={faPencil} />}
+                                        onClick={() => handleShareClick(numericCode)}
+                                        fullWidth
+                                    >
+                                        Cambiar
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {qrCodes.length === 0 ? (
                         <div className="no-code">
-                            <p>No existe ningún <br />código vigente</p>
+                            <p>No existe ningún <br />código QR vigente</p>
                             <FontAwesomeIcon icon={faQrcode} className="icon-placeholder" />
                         </div>
                     ) : (
                         <div className="qr-codes-container">
+                            <p className="code-title">Códigos QR</p>
                             {qrCodes.map((code, index) => {
                                 if (!code.id) {
                                     return null
@@ -179,7 +211,7 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
                                                 }
                                             }}
                                             value={code.id}
-                                            size={isUnder568 ? 100 : isUnder768 ? 120 : isUnder1068 ? 100 : 150}
+                                            size={isUnder568 || qrCodes.length === 4 ? 100 : isUnder768 || qrCodes.length === 3 ? 120 : isUnder1068 ? 100 : 150}
                                         />
 
                                         <div className="content">
@@ -200,7 +232,6 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
                                 )
                             })}
                         </div>
-
                     )}
                     <Button
                         variant="contained"

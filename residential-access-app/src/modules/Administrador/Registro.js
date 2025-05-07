@@ -12,7 +12,7 @@ import Check from "../../components/Check"
 import CameraModal from "../../components/modals/CameraModal"
 
 // Hooks
-import { useDomicilios } from "../../hooks/domicilio.hook"
+import { useAvailableDomicilios } from "../../hooks/domicilio.hook"
 import { useUsuario } from "../../hooks/usuario.hook"
 
 const Registro = ({ selectedOption, setSelectedOption }) => {
@@ -39,7 +39,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const [message, setMessage] = useState(false)
     const [showCameraModal, setShowCameraModal] = useState(false)
 
-    const { domicilios } = useDomicilios(["id", "calle", "numero_calle"])
+    const { domicilios } = useAvailableDomicilios(["id", "calle", "numero_calle"])
     const { saveUsuario, loading } = useUsuario()
 
     useEffect(() => {
@@ -127,11 +127,11 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     return (
         <div className="registro-container">
             {selectedOption === "Registro de usuarios" ? (
-                <div className="card-container">
-                    <button className="card" onClick={() => handleCardSelection("Residente")}>
+                <div className="admin-card-container">
+                    <button className="admin-card" onClick={() => handleCardSelection("Residente")}>
                         <FaHouseUser size={isMobile ? 130 : 200} /> <span>Residente</span>
                     </button>
-                    <button className="card" onClick={() => handleCardSelection("Guardia")}>
+                    <button className="admin-card" onClick={() => handleCardSelection("Guardia")}>
                         <FaUserLock size={isMobile ? 150 : 230} /> <span>Guardia</span>
                     </button>
                 </div>

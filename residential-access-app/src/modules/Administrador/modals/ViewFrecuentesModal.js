@@ -124,8 +124,14 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
                     <IconButton onClick={() => handleEditClick(params.row)} color="primary">
                         <Edit />
                     </IconButton>
-                    <IconButton onClick={() => handleToggleBlock(params.row.id)} color="primary">
-                        {params.row.bloqueado ? <LockIcon /> : <LockOpenIcon />}
+                    <IconButton onClick={() => handleToggleBlock(params.row.id)}>
+                        {
+                            params.row.bloqueado ? (
+                                <LockIcon style={{ color: "red" }} />
+                            ) : (
+                                <LockOpenIcon style={{ color: "green" }} />
+                            )
+                        }
                     </IconButton>
                 </>
             )

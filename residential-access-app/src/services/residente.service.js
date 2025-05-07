@@ -75,11 +75,21 @@ export const updateResidente = async (residenteData) => {
         const formData = new FormData()
 
         // Agregar datos al FormData
-        formData.append("nombre", residenteData.nombre)
-        formData.append("apellidos", residenteData.apellidos)
-        formData.append("telefono", residenteData.telefono)
-        formData.append("correo_electronico", residenteData.correo_electronico)
-        formData.append("bloqueado", residenteData.bloqueado)
+        if (residenteData.nombre) {
+            formData.append("nombre", residenteData.nombre)
+        }
+        if (residenteData.apellidos) {
+            formData.append("apellidos", residenteData.apellidos)
+        }
+        if (residenteData.telefono) {
+            formData.append("telefono", residenteData.telefono)
+        }
+        if (residenteData.correo_electronico) {
+            formData.append("correo_electronico", residenteData.correo_electronico)
+        }
+        if (residenteData.bloqueado) {
+            formData.append("bloqueado", residenteData.bloqueado)
+        }
 
         // Agregar el archivo si existe
         if (residenteData.ine instanceof File) {

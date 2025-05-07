@@ -5,9 +5,15 @@ export const createConductor = async (conductorData) => {
         const formData = new FormData()
 
         // Agregar datos al FormData
-        formData.append("nombre", conductorData.nombre)
-        formData.append("apellidos", conductorData.apellidos)
-        formData.append("id_vehiculo", conductorData.id_vehiculo)
+        if (conductorData.nombre) {
+            formData.append("nombre", conductorData.nombre)
+        }
+        if (conductorData.apellidos) {
+            formData.append("apellidos", conductorData.apellidos)
+        }
+        if (conductorData.id_vehiculo) {
+            formData.append("id_vehiculo", conductorData.id_vehiculo)
+        }
 
         // Agregar el archivo si existe
         if (conductorData.ine instanceof File) {

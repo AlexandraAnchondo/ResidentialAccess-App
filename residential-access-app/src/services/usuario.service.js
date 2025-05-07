@@ -5,13 +5,27 @@ export const createUsuario = async (usuarioData) => {
         const formData = new FormData()
 
         // Agregar datos al FormData
-        formData.append("nombre", usuarioData.nombre)
-        formData.append("apellidos", usuarioData.apellidos)
-        formData.append("telefono", usuarioData.telefono)
-        formData.append("correo_electronico", usuarioData.correo_electronico)
-        formData.append("id_rol", usuarioData.id_rol)
-        formData.append("id_domicilio", usuarioData.id_domicilio ? usuarioData.id_domicilio : null)
-        formData.append("rfc", usuarioData.rfc ? usuarioData.rfc : null)
+        if (usuarioData.nombre) {
+            formData.append("nombre", usuarioData.nombre)
+        }
+        if (usuarioData.apellidos) {
+            formData.append("apellidos", usuarioData.apellidos)
+        }
+        if (usuarioData.telefono) {
+            formData.append("telefono", usuarioData.telefono)
+        }
+        if (usuarioData.correo_electronico) {
+            formData.append("correo_electronico", usuarioData.correo_electronico)
+        }
+        if (usuarioData.id_rol) {
+            formData.append("id_rol", usuarioData.id_rol)
+        }
+        if (usuarioData.id_domicilio) {
+            formData.append("id_domicilio", usuarioData.id_domicilio)
+        }
+        if (usuarioData.rfc) {
+            formData.append("rfc", usuarioData.rfc)
+        }
 
         // Agregar el archivo si existe
         if (usuarioData.ine instanceof File) {
@@ -72,12 +86,31 @@ export const updateUsuario = async (usuarioData) => {
         const formData = new FormData()
 
         // Agregar datos al FormData
-        formData.append("nombre", usuarioData.nombre)
-        formData.append("apellidos", usuarioData.apellidos)
-        formData.append("telefono", usuarioData.telefono)
-        formData.append("correo_electronico", usuarioData.correo_electronico)
-        formData.append("id_rol", usuarioData.id_rol)
-        formData.append("bloqueado", usuarioData.bloqueado)
+        if (usuarioData.nombre) {
+            formData.append("nombre", usuarioData.nombre)
+        }
+        if (usuarioData.apellidos) {
+            formData.append("apellidos", usuarioData.apellidos)
+        }
+        if (usuarioData.telefono) {
+            formData.append("telefono", usuarioData.telefono)
+        }
+        if (usuarioData.correo_electronico) {
+            formData.append("correo_electronico", usuarioData.correo_electronico)
+        }
+        if (usuarioData.id_rol) {
+            formData.append("id_rol", usuarioData.id_rol)
+        }
+        if (usuarioData.id_domicilio) {
+            formData.append("id_domicilio", usuarioData.id_domicilio)
+        }
+        if (usuarioData.rfc) {
+            formData.append("rfc", usuarioData.rfc)
+        }
+
+        if (usuarioData.bloqueado) {
+            formData.append("bloqueado", usuarioData.bloqueado)
+        }
 
         // Agregar el archivo si existe
         if (usuarioData.ine instanceof File) {

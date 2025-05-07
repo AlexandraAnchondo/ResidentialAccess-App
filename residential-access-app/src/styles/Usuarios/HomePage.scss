@@ -170,7 +170,7 @@ input {
     align-self: start;
 }
 
-.qr-code-card:nth-child(1) {
+.qr-code-card:nth-child(2) {
     flex-direction: row; 
     .content {
         margin-left: 80px; 
@@ -178,7 +178,7 @@ input {
     }
 }
 
-.qr-code-card:nth-child(2) {
+.qr-code-card:nth-child(3) {
     flex-direction: row-reverse; 
     .content {
         margin-right: 80px; 
@@ -186,12 +186,98 @@ input {
     }
 }
 
-.qr-code-card:nth-child(3) {
+.qr-code-card:nth-child(4) {
     flex-direction: row; 
     .content {
         margin-left: 80px; 
         margin-right: 10px; 
     }
+}
+
+.qr-code-card:nth-child(5) {
+    flex-direction: row-reverse; 
+    .content {
+        margin-right: 80px; 
+        margin-left: 10px;   
+    }
+}
+
+.numeric-code-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 10px;
+    justify-content: center;
+}
+
+.numeric-code-card {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.numeric-code-card img {
+    width: 100px;
+    height: 100px;
+}
+
+.numeric-code-card .content {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.numeric-code-card .left,
+.numeric-code-card .right {
+    flex: 1;
+}
+
+.numeric-code-card .left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.numeric-code-card .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.numeric-code-card p {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.numeric-code-card button {
+    align-self: start;
+}
+
+.numeric-code {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 30px;
+    color:#333;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.code-title {
+    font-size: 12px;
+    color: #acacac;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 @media screen and (max-width: 768px) {
@@ -276,7 +362,7 @@ input {
 }
 
 @media screen and (max-width: 468px) {
-    .qr-code-card:nth-child(1) {
+    .qr-code-card:nth-child(2) {
         flex-direction: row; 
         .content {
             margin-left: 40px; 
@@ -284,7 +370,7 @@ input {
         }
     }
     
-    .qr-code-card:nth-child(2) {
+    .qr-code-card:nth-child(3) {
         flex-direction: row-reverse; 
         .content {
             margin-right: 40px; 
@@ -292,17 +378,25 @@ input {
         }
     }
     
-    .qr-code-card:nth-child(3) {
+    .qr-code-card:nth-child(4) {
         flex-direction: row;
         .content {
             margin-left: 40px;
             margin-right: 5px; 
         }
     }
+
+    .qr-code-card:nth-child(5) {
+        flex-direction: row-reverse; 
+        .content {
+            margin-right: 40px; 
+            margin-left: 5px;   
+        }
+    }
 }
 
 @media screen and (min-width: 469px) and (max-width: 568px) {
-    .qr-code-card:nth-child(1) {
+    .qr-code-card:nth-child(2) {
         flex-direction: row; 
         .content {
             margin-left: 50px; 
@@ -310,7 +404,7 @@ input {
         }
     }
     
-    .qr-code-card:nth-child(2) {
+    .qr-code-card:nth-child(3) {
         flex-direction: row-reverse; 
         .content {
             margin-right: 50px; 
@@ -318,17 +412,25 @@ input {
         }
     }
     
-    .qr-code-card:nth-child(3) {
+    .qr-code-card:nth-child(4) {
         flex-direction: row;
         .content {
             margin-left: 50px;
             margin-right: 15px; 
         }
     }
+
+    .qr-code-card:nth-child(5) {
+        flex-direction: row-reverse; 
+        .content {
+            margin-right: 50px; 
+            margin-left: 15px;   
+        }
+    }
 }
 
 @media screen and (min-width: 569px) and (max-width: 900px) {
-    .qr-code-card:nth-child(1) {
+    .qr-code-card:nth-child(2) {
         flex-direction: row; 
         gap: 50px;
         .content {
@@ -336,7 +438,7 @@ input {
         }
     }
     
-    .qr-code-card:nth-child(2) {
+    .qr-code-card:nth-child(3) {
         flex-direction: row-reverse; 
         gap: 50px;
         .content {
@@ -344,11 +446,19 @@ input {
         }
     }
     
-    .qr-code-card:nth-child(3) {
+    .qr-code-card:nth-child(4) {
         flex-direction: row;
         gap: 50px;
         .content {
             margin-right: 20px; 
+        }
+    }
+
+    .qr-code-card:nth-child(5) {
+        flex-direction: row-reverse; 
+        gap: 50px;
+        .content {
+            margin-left: 20px; 
         }
     }
 }

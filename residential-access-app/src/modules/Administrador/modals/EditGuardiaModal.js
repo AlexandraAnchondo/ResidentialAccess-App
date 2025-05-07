@@ -11,6 +11,7 @@ import {
     Person as PersonIcon,
     Phone as PhoneIcon,
     Email as EmailIcon,
+    DocumentScanner as DocumentIcon,
     CameraAlt as CameraAltIcon,
     UploadFile as UploadFileIcon,
     Save as SaveIcon,
@@ -171,6 +172,20 @@ const EditResidenteModal = ({ show, onClose, onEdit, guardia, isSaved, setIsSave
                                         startAdornment: (
                                             <InputAdornment position="start">
                                                 <EmailIcon />
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                    fullWidth
+                                />
+                                <TextField
+                                    label="RFC"
+                                    name="rfc"
+                                    value={formData.rfc}
+                                    onChange={handleInputChange}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <DocumentIcon />
                                             </InputAdornment>
                                         )
                                     }}
