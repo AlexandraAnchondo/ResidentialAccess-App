@@ -15,7 +15,9 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 
 import Check from "../../../components/Check"
 
-const AddVisitaFrecuenteModal = ({ show, onClose, onAdd, visitante, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
+import Loader from "../../../components/Loader"
+
+const AddVisitaFrecuenteModal = ({ show, onClose, onAdd, visitante, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, loading }) => {
 
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
@@ -88,7 +90,7 @@ const AddVisitaFrecuenteModal = ({ show, onClose, onAdd, visitante, vehiculo, is
                     </div>
                 </div>
                 <div className="add-modal-content" style={{ animation: "none" }}>
-                    {!isSaved && !isFailure &&
+                    {!isSaved && !isFailure && !loading &&
                         <TextField
                             label="Tarjetón"
                             name="numero_tarjeton"
@@ -102,6 +104,11 @@ const AddVisitaFrecuenteModal = ({ show, onClose, onAdd, visitante, vehiculo, is
                                 )
                             }}
                         />
+                    }
+                    {loading &&
+                        <div className="loading-container">
+                            <Loader loadingMessage={"Abriendo pluma..."} />
+                        </div>
                     }
                     <Check isFailure={isFailure} isSaved={isSaved} message={message} />
                 </div>

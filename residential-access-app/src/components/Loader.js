@@ -2,7 +2,7 @@ import React from "react"
 import CircularProgress from "@mui/material/CircularProgress"
 import "../styles/General/Loader.scss"
 
-const Loader = () => {
+const Loader = ({ loadingMessage = "" }) => {
     return (
         <div className="loading-spinner">
             <React.Fragment>
@@ -19,7 +19,7 @@ const Loader = () => {
                     thickness={3}
                     sx={{ "svg circle": { stroke: "url(#my_gradient)" } }}
                 />
-                <p className="loading-captions">Cargando...</p>
+                <p className="loading-captions">{loadingMessage === "" ? "Cargando..." : loadingMessage}</p>
             </React.Fragment>
         </div>
     )

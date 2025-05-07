@@ -21,6 +21,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 // Components
 import Check from "../../../components/Check"
 import QRCodeScanner from "../../../components/QRCodeScanner"
+import Loader from "../../../components/Loader"
 
 // Hooks
 import { useDomicilios, useValidateAccessCode } from "../../../hooks/domicilio.hook"
@@ -28,7 +29,7 @@ import { useDomicilios, useValidateAccessCode } from "../../../hooks/domicilio.h
 // Modals
 import NotificationModal from "../../../components/modals/NotificacionModal"
 
-const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, setMessage }) => {
+const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, setMessage, loading }) => {
 
     const { domicilios } = useDomicilios(["id", "calle", "numero_calle"])
     const { validateCode } = useValidateAccessCode()
@@ -141,7 +142,7 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                     </div>
                 </div>
 
-                {!isSaved && !isFailure && <>
+                {!isSaved && !isFailure && !loading && <>
                     {/* Paso 1: Botón de cámara */}
                     {step === 1 && !showScanner && (
                         <div className="add-modal-content-v2" style={{ textAlign: "center", alignItems: "center" }}>
@@ -229,6 +230,11 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                         </div>
                     )}
                 </>}
+                {loading &&
+                        <div className="loading-container">
+                            <Loader loadingMessage={"Abriendo pluma..."} />
+                        </div>
+                }
 
                 {/* Paso 4: Check gigante */}
                 <Check isFailure={isFailure} isSaved={isSaved} message={message} />

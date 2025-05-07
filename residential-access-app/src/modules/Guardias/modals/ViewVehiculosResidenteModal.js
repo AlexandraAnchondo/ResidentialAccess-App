@@ -99,7 +99,7 @@ const ViewVehiculoResidenteModal = ({ show, onClose, residente, onAdd, setSelect
                 </div>
                 <div className="add-modal-content" style={{ animation: "none", padding: 0 }}>
                     {residente?.vehiculos == null || residente?.vehiculos.length === 0 ? (
-                        <div className="residente-frecuente-no-data" style={{ margin: 0, fontSize: "1.5rem" }}>
+                        <div className="vehiculo-no-data" style={{ margin: 0, fontSize: "1.5rem" }}>
                             <DirectionsCarIcon className="icon-placeholder" style={{ marginTop: "20px", fontSize: "8rem" }}/>
                             <p>No se encontraron vehículos relacionados</p>
                         </div>

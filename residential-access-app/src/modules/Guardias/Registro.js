@@ -49,9 +49,9 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const { visitantes_frecuentes, setVisitanteFrecuentes, loading: loadingVisitantesFrecuentes } = useGetVisitantesFrecuentesWithDomicilio()
     const { vehiculos, setVehiculos, loading: loadingVehiculos } = useGetVehiculos()
     const { residentes, setResidentes, loading: loadingResidentes } = useGetResidentesWithDomicilio()
-    const { saveVisitaVisitante } = useCreateVisitaVisitante()
-    const { saveVisitaConductor } = useCreateVisitaConductor()
-    const { saveVisitaResidente } = useCreateVisitaResidente()
+    const { saveVisitaVisitante, loading: loadingVisitaVisitante } = useCreateVisitaVisitante()
+    const { saveVisitaConductor, loading: loadingVisitaConductor } = useCreateVisitaConductor()
+    const { saveVisitaResidente, loading: loadingVisitaResidente } = useCreateVisitaResidente()
     const { assignVehicle } = useAssignVehicleToVisitante()
     const { saveConductor } = useCreateConductor()
     const { saveVehiculo } = useCreateVehiculo()
@@ -389,18 +389,18 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 setMessage(response.message ? response.message : "Operación exitosa")
                 setSelectedOption("Registro de visitas")
                 setSelectedRow(null)
-                setSelectedVehiculoFromVisitante(null)
+                setSelectedVehiculoFromResidente(null)
                 return
             }
             setShowAddVisitaResidenteModal(true)
             setSelectedRow(null)
-            setSelectedVehiculoFromVisitante(null)
+            setSelectedVehiculoFromResidente(null)
             setIsFailure(true)
         } catch (err) {
             setShowAddVisitaResidenteModal(true)
             setIsFailure(true)
             setSelectedRow(null)
-            setSelectedVehiculoFromVisitante(null)
+            setSelectedVehiculoFromResidente(null)
             setMessage(err.message || "Operación fallida")
         }
     }
@@ -563,13 +563,18 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                         </Button>
                                     )}
                                 </div>
-                                <DataTable rows={rows} columns={columns} checkboxSelection={true} handleRowSelection={handleRowSelection}/>
-                                <Button
+                                {loadingVisitaResidente &&
+                                    <div className="loading-container">
+                                        <Loader loadingMessage={"Abriendo pluma..."} />
+                                    </div>
+                                }
+                                {!loadingVisitaResidente && <DataTable rows={rows} columns={columns} checkboxSelection={true} handleRowSelection={handleRowSelection} />}
+                                {!loadingVisitaResidente && <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
                                     sx={{ marginLeft: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
-                                >Atrás</Button>
+                                >Atrás</Button>}
                             </div>
                         )}
                     </div>
@@ -642,6 +647,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 isFailure={isFailure}
                 setIsFailure={setIsFailure}
                 message={message}
+                loading={loadingVisitaVisitante}
             />
 
             <AddVisitaVehiculoModal
@@ -656,6 +662,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 setIsFailure={setIsFailure}
                 message={message}
                 setMessage={setMessage}
+                loading={loadingVisitaConductor}
             />
 
             <AddVisitaResidenteModal
