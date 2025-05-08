@@ -1,0 +1,15 @@
+{
+  "workbench.iconTheme": "material-icon-theme",
+  "breadcrumbs.icons": true,
+  "workbench.editor.showIcons": true,
+  "outline.icons": true,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 4,
+  "eslint.validate": ["javascript", "javascriptreact"],
+  "eslint.format.enable": true,
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#1F2F41",
+    "titleBar.activeBackground": "#2B415B",
+    "titleBar.activeForeground": "#F9FAFC"
+  }
+}

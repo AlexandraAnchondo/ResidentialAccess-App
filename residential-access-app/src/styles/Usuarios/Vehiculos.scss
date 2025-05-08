@@ -1,0 +1,127 @@
+@use '../General/Colors.scss';
+
+.vehiculos-no-data {
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    flex-grow: 1; 
+    text-align: center; 
+    color: var(--text-disabled);
+    margin: 20px 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 2.5rem;
+}
+
+.vehiculos-no-data .icon-placeholder {
+    font-size: 10rem; 
+    color: var(--border-color);
+    margin-top: 10px; 
+}
+
+.vehiculos-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.vehiculo-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.vehiculo-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    justify-content: center; 
+    gap: 15px;               
+    margin-bottom: 15px;
+}
+
+.color-icon {
+    font-size: 24px;
+}
+
+.vehiculo-card-body p {
+    margin: 5px 0;
+    font-size: 1rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.vehiculo-card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    align-self: flex-end;
+}
+
+.vehiculos-main .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+}
+
+@media screen and (max-width: 768px) {
+    .vehiculos-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    .vehiculos-cards {
+        display: flex;
+        gap: 30px;
+    }
+
+    .vehiculo-card {
+        width: 80%;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .vehiculo-card-actions {
+        align-self: center;
+    }
+
+    .vehiculos-no-data p {
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+    
+    .vehiculos-no-data .icon-placeholder {
+        font-size: 8rem;
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+    .vehiculos-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    .visitor-no-data p {
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+    
+    .vehiculo-no-data .icon-placeholder {
+        font-size: 10rem; 
+    }
+}
+

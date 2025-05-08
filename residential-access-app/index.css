@@ -1,1 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap');
+@use url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap');
+@use './src/styles/Colors.css';
+
+.generic-button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    align-self: center; /* Centra el botón horizontalmente */
+}
+
+.generic-button:hover{
+    background-color: var(--secondary-hover-color);
+}
