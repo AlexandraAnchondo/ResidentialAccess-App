@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faImage, faShareAlt, faQrcode, faPencil } from "@fortawesome/free-solid-svg-icons"
-import CodeModal from "./modals/CodeModal"
 import "../../styles/Usuarios/HomePage.scss"
 import { Button } from "@mui/material"
 import { QRCodeCanvas } from "qrcode.react"
@@ -16,15 +15,22 @@ import { shareQrImage } from "../../utils/shareQRImage"
 // Hooks
 import {
     useGetDomicilioById,
-    useCreateAccessCode
+    useCreateAccessCode,
+    useUpdateDomicilio
 } from "../../hooks/domicilio.hook"
+
+// Modals
+import CodeModal from "./modals/CodeModal"
+import NumericCodeModal from "./modals/NumericCodeModal"
 
 const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
     // API calls
     const { fetchDomicilio, domicilio } = useGetDomicilioById()
     const { saveCode } = useCreateAccessCode()
+    const { editDomicilio } = useUpdateDomicilio()
 
     const [showModal, setShowModal] = useState(false)
+    const [showNumericModal, setShowNumericModal] = useState(false)
     const [qrCodes, setQrCodes] = useState([])
     const [numericCode, setNumericCode] = useState(null)
     const qrRefs = useRef({})
@@ -113,7 +119,39 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
 
     const handleShareClick = (code) => {
         const qrCanvas = qrRefs.current[code.id]
-        shareQrImage(qrCanvas, code, "Privadas Campestre 2")
+        shareQrImage(qrCanvas, code, process.env.REACT_APP_NOMBRE_RESIDENCIAL)
+    }
+
+    const handleSaveNumericCode = async (nuevoCodigo) => {
+        try {
+            const response = await editDomicilio({ id: id_domicilio, codigo_numerico: nuevoCodigo })
+            if (response.id != null) {
+                setNumericCode(nuevoCodigo)
+                setIsSaved(true)
+                setMessage(response.message ? response.message : "Operación exitosa")
+                return
+            }
+            setIsFailure(true)
+        } catch (error) {
+            setIsFailure(true)
+            setMessage(error.message || "Operación fallida")
+        }
+    }
+
+    const handleShareNumericCodeClick = (code) => {
+        const mensaje = `${process.env.REACT_APP_NOMBRE_RESIDENCIAL}\n${domicilio.calle} ${domicilio.numero_calle}\nEste es tu código de acceso: ${code}\nCompártelo solo con personas de confianza`
+
+        if (navigator.share) {
+            navigator.share({
+                title: "Código de acceso",
+                text: mensaje
+            }).catch((error) => {
+                console.error("Error al compartir:", error)
+            })
+        } else {
+            navigator.clipboard.writeText(mensaje)
+            alert("Mensaje copiado al portapapeles:\n\n" + mensaje)
+        }
     }
 
     return (
@@ -164,18 +202,18 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
                                     <Button
                                         variant="outlined"
                                         startIcon={<FontAwesomeIcon icon={faShareAlt} />}
-                                        onClick={() => handleShareClick(numericCode)}
+                                        onClick={() => handleShareNumericCodeClick(numericCode)}
                                         fullWidth
                                     >
-                                        Compartir
+                                Compartir
                                     </Button>
                                     <Button
                                         variant="outlined"
                                         startIcon={<FontAwesomeIcon icon={faPencil} />}
-                                        onClick={() => handleShareClick(numericCode)}
+                                        onClick={() => setShowNumericModal(true)}
                                         fullWidth
                                     >
-                                        Cambiar
+                                Cambiar
                                     </Button>
                                 </div>
                             </div>
@@ -254,6 +292,17 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
                 onClose={handleCloseModal}
                 existingCodes={qrCodes}
                 onAdd={handleSaveCode}
+                isSaved={isSaved}
+                setIsSaved={setIsSaved}
+                isFailure={isFailure}
+                setIsFailure={setIsFailure}
+                message={message}
+            />
+
+            <NumericCodeModal
+                open={showNumericModal}
+                onClose={() => setShowNumericModal(false)}
+                onSave={handleSaveNumericCode}
                 isSaved={isSaved}
                 setIsSaved={setIsSaved}
                 isFailure={isFailure}

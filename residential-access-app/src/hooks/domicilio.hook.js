@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getAllDomicilios, getAvailableDomicilios, getDomicilioById, createAccessCode, validateAccessCode } from "../services/domicilio.service"
+import { getAllDomicilios, getAvailableDomicilios, getDomicilioById, createAccessCode, validateAccessCode, validateNumericCode, updateDomicilio } from "../services/domicilio.service"
 
 export const useDomicilios = (fields = ["*"]) => {
     const [domicilios, setDomicilios] = useState([])
@@ -130,4 +130,23 @@ export const useValidateAccessCode = () => {
     }
 
     return { validateCode, loading, error }
+}
+
+export const useUpdateDomicilio = () => {
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
+
+    const editDomicilio = async (domicilioData) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const response = await updateDomicilio(domicilioData)
+            return response
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
+        }
+    }
+    return { editDomicilio, loading, error }
 }

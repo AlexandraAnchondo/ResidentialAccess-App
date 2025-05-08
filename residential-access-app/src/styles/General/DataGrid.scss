@@ -135,6 +135,11 @@
     justify-content: center;
 }
 
+.modal-camera video {
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
 .modal-camera-controls {
     display: grid;
     grid-template-columns: 1fr 1fr; 
@@ -143,6 +148,25 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     max-width: 800px; 
     margin-top: 10px;
+}
+
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+    .modal-camera {
+        max-width: 90vw;
+        max-height: 90vh;
+    }
+
+    .modal-camera video {
+        max-width: 80vw;
+        max-height: 80vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .modal-camera video {
+        max-width: 90vw;
+        max-height: 90vh;
+    }
 }
 
 

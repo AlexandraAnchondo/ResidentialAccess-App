@@ -663,6 +663,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 message={message}
                 setMessage={setMessage}
                 loading={loadingVisitaConductor}
+                numericCode={1234}
             />
 
             <AddVisitaResidenteModal

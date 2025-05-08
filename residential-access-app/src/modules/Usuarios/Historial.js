@@ -44,6 +44,7 @@ const Historial = ({ id_domicilio }) => {
                 <DataTable
                     rows={visitas}
                     columns={columns}
+                    showSearchPlacasButton={false}
                 />
             )
             }

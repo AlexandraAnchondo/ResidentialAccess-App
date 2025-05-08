@@ -93,3 +93,24 @@ export const validateAccessCode = async (id) => {
     }
 }
 
+export const updateDomicilio = async (domicilioData) => {
+    try {
+        const response = await fetch(`${API_URL}/update/${domicilioData.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(domicilioData)
+        })
+
+        if (!response.ok) {
+            throw new Error(`Error al actualizar domicilio: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en updateDomicilio:", error)
+        throw error
+    }
+}
+

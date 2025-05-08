@@ -13,7 +13,9 @@ import {
     AddCard,
     QrCode as QRCodeIcon,
     QrCode,
-    House
+    House,
+    ArrowBack,
+    CheckCircle,
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -29,7 +31,7 @@ import { useDomicilios, useValidateAccessCode } from "../../../hooks/domicilio.h
 // Modals
 import NotificationModal from "../../../components/modals/NotificacionModal"
 
-const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, setMessage, loading }) => {
+const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, setMessage, loading, numericCode }) => {
 
     const { domicilios } = useDomicilios(["id", "calle", "numero_calle"])
     const { validateCode } = useValidateAccessCode()
@@ -38,6 +40,8 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
     const [step, setStep] = useState(1) // Controla la vista (1 = cámara, 2 = check, 3 = formulario 4 = confirmación)
     const [showScanner, setShowScanner] = useState(false)
+    const [showManualInput, setShowManualInput] = useState(false)
+    const [manualCode, setManualCode] = useState("")
     const [modalMensaje, setModalMensaje] = useState("")
     const [showNotificationModal, setShowNotificationModal] = useState("")
 
@@ -70,31 +74,31 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
         setClosing(true)
         setIsSaved(false)
         setIsFailure(false)
+        setShowManualInput(false)
+        setManualCode("")
         setTimeout(() => {
             onClose()
             setClosing(false)
         }, 500)
     }
 
-    const validateQR = async (accessCode) => {
+    const validateAccessCode = async (accessCode) => {
         try {
             const response = await validateCode({ id: accessCode })
             if (response.success !== false) {
                 setStep(2)
                 return
             }
-            setIsFailure(true)
-            setMessage("Código no válido")
+            handleNotificationModalMessage("Código no válido o expirado")
         } catch (err) {
-            setIsFailure(true)
-            setMessage("Código no válido")
+            handleNotificationModalMessage("Código no válido o expirado")
         }
     }
 
     const handleScan = (decodedText) => {
         try {
             const code = decodedText
-            validateQR(code)
+            validateAccessCode(code)
         } catch (e) {
             handleNotificationModalMessage("QR inválido")
         }
@@ -141,11 +145,10 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                         />
                     </div>
                 </div>
-
                 {!isSaved && !isFailure && !loading && <>
                     {/* Paso 1: Botón de cámara */}
-                    {step === 1 && !showScanner && (
-                        <div className="add-modal-content-v2" style={{ textAlign: "center", alignItems: "center" }}>
+                    {step === 1 && !showScanner && !showManualInput && (
+                        <div className="add-modal-content-v2" style={{ textAlign: "center", alignItems: "center", flexDirection: "column" }}>
                             <Button
                                 onClick={() => setShowScanner(true)}
                                 variant="contained"
@@ -153,7 +156,6 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                                     width: isMobile ? "80%" : "50%",
                                     height: "150px",
                                     fontSize: isMobile ? "1.2rem" : "1.5rem",
-
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
@@ -163,8 +165,15 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                                 }}
                             >
                                 <QRCodeIcon sx={{ fontSize: 80 }} />
-                        Escanear QR
+                                Escanear QR
                             </Button>
+
+                            <p
+                                style={{ marginTop: "10px", cursor: "pointer", fontSize: "1rem", color: "#007bff", textDecoration: "underline" }}
+                                onClick={() => setShowManualInput(true)}
+                            >
+                                Ingresar código numérico
+                            </p>
                         </div>
                     )}
 
@@ -173,6 +182,40 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                             onScanSuccess={handleScan}
                             onClose={() => setShowScanner(false)}
                         />
+                    )}
+
+                    {step === 1 && showManualInput && (
+                        <div className="add-modal-content-v2" style={{ textAlign: "center", alignItems: "center", flexDirection: "column" }}>
+                            <TextField
+                                label="Código numérico"
+                                variant="outlined"
+                                value={manualCode}
+                                onChange={(e) => setManualCode(e.target.value)}
+                            />
+                            <div>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<CheckCircle />}
+                                    disabled={!manualCode}
+                                    onClick={() => validateAccessCode(manualCode)}
+                                    sx={{
+                                        backgroundColor: "#52ca88"
+                                    }}
+                                >
+                                    Validar
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    color="error"
+                                    endIcon={<ArrowBack />}
+                                    onClick={() => setShowManualInput(false)}
+                                    style={{ marginLeft: "10px" }}
+                                >
+                                    Atrás
+                                </Button>
+                            </div>
+                        </div>
                     )}
 
                     {/* Paso 2: QR gigante + Botón Siguiente */}
@@ -231,9 +274,9 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                     )}
                 </>}
                 {loading &&
-                        <div className="loading-container">
-                            <Loader loadingMessage={"Abriendo pluma..."} />
-                        </div>
+                    <div className="loading-container">
+                        <Loader loadingMessage={"Abriendo pluma..."} />
+                    </div>
                 }
 
                 {/* Paso 4: Check gigante */}
@@ -275,7 +318,7 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
-                        style={{ marginLeft: 20, marginBottom: 20 }}
+                        style={{ marginLeft: step === 1 ? 0 : 20, marginBottom: 20 }}
                     >
                         {isSaved || isFailure ? "Cerrar" : "Cancelar"}
                     </Button>

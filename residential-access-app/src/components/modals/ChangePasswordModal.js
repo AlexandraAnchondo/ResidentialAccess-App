@@ -15,9 +15,21 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
     const [shakeError, setShakeError] = useState(false)
     const [closing, setClosing] = useState(false) // Estado para manejar animacion de cierre
 
+    const validarContraseñaFuerte = (contraseña) => {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/
+        return regex.test(contraseña)
+    }
+
     const handleSubmit = () => {
-        if (confirmPassword !== newPassword || !newPassword || !confirmPassword) {
-            setMensaje("Las contraseñas no coinciden")
+        const esFuerte = validarContraseñaFuerte(newPassword)
+        const coinciden = newPassword === confirmPassword
+
+        if (!esFuerte || !coinciden || !newPassword || !confirmPassword) {
+            setMensaje(
+                !esFuerte
+                    ? "La contraseña debe tener mínimo 8 caracteres, mayúscula, minúscula, número y símbolo."
+                    : "Las contraseñas no coinciden"
+            )
             setShakeError(true)
             setTimeout(() => setShakeError(false), 500)
             return
