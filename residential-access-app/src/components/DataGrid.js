@@ -14,7 +14,7 @@ import {
 
 const paginationModel = { page: 0, pageSize: 5 }
 
-export default function DataTable({ rows, columns, checkboxSelection = false, handleRowSelection, viewFromModal = false, showSearchPlacasButton = true }) {
+export default function DataTable({ rows, columns, checkboxSelection = false, handleRowSelection, viewFromModal = false, showSearchPlacasButton = true, sortingMode = "asc" }) {
     const [showCamera, setShowCamera] = React.useState(false)
     const videoRef = React.useRef(null)
     const apiRef = useGridApiRef()
@@ -125,7 +125,12 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
                     rows={rows}
                     columns={columns}
                     localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-                    initialState={{ pagination: { paginationModel } }}
+                    initialState={{
+                        pagination: { paginationModel },
+                        sorting: {
+                            sortModel: [{ field: "id", sort: sortingMode }]
+                        }
+                    }}
                     pageSizeOptions={[5, 10, 20]}
                     checkboxSelection={checkboxSelection}
                     filterMode="client" // Para filtrar en el cliente

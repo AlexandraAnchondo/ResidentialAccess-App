@@ -354,7 +354,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             setIsFailure(true)
             setSelectedRow(null)
             setSelectedVehiculoFromVisitante(null)
-            setMessage(err.message || "Operación fallida")
+            setMessage(selectedVehiculoFromVisitante.bloqueado === 1 ? "Este vehículo se encuentra bloqueado" : err.message || "Operación fallida")
         }
     }
 
@@ -376,7 +376,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             setIsFailure(true)
             setSelectedRow(null)
             setSelectedConductorFromVehiculo(null)
-            setMessage(err.message || "Operación fallida")
+            setMessage(selectedVehiculo.bloqueado === 1 ? "Este vehículo se encuentra bloqueado" : err.message || "Operación fallida")
         }
     }
 
@@ -401,7 +401,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             setIsFailure(true)
             setSelectedRow(null)
             setSelectedVehiculoFromResidente(null)
-            setMessage(err.message || "Operación fallida")
+            setMessage(selectedVehiculoFromResidente.bloqueado === 1 ? "Este vehículo se encuentra bloqueado" : err.message || "Operación fallida")
         }
     }
 

@@ -101,7 +101,7 @@ const VisitasActivas = () => {
                     <Loader />
                 </div>
             ) : (
-                <DataTable rows={visitas} columns={columns} />
+                <DataTable rows={visitas} columns={columns} sortingMode={"desc"} />
             )}
         </div>
     )
