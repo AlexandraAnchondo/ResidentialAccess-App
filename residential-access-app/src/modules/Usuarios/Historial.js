@@ -45,6 +45,7 @@ const Historial = ({ id_domicilio }) => {
                     rows={visitas}
                     columns={columns}
                     showSearchPlacasButton={false}
+                    sortingMode={"desc"}
                 />
             )
             }
