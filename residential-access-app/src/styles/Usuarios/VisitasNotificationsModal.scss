@@ -1,0 +1,138 @@
+.notifications-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+}
+
+.notifications-modal {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+    animation: scaleInNotification 0.3s ease;
+}
+
+.notifications-modal h2 {
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.notifications-modal span {
+    font-size: 1.1rem;
+    text-align: center;
+    color: var(--dark-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.fade-out-notification {
+    animation: fadeOutNotification 0.3s forwards;
+}
+
+.scale-down-notification {
+    animation: scaleDownNotification 0.3s forwards;
+}
+
+@keyframes scaleInNotification {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutNotification {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes scaleDownNotification {
+    to {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+}
+
+.notif-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+    font-size: 1rem;
+}
+
+.notif-icon {
+    color: #00a8cc;
+    margin-right: 0.5rem;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 26px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #00a8cc;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.notif-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.close-btn {
+    background-color: #ffe5e5 !important;
+    border-radius: 50% !important;
+}
