@@ -344,17 +344,21 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 setMessage(response.message ? response.message : "Operación exitosa")
                 setSelectedOption("Registro de visitas")
                 setSelectedRow(null)
+                setSelectedVisitante(null)
                 setSelectedVehiculoFromVisitante(null)
                 return
             }
             setSelectedRow(null)
+            setSelectedVisitante(null)
             setSelectedVehiculoFromVisitante(null)
             setIsFailure(true)
         } catch (err) {
-            setIsFailure(true)
             setSelectedRow(null)
+            setSelectedVisitante(null)
             setSelectedVehiculoFromVisitante(null)
-            setMessage(selectedVehiculoFromVisitante.bloqueado === 1 ? "Este vehículo se encuentra bloqueado" : err.message || "Operación fallida")
+            setIsFailure(true)
+            const bloqueado = checkIfSomethingIsBlocked()
+            setMessage(bloqueado != null ? bloqueado : err.message || "Operación fallida")
         }
     }
 
@@ -366,17 +370,21 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 setMessage(response.message ? response.message : "Operación exitosa")
                 setSelectedOption("Registro de visitas")
                 setSelectedRow(null)
+                setSelectedVehiculo(null)
                 setSelectedConductorFromVehiculo(null)
                 return
             }
             setSelectedRow(null)
+            setSelectedVehiculo(null)
             setSelectedConductorFromVehiculo(null)
             setIsFailure(true)
         } catch (err) {
-            setIsFailure(true)
             setSelectedRow(null)
+            setSelectedVehiculo(null)
             setSelectedConductorFromVehiculo(null)
-            setMessage(selectedVehiculo.bloqueado === 1 ? "Este vehículo se encuentra bloqueado" : err.message || "Operación fallida")
+            setIsFailure(true)
+            const bloqueado = checkIfSomethingIsBlocked()
+            setMessage(bloqueado != null ? bloqueado : err.message || "Operación fallida")
         }
     }
 
@@ -389,20 +397,43 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 setMessage(response.message ? response.message : "Operación exitosa")
                 setSelectedOption("Registro de visitas")
                 setSelectedRow(null)
+                setSelectedResidente(null)
                 setSelectedVehiculoFromResidente(null)
                 return
             }
             setShowAddVisitaResidenteModal(true)
             setSelectedRow(null)
+            setSelectedResidente(null)
             setSelectedVehiculoFromResidente(null)
             setIsFailure(true)
         } catch (err) {
             setShowAddVisitaResidenteModal(true)
-            setIsFailure(true)
             setSelectedRow(null)
+            setSelectedResidente(null)
             setSelectedVehiculoFromResidente(null)
-            setMessage(selectedVehiculoFromResidente.bloqueado === 1 ? "Este vehículo se encuentra bloqueado" : err.message || "Operación fallida")
+            setIsFailure(true)
+            const bloqueado = checkIfSomethingIsBlocked()
+            setMessage(bloqueado != null ? bloqueado : err.message || "Operación fallida")
         }
+    }
+
+    const checkIfSomethingIsBlocked = () => {
+        if (selectedOption === "Residente" && selectedResidente?.bloqueado === 1) {
+            return "Este residente se encuentra bloqueado"
+        }
+        if (selectedOption === "Residente" && selectedVehiculoFromResidente?.bloqueado === 1) {
+            return "Este vehículo se encuentra bloqueado"
+        }
+        if (selectedOption === "Visitante frecuente" && selectedVisitante?.bloqueado === 1) {
+            return "Este visitante frecuente se encuentra bloqueado"
+        }
+        if (selectedOption === "Visitante frecuente" && selectedVehiculoFromVisitante?.bloqueado === 1) {
+            return "Este vehículo se encuentra bloqueado"
+        }
+        if (selectedOption === "Vehículos" && selectedVehiculo?.bloqueado === 1) {
+            return "Este vehículo se encuentra bloqueado"
+        }
+        return null
     }
 
     return (
