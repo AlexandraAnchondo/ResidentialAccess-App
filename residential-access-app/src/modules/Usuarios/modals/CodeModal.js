@@ -5,6 +5,7 @@ import { Check as CheckIcon, Cancel as CancelIcon, Close } from "@mui/icons-mate
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 import Check from "../../../components/Check"
+import CheckBox from "../../../components/CheckBox"
 
 const CodeModal = ({ show, onClose, existingCodes, onAdd, isSaved, setIsSaved, isFailure, setIsFailure, message }) => {
     const [selectedCodes, setSelectedCodes] = useState([])
@@ -112,13 +113,11 @@ const CodeModal = ({ show, onClose, existingCodes, onAdd, isSaved, setIsSaved, i
                                                 : ""
                                         }
                                     >
-                                        <input
-                                            type="checkbox"
-                                            name="codeType"
+                                        <CheckBox
+                                            isDisabled={isDisabled}
                                             value={value}
-                                            onChange={handleCheckboxChange}
-                                            disabled={isDisabled}
-                                            style={{ marginRight: 8 }}
+                                            onChange={(event) => handleCheckboxChange(event, value)}
+                                            checked={selectedCodes.includes(value)}
                                         />
                                         {labelText}
                                     </label>

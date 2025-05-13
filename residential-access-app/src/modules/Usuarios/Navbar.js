@@ -48,6 +48,7 @@ const Navbar = () => {
     const [showSettingsMenu, setShowSettingsMenu] = useState(false)
     const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
     const [showVisitasNotificationsModal, setShowVisitasNotificationsModal] = useState(false)
+    const [closing, setClosing] = useState(false)
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -141,6 +142,14 @@ const Navbar = () => {
 
     const handleNotificationsChange = async () => {
 
+    }
+
+    const handleClose = () => {
+        setClosing(true)
+        setTimeout(() => {
+            setShowSettingsMenu(false)
+            setClosing(false)
+        }, 300)
     }
 
     return (
@@ -275,7 +284,7 @@ const Navbar = () => {
             )}
 
             {showSettingsMenu && (
-                <div className="settings-dropdown">
+                <div className={`settings-dropdown ${closing ? "scale-down-notification " : ""}`}>
                     <Button
                         onClick={() => {
                             setShowChangePasswordModal(true)
@@ -307,9 +316,7 @@ const Navbar = () => {
                         Notificaciones
                     </Button>
                     <Button
-                        onClick={() => {
-                            setShowSettingsMenu(false)
-                        }}
+                        onClick={handleClose}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}

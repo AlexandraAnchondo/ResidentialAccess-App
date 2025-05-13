@@ -234,6 +234,7 @@ h2 {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     padding: 0.5rem;
     width: 250px;
+    animation: popUp 0.3s ease-out;
     
 
     button {
@@ -483,9 +484,8 @@ h2 {
     }
 
     .settings-dropdown {
-        left: 50%;
+        left: 20%;
         top: 50%;
-        transform: translate(-50%, -50%);
         right: auto; // Anula el right anterior
     }
 }

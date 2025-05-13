@@ -136,3 +136,33 @@ input:checked + .slider:before {
     background-color: #ffe5e5 !important;
     border-radius: 50% !important;
 }
+
+@media (max-width: 768px) {
+    .notifications-modal {
+      max-width: 250px;
+    }
+
+    .notifications-modal span {
+        font-size: .8rem;
+    }
+
+    .switch {
+        width: 40px;
+        height: 26px;
+    }
+
+    .slider {
+        border-radius: 26px;
+    }
+    
+    .slider:before {
+        height: 22px;
+        width: 22px;
+        left: 2px;
+        bottom: 2px;
+    }
+    
+    input:checked + .slider:before {
+        transform: translateX(14px);
+    }
+  }
