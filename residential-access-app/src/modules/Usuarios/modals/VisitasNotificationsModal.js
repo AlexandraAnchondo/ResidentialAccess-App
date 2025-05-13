@@ -3,10 +3,8 @@ import { IconButton } from "@mui/material"
 import { Close, Email, WhatsApp } from "@mui/icons-material"
 import "../../../styles/Usuarios/VisitasNotificationsModal.scss"
 
-const VisitasNotificationsModal = ({ isOpen, onClose }) => {
+const VisitasNotificationsModal = ({ isOpen, onClose, emailNotifs, setEmailNotifs, whatsappNotifs, setWhatsappNotifs }) => {
     const [closing, setClosing] = useState(false)
-    const [emailNotifs, setEmailNotifs] = useState(true)
-    const [whatsappNotifs, setWhatsappNotifs] = useState(false)
 
     const handleClose = () => {
         setClosing(true)

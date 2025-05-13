@@ -1,5 +1,5 @@
 // Resources
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDoorOpen, faBars, faKey, faCog, faBell } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
@@ -18,7 +18,8 @@ import NavButtons from "./NavButtons"
 
 // Hooks
 import {
-    useGetDomicilioById
+    useGetDomicilioById,
+    useUpdateDomicilio
 } from "../../hooks/domicilio.hook"
 import { useAuth, useRefreshToken, useResetPassword } from "../../hooks/auth.hook"
 import { useSessionWarning } from "../../hooks/session.warning"
@@ -37,6 +38,7 @@ const Navbar = () => {
     const { showWarning, tiempoRestante, setToken } = useSessionWarning()
     const { getRefreshedToken } = useRefreshToken()
     const { fetchDomicilio, domicilio } = useGetDomicilioById()
+    const { editDomicilio } = useUpdateDomicilio()
 
     const [activeView, setActiveView] = useState("home")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
@@ -49,6 +51,8 @@ const Navbar = () => {
     const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
     const [showVisitasNotificationsModal, setShowVisitasNotificationsModal] = useState(false)
     const [closing, setClosing] = useState(false)
+    const [emailNotifs, setEmailNotifs] = useState(null)
+    const [whatsappNotifs, setWhatsappNotifs] = useState(null)
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -74,7 +78,40 @@ const Navbar = () => {
         if (user?.id_domicilio && domicilio == null) {
             fetchDomicilio(user.id_domicilio)
         }
-    }, [user, fetchDomicilio])
+    }, [user, domicilio, fetchDomicilio])
+
+    // Cargar configuraciones de las notificaciones para las visitas del domicilio
+    useEffect(() => {
+        if (domicilio) {
+            setEmailNotifs(domicilio.visita_correo_notificaciones)
+            setWhatsappNotifs(domicilio.visita_whatsapp_notificaciones)
+        }
+    }, [domicilio])
+
+    // Actualizar las notificaciones para las visitas del domicilio
+    const isFirstRun = useRef(true)
+    useEffect(() => {
+        if (isFirstRun.current) {
+            isFirstRun.current = false
+            return
+        }
+
+        if (domicilio) {
+            const actualizarNotificaciones = async () => {
+                try {
+                    await editDomicilio({
+                        id: domicilio.id,
+                        visita_correo_notificaciones: emailNotifs,
+                        visita_whatsapp_notificaciones: whatsappNotifs
+                    })
+                } catch (error) {
+                    console.error("Error al actualizar el domicilio:", error)
+                }
+            }
+
+            actualizarNotificaciones()
+        }
+    }, [emailNotifs, whatsappNotifs])
 
     const handleNavClick = (view, label) => {
         setActiveView(view)
@@ -138,10 +175,6 @@ const Navbar = () => {
         }
         setShowChangePasswordModal(false)
         setShowSettingsMenu(false)
-    }
-
-    const handleNotificationsChange = async () => {
-
     }
 
     const handleClose = () => {
@@ -336,7 +369,10 @@ const Navbar = () => {
             <VisitasNotificationsModal
                 isOpen={showVisitasNotificationsModal}
                 onClose={() => setShowVisitasNotificationsModal(false)}
-                onSubmit={handleNotificationsChange}
+                emailNotifs={emailNotifs}
+                setEmailNotifs={setEmailNotifs}
+                whatsappNotifs={whatsappNotifs}
+                setWhatsappNotifs={setWhatsappNotifs}
             />
 
             <NotificationModal
