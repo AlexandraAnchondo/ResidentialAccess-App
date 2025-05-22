@@ -118,7 +118,7 @@ const Navbar = () => {
             setToken(response.token)
         } catch (err) {
             handleNotificationModalMessage("⚠️ Error al extender sesión. Inicia sesión de nuevo.")
-            window.location.href = "/login"
+            window.location.href = "/"
         }
     }
 

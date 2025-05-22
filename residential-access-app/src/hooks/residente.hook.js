@@ -34,22 +34,26 @@ export const useGetResidentesWithDomicilio = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-        const fetchResidentesWithDomicilio = async () => {
-            try {
-                const data = await getResidentesWithDomicilio()
-                setResidentes(data)
-            } catch (err) {
-                setError(err.message)
-            } finally {
-                setLoading(false)
-            }
+    const fetchResidentesWithDomicilio = async () => {
+        try {
+            const data = await getResidentesWithDomicilio()
+            setResidentes(data)
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
         }
+    }
 
+    useEffect(() => {
         fetchResidentesWithDomicilio()
     }, [])
 
-    return { residentes, setResidentes, loading, error }
+    const reload = async() => {
+        fetchResidentesWithDomicilio()
+    }
+
+    return { residentes, setResidentes, loading, error, reload }
 }
 
 export const useGetResidentesByDomicilioManual = () => {

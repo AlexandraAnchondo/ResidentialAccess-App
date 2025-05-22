@@ -36,7 +36,7 @@ const VisitasNotificationsModal = ({ isOpen, onClose, emailNotifs, setEmailNotif
                     </label>
                 </div>
 
-                <div className="notif-option">
+                {/* <div className="notif-option">
                     <WhatsApp className="notif-icon" />
                     <span>Notificaciones por <strong>WhatsApp</strong></span>
                     <label className="switch">
@@ -47,7 +47,7 @@ const VisitasNotificationsModal = ({ isOpen, onClose, emailNotifs, setEmailNotif
                         />
                         <span className="slider"></span>
                     </label>
-                </div>
+                </div> */}
 
                 <div className="notif-actions">
                     <IconButton onClick={handleClose} className="close-btn" color="error">

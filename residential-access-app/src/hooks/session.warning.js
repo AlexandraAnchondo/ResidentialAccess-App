@@ -47,7 +47,7 @@ export const useSessionWarning = () => {
                     localStorage.removeItem("token")
                     localStorage.removeItem("rol")
                     localStorage.removeItem("user")
-                    window.location.href = "/login"
+                    window.location.href = "/"
                 }
             } catch (err) {
                 console.error("Error al decodificar el token", err)

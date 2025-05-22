@@ -56,7 +56,7 @@ const ResetPassword = () => {
             const response = await changePassword({ token, correo, nuevaContraseña })
             if (response.id_usuario != null) {
                 alert("Contraseña actualizada con éxito. Ahora puedes iniciar sesión.")
-                navigate("/login")
+                navigate("/")
             } else {
                 alert(response.error || "Error al cambiar la contraseña")
             }

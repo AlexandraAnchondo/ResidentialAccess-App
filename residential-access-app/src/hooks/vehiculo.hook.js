@@ -6,22 +6,26 @@ export const useGetVehiculos = (fields = ["*"]) => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-        const fetchVehiculos = async () => {
-            try {
-                const data = await getAllVehiculos(fields)
-                setVehiculos(data)
-            } catch (err) {
-                setError(err.message)
-            } finally {
-                setLoading(false)
-            }
+    const fetchVehiculos = async () => {
+        try {
+            const data = await getAllVehiculos(fields)
+            setVehiculos(data)
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
         }
+    }
 
+    useEffect(() => {
         fetchVehiculos()
     }, [])
 
-    return { vehiculos, setVehiculos, loading, error }
+    const reload = async() => {
+        fetchVehiculos()
+    }
+
+    return { vehiculos, setVehiculos, loading, error, reload }
 }
 
 export const useGetVehiculosByDomicilio = (id_domicilio) => {

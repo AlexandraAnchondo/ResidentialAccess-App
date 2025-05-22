@@ -137,22 +137,27 @@ export const useGetVisitantesFrecuentesWithDomicilio = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-        const fetchVisitantesFrecuentesWithDomicilio = async () => {
-            try {
-                const data = await getVisitantesFrecuentesWithDomicilio()
-                setVisitanteFrecuentes(data)
-            } catch (err) {
-                setError(err.message)
-            } finally {
-                setLoading(false)
-            }
+    const fetchVisitantesFrecuentesWithDomicilio = async () => {
+        try {
+            setLoading(true)
+            const data = await getVisitantesFrecuentesWithDomicilio()
+            setVisitanteFrecuentes(data)
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setLoading(false)
         }
+    }
 
+    useEffect(() => {
         fetchVisitantesFrecuentesWithDomicilio()
     }, [])
 
-    return { visitantes_frecuentes, setVisitanteFrecuentes, loading, error }
+    const reload = async() => {
+        fetchVisitantesFrecuentesWithDomicilio()
+    }
+
+    return { visitantes_frecuentes, setVisitanteFrecuentes, loading, error, reload }
 }
 
 export const useAssignVehicleToVisitante = () => {
