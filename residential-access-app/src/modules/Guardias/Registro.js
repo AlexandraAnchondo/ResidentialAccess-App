@@ -178,6 +178,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const [message, setMessage] = useState(false)
 
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
+    const isTablet = useMediaQuery("(min-width: 769px) and (max-width: 1068px)") // Detecta tamaño de pantalla
 
     useEffect(() => {
         if (showAddVehiculoModal || showViewVehiculosVisitanteModal || showAddVisitaFrecuenteModal || showAddVisitaVehiculoModal || showAddVisitaResidenteModal) {
@@ -434,7 +435,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                         <span>Visitante frecuente</span>
                     </button>
                     <button className="guard-card" onClick={() => handleCardSelection("Vehículos")}>
-                        <FaIdCard size={isMobile ? 150 : 230} />
+                        <FaIdCard size={isMobile || isTablet ? 180 : 230} />
                         <span>Conductor</span>
                     </button>
                     <button className="guard-card" onClick={() => handleCardSelection("Residente")}>

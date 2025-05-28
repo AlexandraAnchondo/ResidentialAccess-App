@@ -104,7 +104,7 @@ const ViewVehiculoResidenteModal = ({ show, onClose, residente, onAdd, setSelect
                             <p>No se encontraron vehículos relacionados</p>
                         </div>
                     ) : (
-                        <DataTable rows={residente.vehiculos} columns={columns_vehiculos_residentes} />
+                        <DataTable rows={residente.vehiculos} columns={columns_vehiculos_residentes} viewFromModal={true}/>
                     )}
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16, marginBottom: 16 }}>

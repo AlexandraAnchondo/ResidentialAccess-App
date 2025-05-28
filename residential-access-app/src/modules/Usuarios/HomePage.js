@@ -66,10 +66,13 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
         setShowModal(true)
     }
 
-    const handleSaveCode = async (selectedCodes) => {
+    const handleSaveCode = async (codesData) => {
+        const selectedCodes = codesData.selectedCodes
+        const singleUseType = codesData.singleUseOption
         const codesToGenerate = selectedCodes.map((value) => {
             let duration
             let expiration
+            let type
 
             // Asignar la duración
             if (value === "1-month") {
@@ -87,12 +90,14 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
             } else if (value === "single-use") {
                 duration = "1 uso único"
                 expiration = "" // No hay fecha de expiración
+                type = singleUseType
             }
 
             return {
                 duration,
                 id: `${value}-${Date.now()}`,
-                expiration: expiration ? expiration.toISOString() : "1 uso único" // La fecha de expiración en formato ISO
+                expiration: expiration ? expiration.toISOString() : "1 uso único", // La fecha de expiración en formato ISO
+                type
             }
         })
 
@@ -257,6 +262,9 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
                                                 Vence en:{" "}
                                                 <CountdownTimer expiration={code.expiration} onExpire={handleCodeExpire} /> (
                                                 {code.duration})
+                                            </p>
+                                            <p>
+                                                {code?.type != null ? code.type : ""}
                                             </p>
                                             <Button
                                                 variant="outlined"
