@@ -21,7 +21,7 @@ echo ======================================
 echo   Deteniendo Nginx... 
 echo ======================================
 cd /d C:\nginx
-nginx -s stop
+taskkill /f /im nginx.exe
 
 :: Paso 4: Iniciar Nginx
 echo ======================================
