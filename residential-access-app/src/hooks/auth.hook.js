@@ -14,7 +14,7 @@ export const useAuth = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("rol")
         localStorage.removeItem("user")
-        window.location.href = "/login"
+        window.location.href = "/"
     }
 
     const checkTokenExpiration = () => {

@@ -1,7 +1,7 @@
 // Resources
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faBars, faKey, faCog } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faBars, faKey, faCog, faBell } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
@@ -18,7 +18,8 @@ import NavButtons from "./NavButtons"
 
 // Hooks
 import {
-    useGetDomicilioById
+    useGetDomicilioById,
+    useUpdateDomicilio
 } from "../../hooks/domicilio.hook"
 import { useAuth, useRefreshToken, useResetPassword } from "../../hooks/auth.hook"
 import { useSessionWarning } from "../../hooks/session.warning"
@@ -27,6 +28,7 @@ import { useAuthContext } from "../../context/auth.context"
 // Modals
 import NotificationModal from "../../components/modals/NotificacionModal"
 import ChangePasswordModal from "../../components/modals/ChangePasswordModal"
+import VisitasNotificationsModal from "./modals/VisitasNotificationsModal"
 
 const Navbar = () => {
     // API calls
@@ -36,15 +38,21 @@ const Navbar = () => {
     const { showWarning, tiempoRestante, setToken } = useSessionWarning()
     const { getRefreshedToken } = useRefreshToken()
     const { fetchDomicilio, domicilio } = useGetDomicilioById()
+    const { editDomicilio } = useUpdateDomicilio()
 
     const [activeView, setActiveView] = useState("home")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const isMobile = useMediaQuery("(max-width: 768px)")
+    const [selectedOption, setSelectedOption] = useState("Bienvenido (a)")
     const [modalMensaje, setModalMensaje] = useState("")
     const [showNotificationModal, setShowNotificationModal] = useState("")
     const [showSettingsMenu, setShowSettingsMenu] = useState(false)
     const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
+    const [showVisitasNotificationsModal, setShowVisitasNotificationsModal] = useState(false)
+    const [closing, setClosing] = useState(false)
+    const [emailNotifs, setEmailNotifs] = useState(null)
+    const [whatsappNotifs, setWhatsappNotifs] = useState(null)
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -70,11 +78,45 @@ const Navbar = () => {
         if (user?.id_domicilio && domicilio == null) {
             fetchDomicilio(user.id_domicilio)
         }
-    }, [user, fetchDomicilio])
+    }, [user, domicilio, fetchDomicilio])
 
-    const handleNavClick = (view) => {
+    // Cargar configuraciones de las notificaciones para las visitas del domicilio
+    useEffect(() => {
+        if (domicilio) {
+            setEmailNotifs(domicilio.visita_correo_notificaciones)
+            setWhatsappNotifs(domicilio.visita_whatsapp_notificaciones)
+        }
+    }, [domicilio])
+
+    // Actualizar las notificaciones para las visitas del domicilio
+    const isFirstRun = useRef(true)
+    useEffect(() => {
+        if (isFirstRun.current) {
+            isFirstRun.current = false
+            return
+        }
+
+        if (domicilio) {
+            const actualizarNotificaciones = async () => {
+                try {
+                    await editDomicilio({
+                        id: domicilio.id,
+                        visita_correo_notificaciones: emailNotifs,
+                        visita_whatsapp_notificaciones: whatsappNotifs
+                    })
+                } catch (error) {
+                    console.error("Error al actualizar el domicilio:", error)
+                }
+            }
+
+            actualizarNotificaciones()
+        }
+    }, [emailNotifs, whatsappNotifs])
+
+    const handleNavClick = (view, label) => {
         setActiveView(view)
         setIsSidebarOpen(false)
+        setSelectedOption(label)
     }
 
     const handleLogoutClick = () => {
@@ -100,7 +142,7 @@ const Navbar = () => {
             setToken(response.token)
         } catch (err) {
             handleNotificationModalMessage("⚠️ Error al extender sesión. Inicia sesión de nuevo.")
-            window.location.href = "/login"
+            window.location.href = "/"
         }
     }
 
@@ -133,6 +175,14 @@ const Navbar = () => {
         }
         setShowChangePasswordModal(false)
         setShowSettingsMenu(false)
+    }
+
+    const handleClose = () => {
+        setClosing(true)
+        setTimeout(() => {
+            setShowSettingsMenu(false)
+            setClosing(false)
+        }, 300)
     }
 
     return (
@@ -183,27 +233,9 @@ const Navbar = () => {
             <div className={`st-pusher ${isSidebarOpen ? "active" : ""}`}>
                 <div className={`overlay ${isSidebarOpen ? "active" : ""}`} onClick={toggleSidebar} />
                 {/* Welcome message for corresponding view */}
-                {activeView === "home" ? (
-                    <div className="welcome-message">
-                        <p>Bienvenido&nbsp;(a)</p>
-                    </div>
-                ) : activeView === "historial" ? (
-                    <div className="welcome-message">
-                        <p>Historial de visitas</p>
-                    </div>
-                ) : activeView === "visitantes" ? (
-                    <div className="welcome-message">
-                        <p>Visitantes frecuentes</p>
-                    </div>
-                ) : activeView === "residentes" ? (
-                    <div className="welcome-message">
-                        <p>Residentes</p>
-                    </div>
-                ) : (
-                    <div className="welcome-message">
-                        <p>Autos</p>
-                    </div>
-                )}
+                <div key={selectedOption} className="welcome-message">
+                    <p>{selectedOption}</p>
+                </div>
                 <AnimatePresence mode="wait">
                     <motion.main
                         key={activeView}
@@ -285,7 +317,7 @@ const Navbar = () => {
             )}
 
             {showSettingsMenu && (
-                <div className="settings-dropdown">
+                <div className={`settings-dropdown ${closing ? "scale-down-notification " : ""}`}>
                     <Button
                         onClick={() => {
                             setShowChangePasswordModal(true)
@@ -303,8 +335,21 @@ const Navbar = () => {
                     </Button>
                     <Button
                         onClick={() => {
+                            setShowVisitasNotificationsModal(true)
                             setShowSettingsMenu(false)
                         }}
+                        variant="outlined"
+                        startIcon={<FontAwesomeIcon icon={faBell} />}
+                        size="small"
+                        sx={{
+                            backgroundColor: "#00a8cc",
+                            "&:hover": "#00a8ccCC"
+                        }}
+                    >
+                        Notificaciones
+                    </Button>
+                    <Button
+                        onClick={handleClose}
                         variant="outlined"
                         color="error"
                         startIcon={<CloseIcon />}
@@ -319,6 +364,15 @@ const Navbar = () => {
                 isOpen={showChangePasswordModal}
                 onClose={() => setShowChangePasswordModal(false)}
                 onSubmit={handlePasswordChange}
+            />
+
+            <VisitasNotificationsModal
+                isOpen={showVisitasNotificationsModal}
+                onClose={() => setShowVisitasNotificationsModal(false)}
+                emailNotifs={emailNotifs}
+                setEmailNotifs={setEmailNotifs}
+                whatsappNotifs={whatsappNotifs}
+                setWhatsappNotifs={setWhatsappNotifs}
             />
 
             <NotificationModal

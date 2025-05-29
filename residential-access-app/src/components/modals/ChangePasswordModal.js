@@ -57,8 +57,8 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
     }
 
     return (
-        <div className={`change-password-overlay ${closing ? "fade-out" : ""}`}>
-            <div className={`change-password-modal ${closing ? "scale-down" : ""}`} style={{ height: mensaje != "" ? "280px" : "250px" }}>
+        <div className={`change-password-overlay ${closing ? "fade-out-notification" : ""}`}>
+            <div className={`change-password-modal ${closing ? "scale-down-notification" : ""}`} style={{ height: mensaje != "" ? "280px" : "250px" }}>
                 <h2>Cambiar contraseña</h2>
 
                 <TextField

@@ -15,7 +15,7 @@ import {
     QrCode,
     House,
     ArrowBack,
-    CheckCircle,
+    CheckCircle
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -39,6 +39,7 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
     const [step, setStep] = useState(1) // Controla la vista (1 = cámara, 2 = check, 3 = formulario 4 = confirmación)
+    const [singleUseType, setSingleUseType] = useState(null)
     const [showScanner, setShowScanner] = useState(false)
     const [showManualInput, setShowManualInput] = useState(false)
     const [manualCode, setManualCode] = useState("")
@@ -67,7 +68,11 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
     }
 
     const handleAcceptClick = () => {
-        onAdd(formData)
+        if (singleUseType != null) {
+            onAdd({ ...formData, tipo_visita_conductor: singleUseType })
+        } else {
+            onAdd(formData)
+        }
     }
 
     const handleCancelClick = () => {
@@ -86,6 +91,7 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
         try {
             const response = await validateCode({ id: accessCode })
             if (response.success !== false) {
+                setSingleUseType(response?.tipo_de_acceso)
                 setStep(2)
                 return
             }
@@ -225,6 +231,11 @@ const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isS
                             <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
                                 Código verificado
                             </Typography>
+                            {singleUseType &&
+                                <Typography variant="h6" sx={{ fontWeight: "bold", color: "#156e42" }}>
+                                    Tipo de acceso: {singleUseType}
+                                </Typography>
+                            }
                         </div>
                     )}
 

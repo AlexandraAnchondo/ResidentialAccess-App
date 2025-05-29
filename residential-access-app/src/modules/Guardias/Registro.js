@@ -46,9 +46,9 @@ import {
 
 const Registro = ({ selectedOption, setSelectedOption }) => {
     // API calls
-    const { visitantes_frecuentes, setVisitanteFrecuentes, loading: loadingVisitantesFrecuentes } = useGetVisitantesFrecuentesWithDomicilio()
-    const { vehiculos, setVehiculos, loading: loadingVehiculos } = useGetVehiculos()
-    const { residentes, setResidentes, loading: loadingResidentes } = useGetResidentesWithDomicilio()
+    const { visitantes_frecuentes, loading: loadingVisitantesFrecuentes, reload: reloadVisitantesFrecuentes } = useGetVisitantesFrecuentesWithDomicilio()
+    const { vehiculos, loading: loadingVehiculos, reload: reloadVehiculos } = useGetVehiculos()
+    const { residentes, loading: loadingResidentes, reload: reloadResidentes } = useGetResidentesWithDomicilio()
     const { saveVisitaVisitante, loading: loadingVisitaVisitante } = useCreateVisitaVisitante()
     const { saveVisitaConductor, loading: loadingVisitaConductor } = useCreateVisitaConductor()
     const { saveVisitaResidente, loading: loadingVisitaResidente } = useCreateVisitaResidente()
@@ -178,6 +178,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const [message, setMessage] = useState(false)
 
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
+    const isTablet = useMediaQuery("(min-width: 769px) and (max-width: 1068px)") // Detecta tamaño de pantalla
 
     useEffect(() => {
         if (showAddVehiculoModal || showViewVehiculosVisitanteModal || showAddVisitaFrecuenteModal || showAddVisitaVehiculoModal || showAddVisitaResidenteModal) {
@@ -187,16 +188,23 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         }
     })
 
+    useEffect(() => {
+        if (selectedOption === "Visitante frecuente") {
+            setRows(visitantes_frecuentes)
+        } else if (selectedOption === "Vehículos") {
+            setRows(vehiculos)
+        } else if (selectedOption === "Residente") {
+            setRows(residentes)
+        }
+    }, [selectedOption, visitantes_frecuentes, vehiculos, residentes])
+
     const handleCardSelection = (card) => {
         setSelectedOption(card)
         if (card === "Visitante frecuente") {
-            setRows(visitantes_frecuentes)
             setColumns(columns_visitante)
         } else if (card === "Vehículos") {
-            setRows(vehiculos)
             setColumns(columns_vehiculo)
         } else {
-            setRows(residentes)
             setColumns(columns_residente)
         }
     }
@@ -225,14 +233,8 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                         vehiculos: [...(prevState.vehiculos || []), nuevo_vehiculo_registrado]
                     }))
 
-                    // También actualiza visitantes_frecuentes
-                    setVisitanteFrecuentes(prevState => prevState.map(v => {
-                        if (v.id == response.id_visitante) {
-                            return { ...v, vehiculos: [...(v.vehiculos || []), nuevo_vehiculo_registrado] }
-                        } else {
-                            return v
-                        }
-                    }))
+                    // Actualiza los visitantes frecuentes
+                    await reloadVisitantesFrecuentes()
 
                     setIsSaved(true)
                     setMessage(response.message ? response.message : "Operación exitosa")
@@ -248,7 +250,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 const response = await saveVehiculo({ ...nuevoVehiculo })
                 if (response.id != null) {
                     // Actualiza los vehiculos
-                    setVehiculos([...vehiculos, { ...nuevoVehiculo, id: response.id }])
+                    await reloadVehiculos()
                     setIsSaved(true)
                     setMessage(response.message ? response.message : "Operación exitosa")
                     // Si el vehiculo creado pertenece a un domicilio, actualiza el y los residentes
@@ -259,13 +261,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                             vehiculos: [...(prevState.vehiculos || []), nuevo_vehiculo_registrado]
                         }))
 
-                        setResidentes(prevState => prevState.map(v => {
-                            if (v.id == response.id_visitante) {
-                                return { ...v, vehiculos: [...(v.vehiculos || []), nuevo_vehiculo_registrado] }
-                            } else {
-                                return v
-                            }
-                        }))
+                        await reloadResidentes()
                     }
                     return
                 }
@@ -290,13 +286,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 }))
 
                 // También actualiza los vehiculos
-                setVehiculos(prevState => prevState.map(v => {
-                    if (v.id == response.id_vehiculo) {
-                        return { ...v, conductores: [...(v.conductores || []), nuevo_conductor_registrado] }
-                    } else {
-                        return v
-                    }
-                }))
+                await reloadVehiculos()
 
                 setIsSaved(true)
                 setMessage(response.message ? response.message : "Operación exitosa")
@@ -445,7 +435,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                         <span>Visitante frecuente</span>
                     </button>
                     <button className="guard-card" onClick={() => handleCardSelection("Vehículos")}>
-                        <FaIdCard size={isMobile ? 150 : 230} />
+                        <FaIdCard size={isMobile || isTablet ? 180 : 230} />
                         <span>Conductor</span>
                     </button>
                     <button className="guard-card" onClick={() => handleCardSelection("Residente")}>
@@ -486,17 +476,22 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                                 zIndex: 10
                                             }}
                                         >
-                                    Registrar visita
+                                            Registrar visita
                                         </Button>
                                     )}
                                 </div>
-                                <DataTable rows={rows} columns={columns} checkboxSelection={true} handleRowSelection={handleRowSelection} />
-                                <Button
+                                {loadingVisitaVisitante &&
+                                    <div className="loading-container">
+                                        <Loader loadingMessage={"Abriendo pluma..."} />
+                                    </div>
+                                }
+                                {!loadingVisitaVisitante && <DataTable rows={rows} columns={columns} checkboxSelection={true} handleRowSelection={handleRowSelection} />}
+                                {!loadingVisitaVisitante && <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
                                     sx={{ marginLeft: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
-                                >Atrás</Button>
+                                >Atrás</Button>}
                             </div>
                         )}
                     </div>
@@ -538,23 +533,28 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                                 zIndex: 10
                                             }}
                                         >
-                                    Registrar visita
+                                            Registrar visita
                                         </Button>
                                     )}
                                 </div>
-                                <DataTable rows={rows} columns={columns} checkboxSelection={true} handleRowSelection={handleRowSelection}/>
-                                <Button
+                                {loadingVisitaConductor &&
+                                    <div className="loading-container">
+                                        <Loader loadingMessage={"Abriendo pluma..."} />
+                                    </div>
+                                }
+                                {!loadingVisitaConductor && <DataTable rows={rows} columns={columns} checkboxSelection={true} handleRowSelection={handleRowSelection}/>}
+                                {!loadingVisitaConductor && <Button
                                     variant="contained"
                                     onClick={() => setShowAddVehiculoModal(true)}
                                     endIcon={<AddCircle />}
                                     sx={{ flex: 1, minWidth: "40%", marginLeft: "20px", backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8cccc" } }}
-                                >Agregar vehículo</Button>
-                                <Button
+                                >Agregar vehículo</Button>}
+                                {!loadingVisitaConductor && <Button
                                     variant="contained"
                                     endIcon={<ArrowBack />}
                                     sx={{ marginLeft: "20px", marginBottom: "20px", backgroundColor: "#0778a1", "&:hover": { backgroundColor: "#004f79" } }}
                                     onClick={handleBackClick}
-                                >Atrás</Button>
+                                >Atrás</Button>}
                             </div>
                         )}
                     </div>
@@ -590,7 +590,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                                                 zIndex: 10
                                             }}
                                         >
-                                    Registrar visita
+                                            Registrar visita
                                         </Button>
                                     )}
                                 </div>

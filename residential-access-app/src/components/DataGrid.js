@@ -108,7 +108,7 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
             <GridToolbar />
             <div style={{ display: "flex", gap: "0.5rem" }}>
                 <GridToolbarQuickFilter />
-                {hasPlacasColumn && (
+                {hasPlacasColumn && rows.length > 4 && (
                     <Button onClick={handleScanClick} startIcon={<CameraAltIcon />} className="scan-button">Buscar placa</Button>
                 )}
             </div>
