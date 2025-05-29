@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { getAllDomicilios, getAvailableDomicilios, getDomicilioById, createAccessCode, validateAccessCode, validateNumericCode, updateDomicilio } from "../services/domicilio.service"
+import { getAllDomicilios, getAvailableDomicilios, getDomicilioById, createAccessCode, validateAccessCode, updateDomicilio } from "../services/domicilio.service"
 
 export const useDomicilios = (fields = ["*"]) => {
     const [domicilios, setDomicilios] = useState([])
