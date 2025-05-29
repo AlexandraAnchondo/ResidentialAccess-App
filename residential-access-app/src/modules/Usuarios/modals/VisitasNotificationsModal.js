@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { IconButton } from "@mui/material"
-import { Close, Email, WhatsApp } from "@mui/icons-material"
+import { Close, Email } from "@mui/icons-material"
 import "../../../styles/Usuarios/VisitasNotificationsModal.scss"
 
-const VisitasNotificationsModal = ({ isOpen, onClose, emailNotifs, setEmailNotifs, whatsappNotifs, setWhatsappNotifs }) => {
+const VisitasNotificationsModal = ({ isOpen, onClose, emailNotifs, setEmailNotifs }) => {
     const [closing, setClosing] = useState(false)
 
     const handleClose = () => {

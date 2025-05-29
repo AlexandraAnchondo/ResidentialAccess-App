@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react"
 import {
-    TextField,
-    InputAdornment,
     Button,
     Typography
 } from "@mui/material"
 import {
-    Close as CloseIcon,
-    Save as SaveIcon,
-    AddCard as AddCardIcon
+    Close as CloseIcon
 } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"

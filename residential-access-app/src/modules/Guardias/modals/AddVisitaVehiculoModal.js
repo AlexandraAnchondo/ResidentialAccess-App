@@ -31,7 +31,7 @@ import { useDomicilios, useValidateAccessCode } from "../../../hooks/domicilio.h
 // Modals
 import NotificationModal from "../../../components/modals/NotificacionModal"
 
-const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, setMessage, loading, numericCode }) => {
+const AddVisitaVehiculoModal = ({ show, onClose, onAdd, conductor, vehiculo, isSaved, setIsSaved, isFailure, setIsFailure, message, loading }) => {
 
     const { domicilios } = useDomicilios(["id", "calle", "numero_calle"])
     const { validateCode } = useValidateAccessCode()
