@@ -42,12 +42,39 @@ export const getVisitanteFrecuenteById = async (id_visitante_frecuente, id_vehic
 
 export const createVisitanteFrecuente = async (visitanteFrecuenteData) => {
     try {
+        const formData = new FormData()
+
+        // Agregar datos al FormData
+        if (visitanteFrecuenteData.nombre) {
+            formData.append("nombre", visitanteFrecuenteData.nombre)
+        }
+        if (visitanteFrecuenteData.apellidos) {
+            formData.append("apellidos", visitanteFrecuenteData.apellidos)
+        }
+        if (visitanteFrecuenteData.telefono) {
+            formData.append("telefono", visitanteFrecuenteData.telefono)
+        }
+        if (visitanteFrecuenteData.id_domicilio) {
+            formData.append("id_domicilio", visitanteFrecuenteData.id_domicilio)
+        }
+        if (visitanteFrecuenteData.placas) {
+            formData.append("placas", visitanteFrecuenteData.placas)
+        }
+        if (visitanteFrecuenteData.modelo) {
+            formData.append("modelo", visitanteFrecuenteData.modelo)
+        }
+        if (visitanteFrecuenteData.color) {
+            formData.append("color", visitanteFrecuenteData.color)
+        }
+
+        // Agregar el archivo si existe
+        if (visitanteFrecuenteData.ine instanceof File) {
+            formData.append("ine", visitanteFrecuenteData.ine)
+        }
+
         const response = await fetch(`${API_URL}/create`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(visitanteFrecuenteData)
+            body: formData
         })
 
         if (!response.ok) {
@@ -63,21 +90,52 @@ export const createVisitanteFrecuente = async (visitanteFrecuenteData) => {
 
 export const updateVisitanteFrecuente = async (visitanteFrecuenteData) => {
     try {
+        const formData = new FormData()
+
+        // Agregar datos al FormData
+        if (visitanteFrecuenteData.nombre) {
+            formData.append("nombre", visitanteFrecuenteData.nombre)
+        }
+        if (visitanteFrecuenteData.apellidos) {
+            formData.append("apellidos", visitanteFrecuenteData.apellidos)
+        }
+        if (visitanteFrecuenteData.telefono) {
+            formData.append("telefono", visitanteFrecuenteData.telefono)
+        }
+        if (visitanteFrecuenteData.id_domicilio) {
+            formData.append("id_domicilio", visitanteFrecuenteData.id_domicilio)
+        }
+        if (visitanteFrecuenteData.placas) {
+            formData.append("placas", visitanteFrecuenteData.placas)
+        }
+        if (visitanteFrecuenteData.modelo) {
+            formData.append("modelo", visitanteFrecuenteData.modelo)
+        }
+        if (visitanteFrecuenteData.color) {
+            formData.append("color", visitanteFrecuenteData.color)
+        }
+
+        if (visitanteFrecuenteData.bloqueado) {
+            formData.append("bloqueado", visitanteFrecuenteData.bloqueado)
+        }
+
+        // Agregar el archivo si existe
+        if (visitanteFrecuenteData.ine instanceof File) {
+            formData.append("ine", visitanteFrecuenteData.ine)
+        }
+
         const response = await fetch(`${API_URL}/update/${visitanteFrecuenteData.id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(visitanteFrecuenteData)
+            body: formData
         })
 
         if (!response.ok) {
-            throw new Error(`Error al actualizar visitante frecuente: ${response.statusText}`)
+            throw new Error(`Error al crear visitante frecuente: ${response.statusText}`)
         }
 
         return await response.json()
     } catch (error) {
-        console.error("Error en updateVisitanteFrecuente:", error)
+        console.error("Error en createVisitanteFrecuente:", error)
         throw error
     }
 }

@@ -198,7 +198,7 @@ const Guardias = () => {
                         <img
                             src={imageSrc}
                             alt="Identificación"
-                            style={{ width: "100%", borderRadius: "8px" }}
+                            style={{ width: "100%", borderRadius: "8px", animation: "popUp 0.3s ease-out" }}
                         />
                     ) : (
                         <p>No se encontró la imagen.</p>

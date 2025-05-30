@@ -202,7 +202,8 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
                                 height: "100%",
                                 borderRadius: "8px",
                                 maxHeight: "60vh",
-                                objectFit: "contain"
+                                objectFit: "contain",
+                                animation: "popUp 0.3s ease-out"
                             }}
                         />
                     ) : (

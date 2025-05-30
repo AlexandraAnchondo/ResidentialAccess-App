@@ -15,8 +15,11 @@ import {
     DirectionsCar as CarIcon,
     FormatListNumbered as LicensePlateIcon,
     Close as CloseIcon,
-    Save as SaveIcon
+    Save as SaveIcon,
+    CameraAlt as CameraAltIcon,
+    UploadFile as UploadFileIcon
 } from "@mui/icons-material"
+import { FaIdCard } from "react-icons/fa"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
@@ -26,6 +29,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
 
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [closing, setClosing] = useState(false) //Estado para manejar animacion de cierre
+    const [showCameraModal, setShowCameraModal] = useState(false)
 
     const availableColors = ["Gris", "Blanco", "Negro", "Rojo", "Azul", "Verde", "Amarillo", "Dorado", "Plata", "Morado", "Cafe", "Naranja"]
 
@@ -35,7 +39,8 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
         telefono: "",
         placas: "",
         modelo: "",
-        color: ""
+        color: "",
+        ine: ""
     })
 
     useEffect(() => {
@@ -47,7 +52,8 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                 telefono: "",
                 placas: "",
                 modelo: "",
-                color: ""
+                color: "",
+                ine: ""
             })
         }
     }, [show])
@@ -55,6 +61,13 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
+    }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            setFormData({ ...formData, ine: file })
+        }
     }
 
     const handlePhoneChange = (e) => {
@@ -86,7 +99,8 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
             formData.telefono &&
             formData.placas &&
             formData.modelo &&
-            formData.color
+            formData.color &&
+            formData.ine
         )
     }
 
@@ -117,7 +131,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                     </div>
                 </div>
                 <div className="add-modal-content">
-                    {!isSaved && !isFailure &&
+                    {!isSaved && !isFailure && <>
                         <Box className="add-modal-options" sx={{ display: "grid", gap: 2 }}>
                             <TextField
                                 label="Nombre"
@@ -211,8 +225,52 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                                     </MenuItem>
                                 ))}
                             </Select>
+
+                            {/* Botón para tomar foto o subir INE */}
+                            <div style={{ display: "flex", gap: 30, justifyContent: "center" }}>
+                                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                                    <FaIdCard size={isMobile ? 20 : 25} color="gray" />
+                                    <Typography
+                                        variant="caption"
+                                        component={!isMobile ? "h2" : "h4"}
+                                        gutterBottom
+                                        color="gray"
+                                        margin={0}
+                                        fontFamily="'Lucida Sans', sans-serif"
+                                        fontWeight="bold"
+                                    >INE</Typography>
+                                </div>
+                                <Button
+                                    variant="contained"
+                                    startIcon={!isMobile ? <CameraAltIcon /> : ""}
+                                    onClick={() => setShowCameraModal(true)} // Abre el modal de la cámara
+                                >
+                                    {!isMobile ? "Tomar foto" : <CameraAltIcon />}
+                                </Button>
+
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                    startIcon={!isMobile ?  <UploadFileIcon /> : ""}
+                                >
+                                    {!isMobile ? "Subir archivo" : <UploadFileIcon />}
+                                    <input
+                                        type="file"
+                                        hidden
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                    />
+                                </Button>
+                            </div>
                         </Box>
-                    }
+                        {formData.ine && !showCameraModal && (
+                            <center><img
+                                src={typeof formData.ine === "string" ? formData.ine : URL.createObjectURL(formData.ine)}
+                                alt="INE"
+                                style={{ marginTop: 10, width: isMobile ? "90%" : "60%", borderRadius: 8 }}
+                            /></center>
+                        )}
+                    </>}
                     <Check isFailure={isFailure} isSaved={isSaved} message={message} />
                 </div>
                 <div className="add-modal-buttons" style={{ marginTop: 16 }}>

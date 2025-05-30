@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
-import { Button, Typography, IconButton } from "@mui/material"
+import { Button, Typography, IconButton, Modal, Box } from "@mui/material"
+import { FaIdCard } from "react-icons/fa"
 import { Close as CloseIcon, Delete as DeleteIcon, Lock as LockIcon, LockOpen as LockOpenIcon, Edit } from "@mui/icons-material"
 import "../../../styles/General/AddModal.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -7,6 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 // Modals
 import DeleteModal from "../../../components/modals/DeleteModal"
 import EditVisitanteFrecuenteModal from "../modals/EditVisitanteFrecuenteModal"
+import NotificationModal from "../../../components/modals/NotificacionModal"
 
 // Components
 import DataTable from "../../../components/DataGrid"
@@ -34,6 +36,10 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
     const [message, setMessage] = useState(false)
+    const [showImageModal, setShowImageModal] = useState(false)
+    const [imageSrc, setImageSrc] = useState("")
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
 
     useEffect(() => {
         if (show && domicilioId) {
@@ -102,6 +108,32 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
         }, 500)
     }
 
+    const handleShowImage = (row) => {
+        if (row.ine) {
+            const ineUrl = typeof row.ine === "string" ? row.ine : URL.createObjectURL(row.ine)
+            const imagePath = `${ineUrl}`
+            setImageSrc(imagePath)
+            setShowImageModal(true)
+        } else {
+            handleNotificationModalMessage("No se encontró ine para este conductor.")
+        }
+    }
+
+    const handleCloseImageModal = () => {
+        setShowImageModal(false)
+        setImageSrc("")
+    }
+
+    const handleCloseNotificationModal = () => {
+        setShowNotificationModal(false)
+        setModalMensaje("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
+    }
+
     const columns = [
         { field: "id", headerAlign: "center", headerName: "ID", flex: 1, minWidth: 50 },
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 150 },
@@ -132,6 +164,9 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
                                 <LockOpenIcon style={{ color: "green" }} />
                             )
                         }
+                    </IconButton>
+                    <IconButton onClick={() => handleShowImage(params.row)} color="primary">
+                        <FaIdCard color="#004f79" />
                     </IconButton>
                 </>
             )
@@ -186,6 +221,47 @@ const ViewFrecuentesModal = ({ show, onClose, domicilioId }) => {
                 onCloseDeleteModal={handleCloseDeleteModal}
                 onDelete={handleBorrarVisitanteFrecuente}
             />
+
+            <NotificationModal
+                message={modalMensaje}
+                onClose={handleCloseNotificationModal}
+                isOpen={showNotificationModal}
+            />
+
+            {/* Modal para mostrar la imagen */}
+            <Modal open={showImageModal} onClose={handleCloseImageModal}>
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 800,
+                        bgcolor: "white",
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 2,
+                        textAlign: "center"
+                    }}
+                >
+                    {imageSrc ? (
+                        <img
+                            src={imageSrc}
+                            alt="Identificación"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "8px",
+                                maxHeight: "60vh",
+                                objectFit: "contain",
+                                animation: "popUp 0.3s ease-out"
+                            }}
+                        />
+                    ) : (
+                        <p>No se encontró la imagen.</p>
+                    )}
+                </Box>
+            </Modal>
         </div>
     )
 }

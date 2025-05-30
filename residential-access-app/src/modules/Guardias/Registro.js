@@ -1,7 +1,7 @@
 // Resources
 import React, { useState, useEffect } from "react"
 import { FaIdCard, FaUserFriends, FaList, FaUserPlus } from "react-icons/fa"
-import { Button } from "@mui/material"
+import { Button, IconButton, Modal, Box } from "@mui/material"
 import { ArrowBack, AddCircle, DirectionsCar } from "@mui/icons-material"
 import "../../styles/Guardias/Registro.scss"
 import useMediaQuery from "@mui/material/useMediaQuery"
@@ -18,6 +18,7 @@ import AddVehiculoModal from "./modals/AddVehiculoModal"
 import AddVisitaFrecuenteModal from "./modals/AddVisitaFrecuenteModal"
 import AddVisitaVehiculoModal from "./modals/AddVisitaVehiculoModal"
 import AddVisitaResidenteModal from "./modals/AddVisitaResidenteModal"
+import NotificationModal from "../../components/modals/NotificacionModal"
 
 // Hooks
 import {
@@ -64,6 +65,19 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
         { field: "nombre", headerAlign: "center", headerName: "Nombre", flex: 1, minWidth: 150 },
         { field: "apellidos", headerAlign: "center", headerName: "Apellidos", flex: 1, minWidth: 250 },
         { field: "telefono", headerAlign: "center", headerName: "Teléfono", flex: 1, minWidth: 150 },
+        {
+            field: "ine",
+            headerName: "INE",
+            flex: 1,
+            minWidth: 50,
+            headerAlign: "center",
+            align: "center",
+            renderCell: (params) => (
+                <IconButton onClick={() => handleShowImage(params.row)} color="primary">
+                    <FaIdCard color="#004f79" />
+                </IconButton>
+            )
+        },
         {
             field: "action",
             headerName: "Vehículos",
@@ -176,6 +190,10 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const [isSaved, setIsSaved] = useState(false)
     const [isFailure, setIsFailure] = useState(false)
     const [message, setMessage] = useState(false)
+    const [showImageModal, setShowImageModal] = useState(false)
+    const [imageSrc, setImageSrc] = useState("")
+    const [modalMensaje, setModalMensaje] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState("")
 
     const isMobile = useMediaQuery("(max-width: 768px)") // Detecta tamaño de pantalla
     const isTablet = useMediaQuery("(min-width: 769px) and (max-width: 1068px)") // Detecta tamaño de pantalla
@@ -424,6 +442,32 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
             return "Este vehículo se encuentra bloqueado"
         }
         return null
+    }
+
+    const handleShowImage = (row) => {
+        if (row.ine) {
+            const ineUrl = typeof row.ine === "string" ? row.ine : URL.createObjectURL(row.ine)
+            const imagePath = `${ineUrl}`
+            setImageSrc(imagePath)
+            setShowImageModal(true)
+        } else {
+            handleNotificationModalMessage("No se encontró ine para este conductor.")
+        }
+    }
+
+    const handleCloseImageModal = () => {
+        setShowImageModal(false)
+        setImageSrc("")
+    }
+
+    const handleCloseNotificationModal = () => {
+        setShowNotificationModal(false)
+        setModalMensaje("")
+    }
+
+    const handleNotificationModalMessage = (message) => {
+        setModalMensaje(message)
+        setShowNotificationModal(true)
     }
 
     return (
@@ -706,6 +750,47 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                 setIsFailure={setIsFailure}
                 message={message}
             />
+
+            <NotificationModal
+                message={modalMensaje}
+                onClose={handleCloseNotificationModal}
+                isOpen={showNotificationModal}
+            />
+
+            {/* Modal para mostrar la imagen */}
+            <Modal open={showImageModal} onClose={handleCloseImageModal}>
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 800,
+                        bgcolor: "white",
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 2,
+                        textAlign: "center"
+                    }}
+                >
+                    {imageSrc ? (
+                        <img
+                            src={imageSrc}
+                            alt="Identificación"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: "8px",
+                                maxHeight: "60vh",
+                                objectFit: "contain",
+                                animation: "popUp 0.3s ease-out"
+                            }}
+                        />
+                    ) : (
+                        <p>No se encontró la imagen.</p>
+                    )}
+                </Box>
+            </Modal>
         </div>
     )
 }
