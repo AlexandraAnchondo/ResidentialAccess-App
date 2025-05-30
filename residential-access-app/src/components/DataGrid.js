@@ -1,6 +1,6 @@
 import * as React from "react"
 import Paper from "@mui/material/Paper"
-import { DataGrid, GridToolbar, GridToolbarQuickFilter, useGridApiRef  } from "@mui/x-data-grid"
+import { DataGrid, GridToolbar, GridToolbarQuickFilter, useGridApiRef } from "@mui/x-data-grid"
 import { esES } from "@mui/x-data-grid/locales"
 import "../styles/General/DataGrid.scss"
 import { styled } from "@mui/material/styles"
@@ -9,13 +9,15 @@ import Tesseract from "tesseract.js"
 import { Button } from "@mui/material"
 import {
     Close as CloseIcon,
-    CameraAlt as CameraAltIcon
+    CameraAlt as CameraAltIcon,
+    FlipCameraAndroid as FlipCameraIcon
 } from "@mui/icons-material"
 
 const paginationModel = { page: 0, pageSize: 5 }
 
 export default function DataTable({ rows, columns, checkboxSelection = false, handleRowSelection, viewFromModal = false, showSearchPlacasButton = true, sortingMode = "asc" }) {
     const [showCamera, setShowCamera] = React.useState(false)
+    const [facingMode, setFacingMode] = React.useState("environment") // default: trasera
     const videoRef = React.useRef(null)
     const apiRef = useGridApiRef()
 
@@ -74,7 +76,27 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
 
     const handleScanClick = async () => {
         setShowCamera(true)
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: facingMode }
+        })
+        if (videoRef.current) {
+            videoRef.current.srcObject = stream
+        }
+    }
+
+    const handleToggleCamera = async () => {
+        const newMode = facingMode === "user" ? "environment" : "user"
+        setFacingMode(newMode)
+
+        // Detener el stream actual
+        if (videoRef.current && videoRef.current.srcObject) {
+            videoRef.current.srcObject.getTracks().forEach(track => track.stop())
+        }
+
+        // Volver a iniciar con la nueva cámara
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: newMode }
+        })
         if (videoRef.current) {
             videoRef.current.srcObject = stream
         }
@@ -159,10 +181,13 @@ export default function DataTable({ rows, columns, checkboxSelection = false, ha
             {showCamera && (
                 <div className="modal-overlay">
                     <div className="modal-camera" style={{ maxWidth: viewFromModal ? "60vw" : "90vw", maxHeight: viewFromModal ? "60vh" : "90vh" }}>
-                        <video ref={videoRef} autoPlay style={{ maxWidth: viewFromModal ? "60vw" : "90vw", maxHeight: viewFromModal ? "50vh" : "90vh" }}/>
+                        <video ref={videoRef} autoPlay style={{ maxWidth: viewFromModal ? "60vw" : "90vw", maxHeight: viewFromModal ? "50vh" : "90vh" }} />
                         <div className="modal-camera-controls">
                             <Button onClick={handleCapture} variant="outlined" color="primary" startIcon={<CameraAltIcon />}>
                                 Capturar
+                            </Button>
+                            <Button onClick={handleToggleCamera} variant="outlined" startIcon={<FlipCameraIcon />} color="secondary">
+                                Cambiar cámara
                             </Button>
                             <Button onClick={() => setShowCamera(false)} variant="outlined" color="error" startIcon={<CloseIcon />}>
                                 Cerrar
