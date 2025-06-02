@@ -5,6 +5,7 @@ import {
     createVisitaResidente,
     getAllVisitasByDomicilio,
     getAllVisitas,
+    getAllActiveVisitas,
     updateVisita
 } from "../services/visita.service"
 
@@ -40,6 +41,29 @@ export const useGetVisitas = () => {
         const fetchVisitas = async () => {
             try {
                 const data = await getAllVisitas()
+                setVisitas(data)
+            } catch (err) {
+                setError(err.message)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchVisitas()
+    }, [])
+
+    return { visitas, setVisitas, loading, error }
+}
+
+export const useGetActiveVisitas = () => {
+    const [visitas, setVisitas] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+
+    useEffect(() => {
+        const fetchVisitas = async () => {
+            try {
+                const data = await getAllActiveVisitas()
                 setVisitas(data)
             } catch (err) {
                 setError(err.message)

@@ -32,6 +32,22 @@ export const getAllVisitas = async () => {
     }
 }
 
+export const getAllActiveVisitas = async () => {
+    try {
+        const url = `${API_URL}/get_all_active`
+        const response = await fetch(url)
+
+        if (!response.ok) {
+            throw new Error(`Error al obtener visitas: ${response.statusText}`)
+        }
+
+        return await response.json()
+    } catch (error) {
+        console.error("Error en getAllVisitas:", error)
+        throw error
+    }
+}
+
 export const createVisitaVisitante = async (visitaData) => {
     try {
         const response = await fetch(`${API_URL}/create_visita_visitante`, {

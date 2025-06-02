@@ -51,13 +51,13 @@ const Login = () => {
         }
 
         if (recordarContraseña) {
-            localStorage.setItem("recordarCorreo", correo)
+            localStorage.setItem("recordarCorreo", correo.trim())
         } else {
             localStorage.removeItem("recordarCorreo")
         }
 
         try {
-            const { rol, user } = await loginUser({ correo_electronico: correo, contraseña: contraseña })
+            const { rol, user } = await loginUser({ correo_electronico: correo.trim(), contraseña: contraseña })
             setUser({ rol, ...user }) // se guarda en contexto y localStorage
 
             if (rol === "usuario") {

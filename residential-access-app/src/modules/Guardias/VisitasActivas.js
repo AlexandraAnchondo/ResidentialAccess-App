@@ -11,13 +11,13 @@ import Loader from "../../components/Loader"
 
 // Hooks
 import {
-    useGetVisitas,
+    useGetActiveVisitas,
     useUpdateVisita
 } from "../../hooks/visita.hook"
 
 const VisitasActivas = () => {
     // API calls
-    const { visitas, setVisitas, loading } = useGetVisitas()
+    const { visitas, setVisitas, loading } = useGetActiveVisitas()
     const { editVisita } = useUpdateVisita()
 
     const columns = [
