@@ -260,14 +260,14 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
                             </Box>
                             {formResidenteData.ine && !showCameraModal && (
                                 <center><img
-                                    src={typeof formResidenteData.ine === "string" ? formResidenteData.ine : URL.createObjectURL(formResidenteData.ine)}
+                                    src={typeof formResidenteData.ine === "string" ? `${process.env.REACT_APP_API_ASSETS_URL}${formResidenteData.ine}` : URL.createObjectURL(formResidenteData.ine)}
                                     alt="INE"
                                     style={{ marginTop: 10, width: isMobile ? "90%" : "60%", borderRadius: 8 }}
                                 /></center>
                             )}
                             {formGuardiaData.ine && !showCameraModal && (
                                 <center><img
-                                    src={typeof formGuardiaData.ine === "string" ? formGuardiaData.ine : URL.createObjectURL(formGuardiaData.ine)}
+                                    src={typeof formGuardiaData.ine === "string" ? `${process.env.REACT_APP_API_ASSETS_URL}${formResidenteData.ine}` : URL.createObjectURL(formGuardiaData.ine)}
                                     alt="INE"
                                     style={{ marginTop: 10, width: isMobile ? "90%" : "60%", borderRadius: 8 }}
                                 /></center>

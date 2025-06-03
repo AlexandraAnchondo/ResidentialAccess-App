@@ -113,7 +113,7 @@ const ViewResidentesModal = ({ show, onClose, domicilioId }) => {
 
     const handleShowImage = (row) => {
         if (row.ine) {
-            const imagePath = typeof row.ine === "string" ? row.ine : URL.createObjectURL(row.ine)
+            const imagePath =  `${process.env.REACT_APP_API_ASSETS_URL}${row.ine}`
             setImageSrc(imagePath)
             setShowImageModal(true)
         } else {

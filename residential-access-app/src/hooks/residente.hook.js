@@ -45,15 +45,11 @@ export const useGetResidentesWithDomicilio = () => {
         }
     }
 
-    useEffect(() => {
-        fetchResidentesWithDomicilio()
-    }, [])
-
     const reload = async() => {
         fetchResidentesWithDomicilio()
     }
 
-    return { residentes, setResidentes, loading, error, reload }
+    return { fetchResidentesWithDomicilio, residentes, setResidentes, loading, error, reload }
 }
 
 export const useGetResidentesByDomicilioManual = () => {

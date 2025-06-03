@@ -47,9 +47,9 @@ import {
 
 const Registro = ({ selectedOption, setSelectedOption }) => {
     // API calls
-    const { visitantes_frecuentes, loading: loadingVisitantesFrecuentes, reload: reloadVisitantesFrecuentes } = useGetVisitantesFrecuentesWithDomicilio()
-    const { vehiculos, loading: loadingVehiculos, reload: reloadVehiculos } = useGetVehiculos()
-    const { residentes, loading: loadingResidentes, reload: reloadResidentes } = useGetResidentesWithDomicilio()
+    const { fetchVisitantesFrecuentesWithDomicilio, visitantes_frecuentes, loading: loadingVisitantesFrecuentes, reload: reloadVisitantesFrecuentes } = useGetVisitantesFrecuentesWithDomicilio()
+    const { fetchVehiculos, vehiculos, loading: loadingVehiculos, reload: reloadVehiculos } = useGetVehiculos()
+    const { fetchResidentesWithDomicilio, residentes, loading: loadingResidentes, reload: reloadResidentes } = useGetResidentesWithDomicilio()
     const { saveVisitaVisitante, loading: loadingVisitaVisitante } = useCreateVisitaVisitante()
     const { saveVisitaConductor, loading: loadingVisitaConductor } = useCreateVisitaConductor()
     const { saveVisitaResidente, loading: loadingVisitaResidente } = useCreateVisitaResidente()
@@ -219,10 +219,13 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
     const handleCardSelection = (card) => {
         setSelectedOption(card)
         if (card === "Visitante frecuente") {
+            fetchVisitantesFrecuentesWithDomicilio()
             setColumns(columns_visitante)
         } else if (card === "Vehículos") {
+            fetchVehiculos()
             setColumns(columns_vehiculo)
         } else {
+            fetchResidentesWithDomicilio()
             setColumns(columns_residente)
         }
     }
@@ -446,7 +449,7 @@ const Registro = ({ selectedOption, setSelectedOption }) => {
 
     const handleShowImage = (row) => {
         if (row.ine) {
-            const ineUrl = typeof row.ine === "string" ? row.ine : URL.createObjectURL(row.ine)
+            const ineUrl = `${process.env.REACT_APP_API_ASSETS_URL}${row.ine}`
             const imagePath = `${ineUrl}`
             setImageSrc(imagePath)
             setShowImageModal(true)

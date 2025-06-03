@@ -265,7 +265,7 @@ const AddVisitanteModal = ({ show, onClose, onAdd, isSaved, setIsSaved, isFailur
                         </Box>
                         {formData.ine && !showCameraModal && (
                             <center><img
-                                src={typeof formData.ine === "string" ? formData.ine : URL.createObjectURL(formData.ine)}
+                                src={typeof formData.ine === "string" ? `${process.env.REACT_APP_API_ASSETS_URL}${formData.ine}` : URL.createObjectURL(formData.ine)}
                                 alt="INE"
                                 style={{ marginTop: 10, width: isMobile ? "90%" : "60%", borderRadius: 8 }}
                             /></center>

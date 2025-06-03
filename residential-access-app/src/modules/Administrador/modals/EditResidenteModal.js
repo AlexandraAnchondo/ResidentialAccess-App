@@ -212,7 +212,7 @@ const EditGuardiaModal = ({ show, onClose, onEdit, residente, isSaved, setIsSave
 
                                 {residente.is_principal && formData.ine && !showCameraModal ? (
                                     <center><img
-                                        src={typeof formData.ine === "string" ? formData.ine : URL.createObjectURL(formData.ine)}
+                                        src={typeof formData.ine === "string" ? `${process.env.REACT_APP_API_ASSETS_URL}${formData.ine}` : URL.createObjectURL(formData.ine)}
                                         alt="INE"
                                         style={{ marginTop: 10, width: isMobile ? "100%" : "60%", borderRadius: 8, maxHeight: "60vh", objectFit: "contain" }}
                                     /></center>

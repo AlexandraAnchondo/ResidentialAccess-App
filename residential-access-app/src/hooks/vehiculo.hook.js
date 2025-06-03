@@ -17,15 +17,11 @@ export const useGetVehiculos = (fields = ["*"]) => {
         }
     }
 
-    useEffect(() => {
-        fetchVehiculos()
-    }, [])
-
     const reload = async() => {
         fetchVehiculos()
     }
 
-    return { vehiculos, setVehiculos, loading, error, reload }
+    return { fetchVehiculos, vehiculos, setVehiculos, loading, error, reload }
 }
 
 export const useGetVehiculosByDomicilio = (id_domicilio) => {

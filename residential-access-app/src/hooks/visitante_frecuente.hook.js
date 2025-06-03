@@ -149,15 +149,11 @@ export const useGetVisitantesFrecuentesWithDomicilio = () => {
         }
     }
 
-    useEffect(() => {
-        fetchVisitantesFrecuentesWithDomicilio()
-    }, [])
-
     const reload = async() => {
         fetchVisitantesFrecuentesWithDomicilio()
     }
 
-    return { visitantes_frecuentes, setVisitanteFrecuentes, loading, error, reload }
+    return { fetchVisitantesFrecuentesWithDomicilio, visitantes_frecuentes, setVisitanteFrecuentes, loading, error, reload }
 }
 
 export const useAssignVehicleToVisitante = () => {
