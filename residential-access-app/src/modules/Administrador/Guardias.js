@@ -139,7 +139,7 @@ const Guardias = () => {
 
     const handleShowImage = (row) => {
         if (row.ine) {
-            const imagePath = `${process.env.REACT_APP_API_ASSETS_URL}${row.ine}`
+            const imagePath = typeof row.ine === "string" ? `${process.env.REACT_APP_API_ASSETS_URL}${row.ine}` : URL.createObjectURL(row.ine)
             setImageSrc(imagePath)
             setShowImageModal(true)
         } else {

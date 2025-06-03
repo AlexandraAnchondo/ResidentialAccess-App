@@ -44,7 +44,7 @@ const ViewConductoresVehiculoModal = ({ show, onClose, vehiculo, onAdd, setSelec
 
     const handleShowImage = (row) => {
         if (row.ine) {
-            const ineUrl = `${process.env.REACT_APP_API_ASSETS_URL}${row.ine}`
+            const ineUrl = typeof row.ine === "string" ? `${process.env.REACT_APP_API_ASSETS_URL}${row.ine}` : URL.createObjectURL(row.ine)
             const imagePath = `${ineUrl}`
             setImageSrc(imagePath)
             setShowImageModal(true)

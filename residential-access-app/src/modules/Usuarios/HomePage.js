@@ -188,7 +188,10 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
                             </div>
                         ) : (
                             <center>
-                                <img src={`${process.env.REACT_APP_API_ASSETS_URL}${ineSrc}`} alt="Foto de identificación" />
+                                <img
+                                    src={typeof ineSrc === "string" ? `${process.env.REACT_APP_API_ASSETS_URL}${ineSrc}` : URL.createObjectURL(ineSrc)}
+                                    alt="Foto de identificación"
+                                />
                             </center>
                         )}
                     </section>

@@ -144,7 +144,7 @@ const Visitantes = ({ id_domicilio }) => {
 
     const handleShowImage = (visitante) => {
         if (visitante.ine) {
-            const ineUrl = `${process.env.REACT_APP_API_ASSETS_URL}${visitante.ine}`
+            const ineUrl = typeof visitante.ine === "string" ? `${process.env.REACT_APP_API_ASSETS_URL}${visitante.ine}` : URL.createObjectURL(visitante.ine)
             const imagePath = `${ineUrl}`
             setImageSrc(imagePath)
             setShowImageModal(true)
