@@ -163,7 +163,7 @@ h2 {
     align-items: center;
     z-index: $z-modal;
     transform: scale(1);
-    background: rgba(0, 0, 0, .0);
+    background-color: rgba(0, 0, 0, 0.5);
     animation: fadeIn .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
 }
 
