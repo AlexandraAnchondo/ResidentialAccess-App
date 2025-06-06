@@ -88,8 +88,8 @@ const Guardias = () => {
         setShowEditModal(true)
     }
 
-    const handleToggleBlock = async (id) => {
-        const updatedGuardias = await guardias.map((guardia) => {
+    const handleToggleBlock = (id) => {
+        const updatedGuardias = guardias.map((guardia) => {
             if (guardia.id === id) {
                 editUsuario({ ...guardia, bloqueado: !guardia.bloqueado })
                 return { ...guardia, bloqueado: !guardia.bloqueado }

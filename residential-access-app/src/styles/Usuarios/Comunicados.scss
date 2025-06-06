@@ -1,0 +1,189 @@
+.comunicados-usuarios-container {
+    padding: 1rem;
+    max-width: 900px;
+    margin: auto;
+
+    .titulo-principal {
+        text-align: center;
+        font-size: 1.75rem;
+        font-weight: bold;
+        color: #0ca9cc;
+        margin-bottom: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .filtros {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        select {
+            padding: 0.5rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 0.95rem;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .buscador {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 0.3rem 0.6rem;
+            background-color: #fff;
+
+            .icono {
+                margin-right: 0.5rem;
+                color: #888;
+            }
+
+            input {
+                border: none;
+                outline: none;
+                font-size: 0.95rem;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                letter-spacing: 1px;
+                color: #333;
+                background: transparent;
+                width: 200px;
+                margin: 0;
+            }
+        }
+    }
+
+    .loading-container {
+        margin-top: 100px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .mensaje-vacio {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+    }
+
+    .comunicados-usuarios-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .comunicado-card {
+        background-color: #ffffff;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        padding: 1.2rem;
+        border: 1px solid #f0f0f0;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-left: 6px solid #0ca9cc;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .comunicado-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+
+            .icono {
+                color: #0ca9cc;
+                margin-right: 0.5rem;
+                font-size: 1.2rem;
+            }
+
+            .titulo {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #0ca9cc;
+            }
+        }
+
+        .fecha {
+            font-size: 0.85rem;
+            color: #888;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+
+        .modal-contenido {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            animation: popUp 0.3s ease-out;
+
+            .cerrar {
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                background: none;
+                border: none;
+                font-size: 1.2rem;
+                cursor: pointer;
+                color: #888;
+
+                &:hover {
+                    color: #333;
+                }
+            }
+
+            .titulo-modal {
+                font-size: 1.4rem;
+                font-weight: bold;
+                color: #0ca9cc;
+                margin-bottom: 1rem;
+            }
+
+            .mensaje-modal {
+                font-size: 1rem;
+                color: #444;
+                margin-bottom: 1.5rem;
+                white-space: pre-line;
+            }
+
+            .fecha-modal {
+                font-size: 0.9rem;
+                color: #666;
+                text-align: right;
+            }
+        }
+    }
+}

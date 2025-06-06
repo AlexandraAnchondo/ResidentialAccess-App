@@ -119,7 +119,7 @@ const Domicilios = () => {
 
     return (
         <div className="domicilios-container">
-            {domicilios.length === 0 ? (
+            {domicilios.length === 0 && !loading ? (
                 <div className="domicilios-no-data">
                     <FontAwesomeIcon icon={faList} className="icon-placeholder" />
                     <p>No hay datos que mostrar</p>

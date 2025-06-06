@@ -36,7 +36,7 @@ const Historial = ({ id_domicilio }) => {
                     <FontAwesomeIcon icon={faList} className="icon-placeholder" />
                     <p>No hay datos que mostrar</p>
                 </div>
-            ): loading ? (
+            ) : loading ? (
                 <div className="loading-container" style={{ marginTop: "100px" }}>
                     <Loader/>
                 </div>

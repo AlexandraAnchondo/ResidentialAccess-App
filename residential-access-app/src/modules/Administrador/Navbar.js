@@ -1,7 +1,7 @@
 // Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faPaperclip, faReceipt, faBars, faHomeUser, faUserLock, faCog, faKey } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faPaperclip, faReceipt, faBars, faHomeUser, faUserLock, faCog, faKey, faBell } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
@@ -13,6 +13,7 @@ import Registro from "./Registro"
 import Visitas from "./Visitas"
 import Domicilios from "./Domicilios"
 import Guardias from "./Guardias"
+import Comunicados from "./Comunicados"
 
 // Hooks
 import { useAuth, useRefreshToken, useResetPassword } from "../../hooks/auth.hook"
@@ -197,6 +198,12 @@ const Navbar = () => {
                             <FontAwesomeIcon icon={faUserLock} />&nbsp;Guardias
                         </button>
                         <button
+                            className={`nav-button ${activeView === "Comunicados" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Comunicados")}
+                        >
+                            <FontAwesomeIcon icon={faBell} />&nbsp;Comunicados
+                        </button>
+                        <button
                             onClick={handleSettings}
                             className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
                         >
@@ -244,6 +251,12 @@ const Navbar = () => {
                                 <FontAwesomeIcon icon={faUserLock} />&nbsp;Guardias
                             </button>
                             <button
+                                className={`nav-button ${activeView === "Comunicados" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Comunicados")}
+                            >
+                                <FontAwesomeIcon icon={faBell} />&nbsp;Comunicados
+                            </button>
+                            <button
                                 onClick={handleSettings}
                                 className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
                             >
@@ -284,12 +297,14 @@ const Navbar = () => {
                                 selectedOption={selectedOption}
                                 setSelectedOption={setSelectedOption}
                             />
-                        ) : activeView === "Visitas"? (
+                        ) : activeView === "Visitas" ? (
                             <Visitas />
-                        ) : activeView === "Domicilios"? (
+                        ) : activeView === "Domicilios" ? (
                             <Domicilios />
-                        ) : (
+                        ) : activeView === "Guardias" ? (
                             <Guardias />
+                        ) : (
+                            <Comunicados />
                         )
                         }
                     </motion.main>

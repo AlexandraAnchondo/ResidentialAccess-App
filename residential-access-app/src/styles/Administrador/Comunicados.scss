@@ -1,0 +1,181 @@
+@use '../General/Colors.scss';
+
+.comunicados-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    font-family: 'Segoe UI', sans-serif;
+    animation: popUp 0.3s ease-out;
+
+    h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #333;
+        margin-top: 0;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        input,
+        textarea {
+            width: 95%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: none;
+            transition: border 0.3s ease;
+            margin: 0;
+
+            &:focus {
+                outline: none;
+                border-color: var(--primary-color);
+            }
+        }
+    }
+
+    .icon-placeholder {
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    .enviar-btn {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        background: var(--primary-color);
+        color: white;
+        font-size: 1rem;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:hover {
+            background: var(--primary-hover-color);
+        }
+    }
+
+    .dashboard-btn {
+        display: block;
+        margin-top: 1rem;
+        width: 100%;
+        padding: 0.75rem;
+        background: var(--dark-color);
+        color: white;
+        font-size: 1rem;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:hover {
+            background: var(--dark-color-hover);
+        }
+    }
+}
+
+
+// Modal
+.modal-confirmacion {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    .modal-contenido {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        animation: popUp 0.3s ease-out;
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .modal-botones {
+            display: flex;
+            justify-content: space-between;
+
+            button {
+                flex: 1;
+                margin: 0 0.5rem;
+                padding: 0.5rem;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+
+            .cancelar {
+                background-color: #ccc;
+                color: #333;
+            }
+
+            .confirmar {
+                background-color: #27ae60;
+                color: white;
+
+                &:hover {
+                    background-color: #1e8449;
+                }
+            }
+        }
+    }
+}
+
+// Responsive
+@media (max-width: 600px) {
+    .comunicados-container {
+        padding: 1.5rem;
+        margin-top: 100px;
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        .icon-placeholder {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+    }
+
+    .modal-contenido {
+        padding: 1.5rem;
+    }
+
+    .modal-botones {
+        flex-direction: column;
+        gap: 10px;
+
+        button {
+            margin: 0.5rem 0;
+        }
+    }
+}

@@ -1,6 +1,6 @@
 @use '../General/Colors.scss';
 
-.modal-overlay {
+.notification-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.notification-modal-content {
   background-color: #ffffff;
   padding: 2rem;
   border-radius: 1rem;
@@ -26,19 +26,19 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.modal-icon {
+.notification-modal-icon {
   font-size: 2.5rem;
   color: var(--primary-color);;
   margin-bottom: 1rem;
 }
 
-.modal-content p {
+.notification-modal-content p {
   font-size: 1.1rem;
   color: #333;
   margin-bottom: 1.5rem;
 }
 
-.modal-content button {
+.notification-modal-content button {
   background-color:  var(--primary-color);;
   color: white;
   border: none;
@@ -49,7 +49,7 @@
   transition: background-color 0.3s ease;
 }
 
-.modal-content button:hover {
+.notification-modal-content button:hover {
   background-color: #255a99;
 }
 
@@ -65,13 +65,13 @@
 }
 
 @media screen and (max-width: 768px) {
-  .modal-content {
+  .notification-modal-content {
     max-width: 250px;
   }
 }
 
 @media screen and (min-width: 769px) and (max-width: 1068px) {
-  .modal-content {
+  .notification-modal-content {
     max-width: 350px;
   }
 }
