@@ -19,9 +19,9 @@ export const sendAdvicesToAllUsers = async (adviceData) => {
     }
 }
 
-export const getAllComunicados = async (fields = []) => {
+export const getAllComunicados = async (id_domicilio) => {
     try {
-        const queryParams = fields.length ? `?fields=${fields.join(",")}` : ""
+        const queryParams = id_domicilio ? `?id_domicilio=${id_domicilio}` : ""
         const url = `${API_URL}/get_all${queryParams}`
         const response = await fetch(url)
 
@@ -32,6 +32,40 @@ export const getAllComunicados = async (fields = []) => {
         return await response.json()
     } catch (error) {
         console.error("Error en getAllComunicados:", error)
+        throw error
+    }
+}
+
+export const setComunicadoLeido = async (data) => {
+    try {
+        const response = await fetch(`${API_URL}/set_advice_as_seen`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        if (!response.ok) {
+            throw new Error(`Error al marcar comunicado como leído: ${response.statusText}`)
+        }
+        return await response.json()
+    } catch (error) {
+        console.error("Error en setComunicadoLeido:", error)
+        throw error
+    }
+}
+
+export const getComunicadosNoLeidosCount = async (id_domicilio) => {
+    try {
+        const queryParams = id_domicilio ? `?id_domicilio=${id_domicilio}` : ""
+        const url = `${API_URL}/get_unseen_advice_count${queryParams}`
+        const response = await fetch(url)
+        if (!response.ok) {
+            throw new Error(`Error al obtener el número de comunicados no leídos: ${response.statusText}`)
+        }
+        return await response.json()
+    } catch (error) {
+        console.error("Error en getComunicadosNoLeidosCount:", error)
         throw error
     }
 }

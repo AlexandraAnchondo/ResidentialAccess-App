@@ -3,13 +3,15 @@ import { FaBullhorn, FaSearch, FaTimes } from "react-icons/fa"
 import { ArrowBack } from "@mui/icons-material"
 import Loader from "../../components/Loader"
 import { Button } from "@mui/material"
-import { useComunicados } from "../../hooks/comunicados.hook"
+import { useComunicados, useCreateComunicadoLeido } from "../../hooks/comunicados.hook"
 import "../../styles/Usuarios/Comunicados.scss"
 
-const ComunicadosUsuario = ({ showBackButton = false, handleBack }) => {
-    const { comunicados, loading } = useComunicados()
+const ComunicadosUsuario = ({ id_domicilio, showBackButton = false, handleBack }) => {
+    const { comunicados, loading, reload } = useComunicados(id_domicilio)
+    const { saveAsComunicadoLeido } = useCreateComunicadoLeido()
 
     const [filtroTiempo, setFiltroTiempo] = useState("3m")
+    const [mostrarSoloNoLeidos, setMostrarSoloNoLeidos] = useState(false)
     const [busqueda, setBusqueda] = useState("")
     const [comunicadoSeleccionado, setComunicadoSeleccionado] = useState(null)
     const [closing, setClosing] = useState(false)
@@ -36,16 +38,22 @@ const ComunicadosUsuario = ({ showBackButton = false, handleBack }) => {
         const ordenados = [...comunicados].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
         const porTiempo = filtrarPorTiempo(ordenados, filtroTiempo)
 
+        let filtrados = porTiempo
+
+        if (mostrarSoloNoLeidos) {
+            filtrados = filtrados.filter(c => c.leido === 0)
+        }
+
         if (!busqueda.trim()) {
-            return porTiempo
+            return filtrados
         }
 
         const termino = busqueda.toLowerCase()
-        return porTiempo.filter(c =>
+        return filtrados.filter(c =>
             c.titulo.toLowerCase().includes(termino) ||
             c.mensaje.toLowerCase().includes(termino)
         )
-    }, [comunicados, filtroTiempo, busqueda])
+    }, [comunicados, filtroTiempo, busqueda, mostrarSoloNoLeidos])
 
     const formatearFecha = (fechaStr) => {
         const fecha = new Date(fechaStr)
@@ -64,9 +72,15 @@ const ComunicadosUsuario = ({ showBackButton = false, handleBack }) => {
         }, 500)
     }
 
+    const handleComunicadoClick = async (c) => {
+        setComunicadoSeleccionado(c)
+        await saveAsComunicadoLeido({ id_comunicado: c.id, id_domicilio: id_domicilio })
+        reload()
+    }
+
     return (
         <div className="comunicados-usuarios-container">
-            <h2 className="titulo-principal">Comunicados del Administrador</h2>
+            <h2 className="titulo-principal">Mensajes del Administrador</h2>
 
             {showBackButton && (
                 <Button
@@ -83,6 +97,18 @@ const ComunicadosUsuario = ({ showBackButton = false, handleBack }) => {
                     <option value="1y">Último año</option>
                     <option value="todos">Todos</option>
                 </select>
+
+                <div className="toggle-leidos">
+                    <label className="switch-label">
+                        <input
+                            type="checkbox"
+                            checked={mostrarSoloNoLeidos}
+                            onChange={(e) => setMostrarSoloNoLeidos(e.target.checked)}
+                        />
+                        <span className="slider"></span>
+                        <span className="texto-toggle">Mostrar solo no leídos</span>
+                    </label>
+                </div>
 
                 <div className="buscador">
                     <FaSearch className="icono" />
@@ -104,18 +130,41 @@ const ComunicadosUsuario = ({ showBackButton = false, handleBack }) => {
             ) : (
                 <div className="comunicados-usuarios-grid">
                     {comunicadosFiltrados.map((comunicado, index) => (
-                        <button
-                            className="comunicado-card fade-in"
-                            key={index}
-                            onClick={() => setComunicadoSeleccionado(comunicado)}
-                        >
-                            <div className="comunicado-header">
-                                <FaBullhorn className="icono" />
-                                <h3 className="titulo">{comunicado.titulo}</h3>
-                            </div>
-                            <p className="fecha">📅 {formatearFecha(comunicado.created_at)}</p>
-                        </button>
+                        <>
+                            {comunicado.leido === 0 && (
+                                <button
+                                    className="comunicado-no-leido-card fade-in"
+                                    key={index}
+                                    onClick={() => handleComunicadoClick(comunicado)}
+                                >
+                                    {/* Indicador de no leído */}
+                                    <span className="notificacion-nueva" title="Nuevo comunicado">●</span>
+
+                                    <div className="comunicado-no-leido-header">
+                                        <FaBullhorn className="icono" />
+                                        <h3 className="titulo">{comunicado.titulo}</h3>
+                                    </div>
+                                    <p className="fecha">📅 Creado: {formatearFecha(comunicado.created_at)}</p>
+                                </button>
+                            )}
+
+                            {comunicado.leido === 1 && (
+                                <button
+                                    className="comunicado-card fade-in"
+                                    key={index}
+                                    onClick={() => setComunicadoSeleccionado(comunicado)}
+                                >
+                                    <div className="comunicado-header">
+                                        <FaBullhorn className="icono" />
+                                        <h3 className="titulo">{comunicado.titulo}</h3>
+                                    </div>
+                                    <p className="fecha">📅 Creado: {formatearFecha(comunicado.created_at)}</p>
+                                    <p className="fecha">✔️ Leído: {formatearFecha(comunicado.fecha_leido)}</p>
+                                </button>
+                            )}
+                        </>
                     ))}
+
                 </div>
             )}
 

@@ -22,6 +22,7 @@ import {
     useGetDomicilioById,
     useUpdateDomicilio
 } from "../../hooks/domicilio.hook"
+import { useComunicadosNoLeidosCount } from "../../hooks/comunicados.hook"
 import { useAuth, useRefreshToken, useResetPassword } from "../../hooks/auth.hook"
 import { useSessionWarning } from "../../hooks/session.warning"
 import { useAuthContext } from "../../context/auth.context"
@@ -40,6 +41,7 @@ const Navbar = () => {
     const { getRefreshedToken } = useRefreshToken()
     const { fetchDomicilio, domicilio } = useGetDomicilioById()
     const { editDomicilio } = useUpdateDomicilio()
+    const { fetchComunicadosNoLeidosCount, comunicadosCount } = useComunicadosNoLeidosCount()
 
     const [activeView, setActiveView] = useState("home")
     const [showLogoutModal, setShowLogoutModal] = useState(false)
@@ -47,13 +49,15 @@ const Navbar = () => {
     const isMobile = useMediaQuery("(max-width: 768px)")
     const [selectedOption, setSelectedOption] = useState("Bienvenido (a)")
     const [modalMensaje, setModalMensaje] = useState("")
-    const [showNotificationModal, setShowNotificationModal] = useState("")
+    const [showNotificationModal, setShowNotificationModal] = useState(false)
     const [showSettingsMenu, setShowSettingsMenu] = useState(false)
     const [showChangePasswordModal, setShowChangePasswordModal] = useState(false)
     const [showVisitasNotificationsModal, setShowVisitasNotificationsModal] = useState(false)
     const [closing, setClosing] = useState(false)
     const [emailNotifs, setEmailNotifs] = useState(null)
-    const [whatsappNotifs, setWhatsappNotifs] = useState(null)
+    //const [whatsappNotifs, setWhatsappNotifs] = useState(null)
+    const [navLink, setNavLink] = useState("")
+    const [defaultButtonMessage, setDefaultButtonMessage] = useState(null)
 
     // Definir la animación de entrada y salida
     const pageVariants = {
@@ -78,41 +82,52 @@ const Navbar = () => {
     useEffect(() => {
         if (user?.id_domicilio && domicilio == null) {
             fetchDomicilio(user.id_domicilio)
+            fetchComunicadosNoLeidosCount(user.id_domicilio)
         }
-    }, [user, domicilio, fetchDomicilio])
+    }, [user, domicilio, fetchDomicilio, fetchComunicadosNoLeidosCount])
+
+    // Cargar la cantidad de comunicados no leidos
+    useEffect(() => {
+        if(comunicadosCount > 0) {
+            setNavLink("Ir a comunicados")
+            setDefaultButtonMessage("Cerrar")
+            handleNotificationModalMessage(`Tienes ${comunicadosCount} comunicados(s) pendiente(s)`)
+        }
+    }, [comunicadosCount])
 
     // Cargar configuraciones de las notificaciones para las visitas del domicilio
     useEffect(() => {
         if (domicilio) {
-            setEmailNotifs(domicilio.visita_correo_notificaciones)
-            setWhatsappNotifs(domicilio.visita_whatsapp_notificaciones)
+            setEmailNotifs(emailNotifs != null ? emailNotifs : domicilio.visita_correo_notificaciones)
+            //setWhatsappNotifs(whatsappNotifs != null ? whatsappNotifs : domicilio.visita_whatsapp_notificaciones)
         }
-    }, [domicilio])
+    }, [domicilio, fetchComunicadosNoLeidosCount])
 
     // Actualizar las notificaciones para las visitas del domicilio
     const isFirstRun = useRef(true)
     useEffect(() => {
-        if (isFirstRun.current) {
+        if (isFirstRun.current && domicilio != null) {
             isFirstRun.current = false
             return
-        }
-
-        if (domicilio) {
-            const actualizarNotificaciones = async () => {
-                try {
-                    await editDomicilio({
-                        id: domicilio.id,
-                        visita_correo_notificaciones: emailNotifs,
-                        visita_whatsapp_notificaciones: whatsappNotifs
-                    })
-                } catch (error) {
-                    console.error("Error al actualizar el domicilio:", error)
+        } else {
+            if (domicilio != null) {
+                const actualizarNotificaciones = async () => {
+                    try {
+                        await editDomicilio({
+                            id: domicilio.id,
+                            visita_correo_notificaciones: emailNotifs
+                            //visita_whatsapp_notificaciones: whatsappNotifs
+                        })
+                    } catch (error) {
+                        console.error("Error al actualizar el domicilio:", error)
+                    }
                 }
-            }
 
-            actualizarNotificaciones()
+                actualizarNotificaciones()
+            }
         }
-    }, [emailNotifs, whatsappNotifs])
+
+    }, [emailNotifs])
 
     const handleNavClick = (view, label) => {
         setActiveView(view)
@@ -150,6 +165,7 @@ const Navbar = () => {
     const handleCloseNotificationModal = () => {
         setShowNotificationModal(false)
         setModalMensaje("")
+        setNavLink("")
     }
 
     const handleNotificationModalMessage = (message) => {
@@ -184,6 +200,13 @@ const Navbar = () => {
             setShowSettingsMenu(false)
             setClosing(false)
         }, 300)
+    }
+
+    const handleNavComunicadosClick = () => {
+        setActiveView("comunicados")
+        setIsSidebarOpen(false)
+        setSelectedOption("Comunicados")
+        handleCloseNotificationModal()
     }
 
     return (
@@ -374,14 +397,17 @@ const Navbar = () => {
                 onClose={() => setShowVisitasNotificationsModal(false)}
                 emailNotifs={emailNotifs}
                 setEmailNotifs={setEmailNotifs}
-                whatsappNotifs={whatsappNotifs}
-                setWhatsappNotifs={setWhatsappNotifs}
+                //whatsappNotifs={whatsappNotifs}
+                //setWhatsappNotifs={setWhatsappNotifs}
             />
 
             <NotificationModal
                 message={modalMensaje}
                 onClose={handleCloseNotificationModal}
                 isOpen={showNotificationModal}
+                navLink={navLink}
+                onClick={handleNavComunicadosClick}
+                defaultButtonMessage={defaultButtonMessage ? defaultButtonMessage : "Ok"}
             />
         </div>
     )

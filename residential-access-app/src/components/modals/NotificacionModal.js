@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { FaInfoCircle } from "react-icons/fa"
 import "../../styles/General/NotificationModal.scss"
 
-const NotificationModal = ({ isOpen, message, onClose }) => {
+const NotificationModal = ({ defaultButtonMessage = "Ok", isOpen, message, onClose, navLink, onClick }) => {
     const [closing, setClosing] = useState(false)
 
     if (!isOpen) {
@@ -36,7 +36,12 @@ const NotificationModal = ({ isOpen, message, onClose }) => {
                 >
                     <FaInfoCircle className="notification-modal-icon" />
                     <p>{message}</p>
-                    <button onClick={handleClose}>OK</button>
+                    <div className="notification-modal-buttons">
+                        {navLink && (
+                            <button onClick={onClick}>{navLink}</button>
+                        )}
+                        <button onClick={handleClose}>{defaultButtonMessage}</button>
+                    </div>
                 </motion.div>
             </motion.div>
         </AnimatePresence>,
