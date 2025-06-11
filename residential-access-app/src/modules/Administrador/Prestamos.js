@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { FaPlus, FaUser, FaCheck, FaTimes, FaTrash, FaPencilAlt } from "react-icons/fa"
+import { FaPlus, FaUser, FaCheck, FaTimes, FaTrash, FaPencilAlt, FaArrowAltCircleLeft } from "react-icons/fa"
 import { TextField, Button, IconButton } from "@mui/material"
 import "../../styles/Administrador/Prestamos.scss"
 
@@ -95,6 +95,24 @@ const PrestamosArticulos = () => {
         })
     }
 
+    const obtenerFechaHoy = () => {
+        const hoy = new Date()
+        return hoy.toISOString().split("T")[0] // YYYY-MM-DD
+    }
+
+    const handlePrestar = async (idArticulo) => {
+        try {
+            await editPrestamo({
+                id: idArticulo,
+                fecha_prestamo: obtenerFechaHoy(),
+                estatus: "Prestado"
+            })
+            reload()
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return (
         <div className="prestamos-container">
             <h2 className="titulo-principal">Artículos para préstamos</h2>
@@ -108,16 +126,32 @@ const PrestamosArticulos = () => {
                     {prestamos.map((p, index) => (
                         <div
                             key={index}
-                            className={`prestamo-card ${p.id_usuario ? "prestado" : "libre"}`}
+                            className={`prestamo-card ${p.estatus === "Libre" ? "libre" : p.estatus === "Solicitado" ? "solicitado" : "prestado"}`}
                         >
                             <div className="icono">{p.id_usuario ? <FaTimes /> : <FaCheck />}</div>
                             <div className="nombre">{p.nombre_articulo}</div>
                             {p.id_usuario && (
                                 <>
-                                    <div className="fecha">📅 Solicitado el: {formatearFecha(p.fecha_solicitado)}</div>
-                                    <div className="usuario">
+                                    {p.estatus === "Prestado" && <>
+                                        <div className="fecha">📅 Prestado el: {formatearFecha(p.fecha_prestamo)}</div>
+                                    </>}
+                                    <div className={`usuario ${p.estatus === "Solicitado" ? "solicitado" : "prestado"}`}>
                                         <FaUser />&nbsp;&nbsp;{p.nombre_usuario}
                                     </div>
+                                    {p.estatus === "Solicitado" && <>
+                                        <div className="fecha">📅 Solicitado el: {formatearFecha(p.fecha_solicitado)}</div>
+                                        <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            startIcon={<FaArrowAltCircleLeft />}
+                                            onClick={() => handlePrestar(p.id)}
+                                            sx={{
+                                                marginTop: "10px"
+                                            }}
+                                        >
+                                        Prestar
+                                        </Button>
+                                    </>}
                                 </>
                             )}
                             <div className="acciones-card">

@@ -37,7 +37,8 @@ const MisPrestamos = ({ id_usuario, nombre_usuario }) => {
                 id: articuloSeleccionado,
                 id_usuario: id_usuario,
                 nombre_usuario: nombre_usuario,
-                fecha_solicitado: obtenerFechaHoy()
+                fecha_solicitado: obtenerFechaHoy(),
+                estatus: "Solicitado"
             })
             reload()
             setSolicitar(false)
@@ -53,7 +54,9 @@ const MisPrestamos = ({ id_usuario, nombre_usuario }) => {
                 id: idArticulo,
                 id_usuario: null,
                 nombre_usuario: null,
-                fecha_solicitado: null
+                fecha_solicitado: null,
+                fecha_prestamo: null,
+                estatus: "Libre"
             })
             reload()
         } catch (error) {
@@ -81,18 +84,24 @@ const MisPrestamos = ({ id_usuario, nombre_usuario }) => {
             ) : (
                 <div className="prestamos-grid">
                     {misPrestamos.map((p, i) => (
-                        <div key={i} className="prestamo-card prestado">
+                        <div key={i} className={`prestamo-card ${p.estatus === "Solicitado" ? "solicitado" : "prestado"}`}>
                             <div className="icono"><FaBox /></div>
                             <div className="nombre">{p.nombre_articulo}</div>
-                            <div className="fecha">📅 Solicitado el: {formatearFecha(p.fecha_solicitado)}</div>
-                            <Button
-                                variant="outlined"
-                                color="error"
-                                startIcon={<FaUndo />}
-                                onClick={() => handleDevolver(p.id)}
-                            >
+                            {p.estatus === "Solicitado" &&
+                                <div className="fecha">📅 Solicitado el: {formatearFecha(p.fecha_solicitado)}</div>
+                            }
+                            {p.estatus === "Prestado" && <>
+                                <div className="fecha">📅 Prestado el: {formatearFecha(p.fecha_prestamo)}</div>
+                                <Button
+                                    variant="outlined"
+                                    color="error"
+                                    startIcon={<FaUndo />}
+                                    onClick={() => handleDevolver(p.id)}
+                                >
                                 Devolver
-                            </Button>
+                                </Button>
+                            </>
+                            }
                         </div>
                     ))}
                 </div>

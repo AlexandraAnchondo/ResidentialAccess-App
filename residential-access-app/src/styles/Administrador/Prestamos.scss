@@ -75,7 +75,6 @@
         margin-top: 0.5rem;
         font-size: 1rem;
         color: #fff;
-        background-color: #d32f2f;
         padding: 0.2rem 0.5rem;
         border-radius: 0.5rem;
         display: inline-flex;
@@ -83,6 +82,14 @@
         gap: 0.3rem;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         letter-spacing: 1px;
+
+        &.prestado {
+            background-color: #d32f2f;
+        }
+
+        &.solicitado {
+            background-color: #2f89d3;
+        }
     }
 
     .acciones-card {
@@ -101,6 +108,11 @@
     &.prestado {
         border: 2px solid #d32f2f;
         background-color: #ffe5e5;
+    }
+
+    &.solicitado {
+        border: 2px solid #2f89d3;
+        background-color: #d9eeff;
     }
 }
 
