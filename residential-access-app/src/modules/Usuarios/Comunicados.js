@@ -6,7 +6,7 @@ import { Button } from "@mui/material"
 import { useComunicados, useCreateComunicadoLeido } from "../../hooks/comunicados.hook"
 import "../../styles/Usuarios/Comunicados.scss"
 
-const ComunicadosUsuario = ({ id_domicilio, showBackButton = false, handleBack }) => {
+const ComunicadosUsuario = ({ id_domicilio, handleBack, adminMode = false }) => {
     const { comunicados, loading, reload } = useComunicados(id_domicilio)
     const { saveAsComunicadoLeido } = useCreateComunicadoLeido()
 
@@ -82,7 +82,7 @@ const ComunicadosUsuario = ({ id_domicilio, showBackButton = false, handleBack }
         <div className="comunicados-usuarios-container">
             <h2 className="titulo-principal">Mensajes del Administrador</h2>
 
-            {showBackButton && (
+            {adminMode && (
                 <Button
                     variant="contained"
                     endIcon={<ArrowBack />}
@@ -98,17 +98,19 @@ const ComunicadosUsuario = ({ id_domicilio, showBackButton = false, handleBack }
                     <option value="todos">Todos</option>
                 </select>
 
-                <div className="toggle-leidos">
-                    <label className="switch-label">
-                        <input
-                            type="checkbox"
-                            checked={mostrarSoloNoLeidos}
-                            onChange={(e) => setMostrarSoloNoLeidos(e.target.checked)}
-                        />
-                        <span className="slider"></span>
-                        <span className="texto-toggle">Mostrar solo no leídos</span>
-                    </label>
-                </div>
+                {!adminMode && (
+                    <div className="toggle-leidos">
+                        <label className="switch-label">
+                            <input
+                                type="checkbox"
+                                checked={mostrarSoloNoLeidos}
+                                onChange={(e) => setMostrarSoloNoLeidos(e.target.checked)}
+                            />
+                            <span className="slider"></span>
+                            <span className="texto-toggle">Mostrar solo no leídos</span>
+                        </label>
+                    </div>
+                )}
 
                 <div className="buscador">
                     <FaSearch className="icono" />
@@ -129,7 +131,7 @@ const ComunicadosUsuario = ({ id_domicilio, showBackButton = false, handleBack }
                 <p className="mensaje-vacio">No se encontraron comunicados.</p>
             ) : (
                 <div className="comunicados-usuarios-grid">
-                    {comunicadosFiltrados.map((comunicado, index) => (
+                    {!adminMode && comunicadosFiltrados.map((comunicado, index) => (
                         <>
                             {comunicado.leido === 0 && (
                                 <button
@@ -164,7 +166,19 @@ const ComunicadosUsuario = ({ id_domicilio, showBackButton = false, handleBack }
                             )}
                         </>
                     ))}
-
+                    {adminMode && comunicadosFiltrados.map((comunicado, index) => (
+                        <button
+                            className="comunicado-card fade-in"
+                            key={index}
+                            onClick={() => setComunicadoSeleccionado(comunicado)}
+                        >
+                            <div className="comunicado-header">
+                                <FaBullhorn className="icono" />
+                                <h3 className="titulo">{comunicado.titulo}</h3>
+                            </div>
+                            <p className="fecha">📅 Creado: {formatearFecha(comunicado.created_at)}</p>
+                        </button>
+                    ))}
                 </div>
             )}
 

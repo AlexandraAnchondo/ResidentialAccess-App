@@ -52,6 +52,13 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
         }, 500)
     }
 
+    const isFormValid = () => {
+        return (
+            newPassword &&
+            confirmPassword
+        )
+    }
+
     if (!isOpen && !closing) {
         return null
     }
@@ -105,6 +112,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
                         variant="contained"
                         startIcon={<Check />}
                         size={isMobile ? "small" : "large"}
+                        disabled={!isFormValid()}
                         sx={{
                             backgroundColor: "#00a8cc",
                             "&:hover": { backgroundColor: "#00a8ccCC" },

@@ -134,7 +134,7 @@ const Comunicados = () => {
                 </div>
             )}
             {showDashboard && (
-                <ComunicadosDashboard showBackButton={true} handleBack={() => setShowDashboard(false)}/>
+                <ComunicadosDashboard handleBack={() => setShowDashboard(false)} adminMode={true}/>
             )}
         </>
     )
