@@ -1,7 +1,7 @@
 // Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faPaperclip, faReceipt, faBars, faKey, faCog } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faPaperclip, faReceipt, faBars, faKey, faCog, faBoxArchive } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from "framer-motion"
 // Components
 import Registro from "./Registro"
 import VisitasActivas from "./VisitasActivas"
+import Prestamos from "../Administrador/Prestamos"
 
 // Hooks
 import { useAuth, useRefreshToken, useResetPassword } from "../../hooks/auth.hook"
@@ -183,6 +184,12 @@ const Navbar = () => {
                             <FontAwesomeIcon icon={faReceipt} />&nbsp;Visitas activas
                         </button>
                         <button
+                            className={`nav-button ${activeView === "Prestamos" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Prestamos")}
+                        >
+                            <FontAwesomeIcon icon={faBoxArchive} />&nbsp;Préstamos
+                        </button>
+                        <button
                             onClick={handleSettings}
                             className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
                         >
@@ -216,6 +223,12 @@ const Navbar = () => {
                                 onClick={() => handleNavClick("Visitas activas")}
                             >
                                 <FontAwesomeIcon icon={faReceipt} />&nbsp;&nbsp;Visitas
+                            </button>
+                            <button
+                                className={`nav-button ${activeView === "Prestamos" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Prestamos")}
+                            >
+                                <FontAwesomeIcon icon={faBoxArchive} />&nbsp;Prestamos
                             </button>
                             <button
                                 onClick={handleSettings}
@@ -258,8 +271,10 @@ const Navbar = () => {
                                 selectedOption={selectedOption}
                                 setSelectedOption={setSelectedOption}
                             />
-                        ) : (
+                        ) : activeView === "Visitas activas" ? (
                             <VisitasActivas />
+                        ) : (
+                            <Prestamos />
                         )}
                     </motion.main>
                 </AnimatePresence>

@@ -1,7 +1,7 @@
 // Resources
 import React, { useState, useEffect } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faDoorOpen, faPaperclip, faReceipt, faBars, faHomeUser, faUserLock, faCog, faKey, faBell } from "@fortawesome/free-solid-svg-icons"
+import { faDoorOpen, faPaperclip, faReceipt, faBars, faHomeUser, faUserLock, faCog, faKey, faBell, faBoxArchive } from "@fortawesome/free-solid-svg-icons"
 import { Check as CheckIcon, Close as CloseIcon } from "@mui/icons-material"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import "../../styles/General/Navbar.scss"
@@ -14,6 +14,7 @@ import Visitas from "./Visitas"
 import Domicilios from "./Domicilios"
 import Guardias from "./Guardias"
 import Comunicados from "./Comunicados"
+import Prestamos from "./Prestamos"
 
 // Hooks
 import { useAuth, useRefreshToken, useResetPassword } from "../../hooks/auth.hook"
@@ -204,6 +205,12 @@ const Navbar = () => {
                             <FontAwesomeIcon icon={faBell} />&nbsp;Comunicados
                         </button>
                         <button
+                            className={`nav-button ${activeView === "Prestamos" ? "active" : ""}`}
+                            onClick={() => handleNavClick("Prestamos")}
+                        >
+                            <FontAwesomeIcon icon={faBoxArchive} />&nbsp;Préstamos
+                        </button>
+                        <button
                             onClick={handleSettings}
                             className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
                         >
@@ -257,6 +264,12 @@ const Navbar = () => {
                                 <FontAwesomeIcon icon={faBell} />&nbsp;Comunicados
                             </button>
                             <button
+                                className={`nav-button ${activeView === "Prestamos" ? "active" : ""}`}
+                                onClick={() => handleNavClick("Prestamos")}
+                            >
+                                <FontAwesomeIcon icon={faBoxArchive} />&nbsp;Prestamos
+                            </button>
+                            <button
                                 onClick={handleSettings}
                                 className={`nav-button ${isSidebarOpen ? "sidebar-button" : ""}`}
                             >
@@ -303,10 +316,11 @@ const Navbar = () => {
                             <Domicilios />
                         ) : activeView === "Guardias" ? (
                             <Guardias />
-                        ) : (
+                        ) : activeView === "Comunicados" ? (
                             <Comunicados />
-                        )
-                        }
+                        ) : (
+                            <Prestamos />
+                        )}
                     </motion.main>
                 </AnimatePresence>
             </div>

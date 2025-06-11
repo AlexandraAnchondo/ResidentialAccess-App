@@ -1,12 +1,17 @@
 import React, { useState, useMemo } from "react"
 import { FaBullhorn, FaSearch, FaTimes } from "react-icons/fa"
 import { ArrowBack } from "@mui/icons-material"
-import Loader from "../../components/Loader"
 import { Button } from "@mui/material"
-import { useComunicados, useCreateComunicadoLeido } from "../../hooks/comunicados.hook"
 import "../../styles/Usuarios/Comunicados.scss"
 
+// Components
+import Loader from "../../components/Loader"
+
+// Hooks
+import { useComunicados, useCreateComunicadoLeido } from "../../hooks/comunicados.hook"
+
 const ComunicadosUsuario = ({ id_domicilio, handleBack, adminMode = false }) => {
+    // API calls
     const { comunicados, loading, reload } = useComunicados(id_domicilio)
     const { saveAsComunicadoLeido } = useCreateComunicadoLeido()
 
@@ -74,8 +79,12 @@ const ComunicadosUsuario = ({ id_domicilio, handleBack, adminMode = false }) => 
 
     const handleComunicadoClick = async (c) => {
         setComunicadoSeleccionado(c)
-        await saveAsComunicadoLeido({ id_comunicado: c.id, id_domicilio: id_domicilio })
-        reload()
+        try{
+            await saveAsComunicadoLeido({ id_comunicado: c.id, id_domicilio: id_domicilio })
+            reload()
+        } catch (e){
+            console.log(e)
+        }
     }
 
     return (

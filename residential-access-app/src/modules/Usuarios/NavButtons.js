@@ -7,7 +7,8 @@ import {
     faCar,
     faQrcode,
     faDoorOpen,
-    faBell
+    faBell,
+    faBox
 } from "@fortawesome/free-solid-svg-icons"
 
 const NavButtons = ({ isMobile, activeView, onClick, logout, isSidebarOpen }) => {
@@ -17,7 +18,8 @@ const NavButtons = ({ isMobile, activeView, onClick, logout, isSidebarOpen }) =>
         { icon: faQrcode, view: "visitantes", buttonLabel: "Visitantes", label: "Visitantes frecuentes" },
         { icon: faUserGroup, view: "residentes", buttonLabel: "Residentes", label: "Residentes" },
         { icon: faCar, view: "vehiculos", buttonLabel: "Vehículos", label: "Vehículos" },
-        { icon: faBell, view: "comunicados", buttonLabel: "Comunicados", label: "Comunicados" }
+        { icon: faBell, view: "comunicados", buttonLabel: "Comunicados", label: "Comunicados" },
+        { icon: faBox, view: "prestamos", buttonLabel: "Préstamos", label: "Préstamos" }
     ]
 
     return (

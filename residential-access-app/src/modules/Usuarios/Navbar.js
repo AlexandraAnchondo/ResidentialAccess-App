@@ -15,6 +15,7 @@ import Residentes from "./Residentes"
 import Vehiculos from "./Vehiculos"
 import HomePage from "./HomePage"
 import Comunicados from "./Comunicados"
+import Prestamos from "./Prestamos"
 import NavButtons from "./NavButtons"
 
 // Hooks
@@ -279,6 +280,8 @@ const Navbar = () => {
                             <Vehiculos id_domicilio={user?.id_domicilio}/>
                         ) : activeView === "comunicados" ? (
                             <Comunicados id_domicilio={user?.id_domicilio}/>
+                        ) : activeView === "prestamos" ? (
+                            <Prestamos id_usuario={user?.id} nombre_usuario={`${user.nombre} ${user.apellidos}`}/>
                         ) : (
                             <HomePage id_domicilio={user?.id_domicilio} name={`${user?.nombre} ${user?.apellidos}`} phone={user?.telefono} email={user?.correo_electronico} ineSrc={user?.ine} />
                         )}
