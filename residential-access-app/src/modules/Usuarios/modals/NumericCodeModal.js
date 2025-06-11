@@ -45,8 +45,8 @@ const NumericCodeModal = ({ open, onClose, onSave, isSaved, setIsSaved, isFailur
     }
 
     return (
-        <div className={`modal-overlay ${closing ? "fade-out" : ""}`}>
-            <div className={`modal-content ${closing ? "scale-down" : ""}`}>
+        <div className={`numeric-code-modal-overlay ${closing ? "fade-out" : ""}`}>
+            <div className={`numeric-code-modal-content ${closing ? "scale-down" : ""}`}>
                 <h2>Cambiar código de acceso</h2>
                 {!isSaved && !isFailure &&
                     <>
@@ -60,18 +60,18 @@ const NumericCodeModal = ({ open, onClose, onSave, isSaved, setIsSaved, isFailur
                             className="codigo-input"
                             placeholder="Código"
                         />
-                        <Button variant="contained" onClick={generarAleatorio} fullWidth sx={{ mt: 2 }} >
+                        <Button variant="contained" onClick={generarAleatorio} fullWidth sx={{ mt: 2, backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8ccCC" } }} >
                             GENERAR CÓDIGO DE FORMA ALEATORIA
                         </Button>
                     </>
                 }
                 <Check isFailure={isFailure} isSaved={isSaved} message={message} />
                 <div className="numeric-code-modal-buttons">
-                    <Button onClick={handleCloseClick}>
+                    <Button onClick={handleCloseClick} sx={{ backgroundColor: "#db8771", "&:hover": { backgroundColor: "#a55642" } }}>
                             CANCELAR
                     </Button>
                     {!isSaved && !isFailure &&
-                        <Button onClick={handleGuardar} disabled={!isFormValid() || isFailure}>
+                        <Button onClick={handleGuardar} disabled={!isFormValid() || isFailure} sx={{ backgroundColor: "#00a8cc", "&:hover": { backgroundColor: "#00a8ccCC" } }}>
                                 GUARDAR
                         </Button>
                     }
