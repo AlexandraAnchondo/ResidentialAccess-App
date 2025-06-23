@@ -113,6 +113,22 @@ const PrestamosArticulos = () => {
         }
     }
 
+    const handleDevolver = async (idArticulo) => {
+        try {
+            await editPrestamo({
+                id: idArticulo,
+                id_usuario: null,
+                nombre_usuario: null,
+                fecha_solicitado: null,
+                fecha_prestamo: null,
+                estatus: "Libre"
+            })
+            reload()
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return (
         <div className="prestamos-container">
             <h2 className="titulo-principal">Artículos para préstamos</h2>
@@ -126,7 +142,7 @@ const PrestamosArticulos = () => {
                     {prestamos.map((p, index) => (
                         <div
                             key={index}
-                            className={`prestamo-card ${p.estatus === "Libre" ? "libre" : p.estatus === "Solicitado" ? "solicitado" : "prestado"}`}
+                            className={`prestamo-card ${p.estatus === "Libre" ? "libre" : p.estatus === "Solicitado" ? "solicitado" : p.estatus === "Prestado" ? "prestado" : "devolucion-solicitada"}`}
                         >
                             <div className="icono">{p.id_usuario ? <FaTimes /> : <FaCheck />}</div>
                             <div className="nombre">{p.nombre_articulo}</div>
@@ -135,7 +151,7 @@ const PrestamosArticulos = () => {
                                     {p.estatus === "Prestado" && <>
                                         <div className="fecha">📅 Prestado el: {formatearFecha(p.fecha_prestamo)}</div>
                                     </>}
-                                    <div className={`usuario ${p.estatus === "Solicitado" ? "solicitado" : "prestado"}`}>
+                                    <div className={`usuario ${p.estatus === "Solicitado" ? "solicitado" : p.estatus === "Prestado" ? "prestado" : "devolucion-solicitada"}`}>
                                         <FaUser />&nbsp;&nbsp;{p.nombre_usuario}
                                     </div>
                                     {p.estatus === "Solicitado" && <>
@@ -150,6 +166,20 @@ const PrestamosArticulos = () => {
                                             }}
                                         >
                                         Prestar
+                                        </Button>
+                                    </>}
+                                    {p.estatus === "Devolucion solicitada" && <>
+                                        <div className="fecha">📅 Devolución solicitada el: {formatearFecha(p.fecha_devolucion_solicitada)}</div>
+                                        <Button
+                                            variant="outlined"
+                                            color="primary"
+                                            startIcon={<FaArrowAltCircleLeft />}
+                                            onClick={() => handleDevolver(p.id)}
+                                            sx={{
+                                                marginTop: "10px"
+                                            }}
+                                        >
+                                        Devolver
                                         </Button>
                                     </>}
                                 </>

@@ -90,6 +90,10 @@
         &.solicitado {
             background-color: #2f89d3;
         }
+
+        &.devolucion-solicitada {
+            background-color: #9b7703;
+        }
     }
 
     .acciones-card {
@@ -113,6 +117,11 @@
     &.solicitado {
         border: 2px solid #2f89d3;
         background-color: #d9eeff;
+    }
+
+    &.devolucion-solicitada {
+        border: 2px solid #f5ce4f;
+        background-color: #faeec7;
     }
 }
 

@@ -48,15 +48,12 @@ const MisPrestamos = ({ id_usuario, nombre_usuario }) => {
         }
     }
 
-    const handleDevolver = async (idArticulo) => {
+    const handleSolicitarDevolucion = async (idArticulo) => {
         try {
             await editPrestamo({
                 id: idArticulo,
-                id_usuario: null,
-                nombre_usuario: null,
-                fecha_solicitado: null,
-                fecha_prestamo: null,
-                estatus: "Libre"
+                fecha_devolucion_solicitada: obtenerFechaHoy(),
+                estatus: "Devolucion solicitada"
             })
             reload()
         } catch (error) {
@@ -84,7 +81,7 @@ const MisPrestamos = ({ id_usuario, nombre_usuario }) => {
             ) : (
                 <div className="prestamos-grid">
                     {misPrestamos.map((p, i) => (
-                        <div key={i} className={`prestamo-card ${p.estatus === "Solicitado" ? "solicitado" : "prestado"}`}>
+                        <div key={i} className={`prestamo-card ${p.estatus === "Solicitado" ? "solicitado" : p.estatus === "Prestado" ? "prestado" : "devolucion-solicitada"}`}>
                             <div className="icono"><FaBox /></div>
                             <div className="nombre">{p.nombre_articulo}</div>
                             {p.estatus === "Solicitado" &&
@@ -96,10 +93,14 @@ const MisPrestamos = ({ id_usuario, nombre_usuario }) => {
                                     variant="outlined"
                                     color="error"
                                     startIcon={<FaUndo />}
-                                    onClick={() => handleDevolver(p.id)}
+                                    onClick={() => handleSolicitarDevolucion(p.id)}
                                 >
-                                Devolver
+                                Solicitar devolución
                                 </Button>
+                            </>
+                            }
+                            {p.estatus === "Devolucion solicitada" && <>
+                                <div className="fecha">📅 Devolución solicitada el: {formatearFecha(p.fecha_devolucion_solicitada)}</div>
                             </>
                             }
                         </div>
