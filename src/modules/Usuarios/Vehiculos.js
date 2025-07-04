@@ -9,6 +9,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 
 // Components
 import Loader from "../../components/Loader"
+import NotificationLabel from "../../components/NotificationLabel"
 
 // Modals
 import DeleteModal from "../../components/modals/DeleteModal"
@@ -252,6 +253,8 @@ const Vehiculos = ({ id_domicilio }) => {
                     </div>
                 )}
             </main>
+
+            <NotificationLabel isFailure={isFailure} isSaved={isSaved} message={message} />
 
             <AddVehiculoModal
                 show={showAddModal}

@@ -8,6 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 
 // Components
 import CountdownTimer from "../../components/CountdownTimer"
+import NotificationLabel from "../../components/NotificationLabel"
 
 // Utils
 import { shareQrImage } from "../../utils/shareQRImage"
@@ -297,6 +298,8 @@ const HomePage = ({ id_domicilio, name, phone, email, ineSrc }) => {
                     </Button>
                 </section>
             </main>
+
+            <NotificationLabel isFailure={isFailure} isSaved={isSaved} message={message} />
 
             <CodeModal
                 show={showModal}

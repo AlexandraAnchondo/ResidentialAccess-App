@@ -10,6 +10,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 
 // Components
 import Loader from "../../components/Loader"
+import NotificationLabel from "../../components/NotificationLabel"
 
 // Modals
 import AddVisitanteModal from "./modals/AddVisitanteModal"
@@ -300,6 +301,8 @@ const Visitantes = ({ id_domicilio }) => {
                     </div>
                 )}
             </main>
+
+            <NotificationLabel isFailure={isFailure} isSaved={isSaved} message={message} />
 
             <AddVisitanteModal
                 show={showAddModal}
