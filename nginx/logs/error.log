@@ -1,0 +1,22 @@
+2025/05/29 10:21:08 [emerg] 25624#8304: bind() to 0.0.0.0:80 failed (10013: An attempt was made to access a socket in a way forbidden by its access permissions)
+2025/05/29 10:27:48 [notice] 4208#16088: signal process started
+2025/05/29 10:27:52 [notice] 10900#3604: signal process started
+2025/05/29 10:27:52 [error] 10900#3604: CreateFile() "C:\nginx/logs/nginx.pid" failed (2: The system cannot find the file specified)
+2025/05/29 10:55:06 [notice] 15280#17428: signal process started
+2025/05/29 11:05:06 [notice] 23440#22360: signal process started
+2025/05/29 11:06:47 [notice] 15108#12600: signal process started
+2025/05/29 11:06:47 [error] 15108#12600: CreateFile() "C:\nginx/logs/nginx.pid" failed (2: The system cannot find the file specified)
+2025/05/29 13:06:15 [notice] 7228#3420: signal process started
+2025/05/29 13:07:27 [notice] 5500#9652: signal process started
+2025/05/29 13:07:27 [error] 5500#9652: CreateFile() "C:\nginx/logs/nginx.pid" failed (2: The system cannot find the file specified)
+2025/05/29 13:08:24 [notice] 18144#21092: signal process started
+2025/05/29 13:17:28 [notice] 12656#21332: signal process started
+2025/05/29 13:17:28 [error] 12656#21332: CreateFile() "C:\nginx/logs/nginx.pid" failed (2: The system cannot find the file specified)
+2025/05/29 13:22:01 [notice] 17224#22276: signal process started
+2025/05/29 13:49:25 [notice] 16120#3684: signal process started
+2025/05/29 13:49:25 [error] 16120#3684: CreateFile() "C:\nginx/logs/nginx.pid" failed (2: The system cannot find the file specified)
+2025/05/29 13:49:37 [notice] 16852#18420: signal process started
+2025/05/29 13:49:37 [error] 16852#18420: CreateFile() "C:\nginx/logs/nginx.pid" failed (2: The system cannot find the file specified)
+2025/05/29 13:50:49 [notice] 2876#1664: signal process started
+2025/05/29 13:50:58 [notice] 24016#6056: signal process started
+2025/05/29 13:50:58 [error] 24016#6056: CreateFile() "C:\nginx/logs/nginx.pid" failed (2: The system cannot find the file specified)

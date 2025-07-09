@@ -107,7 +107,7 @@ const StyledWrapper = styled.div`
     top: 1rem;
     right: 1rem;
     z-index: 9999;
-    animation: ${({ closing }) => closing ? css`${slideOut} 0.4s ease-in` : css`${slideIn} 0.4s ease-out`};
+    animation: ${({ closing }) => closing ? css`${slideOut} 0.4s ease-out` : css`${slideIn} 0.4s ease-in`};
     overflow: hidden;
     display: flex;
     align-items: center;

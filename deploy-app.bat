@@ -11,16 +11,16 @@ call npm run build
 
 :: Paso 2: Borrar carpeta html en Nginx y copiar los nuevos archivos
 echo ======================================
-echo   Reemplazando archivos en C:\nginx\html... 
+echo   Reemplazando archivos en .\nginx\html... 
 echo ======================================
-rmdir /s /q C:\nginx\html
-xcopy /s /e /y /i .\build C:\nginx\html
+rmdir /s /q .\nginx\html
+xcopy /s /e /y /i .\build .\nginx\html
 
 :: Paso 3: Detener Nginx
 echo ======================================
 echo   Deteniendo Nginx... 
 echo ======================================
-cd /d C:\nginx
+cd /d .\nginx
 taskkill /f /im nginx.exe
 
 :: Paso 4: Iniciar Nginx

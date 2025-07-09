@@ -2,6 +2,6 @@
 echo ======================================
 echo   Deteniendo Nginx... 
 echo ======================================
-cd /d C:\nginx
+cd /d .\nginx
 taskkill /f /im nginx.exe
 pause
