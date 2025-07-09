@@ -1,0 +1,212 @@
+.prestamos-container {
+    padding: 1rem;
+    max-width: 900px;
+    margin: auto;
+}
+
+.prestamos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 2fr));
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo-principal {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #0ca9cc;
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.loading-container {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.mensaje-vacio {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.prestamo-card {
+    width: 150px;
+    height: auto;
+    background-color: #f4f4f4;
+    border-radius: 1rem;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: default;
+    transition: transform 0.2s;
+    justify-content: center;
+    align-items: center;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    min-width: 200px;
+    max-width: 300px;
+
+    .icono {
+        font-size: 3.5rem;
+    }
+
+    .nombre {
+        font-weight: bold;
+        margin-top: 0.5rem;
+        word-break: break-word;
+    }
+
+    .fecha {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .usuario {
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        color: #fff;
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        letter-spacing: 1px;
+
+        &.prestado {
+            background-color: #d32f2f;
+        }
+
+        &.solicitado {
+            background-color: #2f89d3;
+        }
+
+        &.devolucion-solicitada {
+            background-color: #9b7703;
+        }
+    }
+
+    .acciones-card {
+        margin-top: 10px;
+        display: flex;
+        gap: 2.5rem;
+        background-color: #8fe5ff;
+        border-radius: 10px;
+    }
+
+    &.libre {
+        border: 2px solid #4caf50;
+        background-color: #ebffe5;
+    }
+
+    &.prestado {
+        border: 2px solid #d32f2f;
+        background-color: #ffe5e5;
+    }
+
+    &.solicitado {
+        border: 2px solid #2f89d3;
+        background-color: #d9eeff;
+    }
+
+    &.devolucion-solicitada {
+        border: 2px solid #f5ce4f;
+        background-color: #faeec7;
+    }
+}
+
+.prestamo-card.agregar {
+    width: 150px;
+    height: 135px;
+    background-color: #e0f7fa;
+    border: 2px dashed #00acc1;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .icono-mas {
+        font-size: 2.5rem;
+        color: #00acc1;
+    }
+
+    &:hover {
+        background-color: #b2ebf2;
+        transform: scale(1.05);
+    }
+}
+
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+
+    .modal-contenido {
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 1rem;
+        max-width: 600px;
+        width: 90%;
+        position: relative;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        animation: popUp 0.3s ease-out;
+
+        .cerrar {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #888;
+
+            &:hover {
+                color: #333;
+            }
+        }
+
+        .titulo-modal {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #0ca9cc;
+            margin-bottom: 1rem;
+        }
+
+        .mensaje-modal {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 1.5rem;
+            white-space: pre-line;
+        }
+
+        .fecha-modal {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: right;
+        }
+    }
+}

@@ -1,0 +1,172 @@
+/* Importar variables globales */
+@use '../General/Colors.scss';
+
+/* Estilos generales para los encabezados */
+.MuiDataGrid-columnHeader {
+    background-color: var(--primary-color); /* Fondo del encabezado */
+    color: white; /* Color del texto */
+    font-weight: bold; /* Negrita */
+    font-size: 1rem; /* Tamaño de fuente */
+    text-align: center !important; /* Centrar el texto */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* Estilos para cada celda del encabezado */
+/*.MuiDataGrid-columnHeader {
+    border-right: 1px solid #000000 !important; //Lineas divisoras
+}*/
+
+.MuiDataGrid-columnHeader:last-of-type {
+    border-right: none !important; /* Sin línea divisoria en la última celda */
+}
+
+.data-table-container {
+    display: flex;
+    justify-content: center;
+    height: auto; /* Altura completa de la ventana */
+    width: 100%;
+    padding: 20px; /* Espaciado para bordes */
+    box-sizing: border-box;
+}
+
+/* Estilo adicional para limitar el tamaño de la tabla */
+.data-table {
+    max-width: 1800px;
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    padding: 10px;
+    background-color: white; /* Fondo del Paper */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+/* Alternar colores en las filas */
+.MuiDataGrid-row:nth-of-type(odd) {
+    background-color: var(--child-row); /* Color para filas impares */
+}
+
+.MuiDataGrid-row:nth-of-type(even) {
+    background-color: white; /* Color para filas pares */
+}
+
+/* Cambiar el color al pasar el mouse */
+.MuiDataGrid-row:hover {
+    background-color: var(--row-hover) !important; /* Color al hacer hover */
+}
+
+/* Aumentar la especificidad para centrar el texto en todas las celdas */
+.MuiDataGrid-root .MuiDataGrid-cell {
+    text-align: center !important; /* Centrar el texto en todas las celdas */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.MuiDataGrid-root .MuiTablePagination-displayedRows {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: var(--primary-color)
+}
+
+.MuiDataGrid-root .MuiDataGrid-toolbarContainer {
+    gap: 20px;
+}
+
+.css-1ccsd5i-MuiButtonBase-root-MuiButton-root {
+    color: var(--primary-color) !important;
+}
+
+/* Optimización para el renderizado de texto */
+.MuiDataGrid-root {
+    -webkit-font-smoothing: antialiased; /* Mejora la suavidad de las fuentes */
+    -moz-osx-font-smoothing: grayscale;  /* Mejora la suavidad de las fuentes en macOS */
+    text-rendering: optimizeLegibility;  /* Mejora la legibilidad en todos los navegadores */
+}
+
+.MuiDataGrid-root .MuiDataGrid-cell {
+    font-size: 14px;   /* Ajusta el tamaño de fuente si es necesario */
+    line-height: 1.5;  /* Mejora la legibilidad de las filas */
+}
+
+/* Ajustes del campo de búsqueda */
+.MuiTextField-root {
+    font-size: 14px; /* Ajusta el tamaño del texto en la barra de búsqueda */
+    line-height: 1.5; /* Aumenta la legibilidad del texto */
+    input {
+        font-size: 14px; /* Asegura que el tamaño del texto dentro del campo sea correcto */
+    }
+}
+
+.scan-button, .reset-button {
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.reset-button {
+  background-color: #666;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+}
+
+.modal-camera {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-camera video {
+    max-width: 80vw;
+    max-height: 80vh;
+}
+
+.modal-camera-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px; 
+    margin: 0 auto; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px; 
+    margin-top: 10px;
+}
+
+@media screen and (min-width: 769px) and (max-width: 1068px) {
+    .modal-camera {
+        max-width: 90vw;
+        max-height: 90vh;
+    }
+
+    .modal-camera video {
+        max-width: 80vw;
+        max-height: 80vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .modal-camera video {
+        max-width: 90vw;
+        max-height: 90vh;
+    }
+}
+
+
